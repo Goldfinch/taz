@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Controllers;
+
+use PageController;
+
+class {{ class }}Controller extends PageController
+{
+    private static $allowed_actions = [];
+
+    private static $casting = [];
+
+    protected function init()
+    {
+        parent::init();
+
+        // ..
+    }
+}

@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Tasks;
+
+use SilverStripe\Dev\BuildTask;
+
+class {{ class }}BuildTask extends BuildTask
+{
+    private static $segment = '{{ class }}';
+
+    protected $enabled = true;
+
+    protected $title = '';
+
+    protected $description = '';
+
+    public function run($request)
+    {
+        //
+    }
+}

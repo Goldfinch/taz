@@ -1,0 +1,28 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__ . '/vendor/autoload.php';
+
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Filesystem\Filesystem;
+
+$application = new Application();
+
+$files = new Filesystem;
+
+$finder = Finder::create();
+$finder
+    ->in(__DIR__ . '/vendor/goldfinch/taz/src/Console/Commands')
+    ->depth(0)
+    ->filter(static function (SplFileInfo $file) {});
+
+foreach($finder as $f)
+{
+    $name = substr($f->getFilename(), 0, -4);
+    $class = '\Goldfinch\Taz\Console\Commands\\' . $name;
+    $application->add(new $class($files, __DIR__));
+}
+
+$application->run();

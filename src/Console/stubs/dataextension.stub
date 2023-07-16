@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Extensions;
+
+use SilverStripe\ORM\DataExtension;
+use SilverStripe\Forms\FieldList;
+
+class {{ class }}Extension extends DataExtension
+{
+    private static $db = [];
+
+    public function updateValidator($validator)
+    {
+        // ..
+    }
+
+    public function updateCMSFields(FieldList $fields)
+    {
+        //
+    }
+}

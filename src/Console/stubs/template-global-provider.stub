@@ -1,0 +1,13 @@
+<?php
+
+namespace App\Providers;
+
+use SilverStripe\View\TemplateGlobalProvider;
+
+class {{ class }}TemplateProvider implements TemplateGlobalProvider
+{
+    public static function get_template_global_variables(): array
+    {
+        return [];
+    }
+}

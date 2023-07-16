@@ -1,0 +1,52 @@
+<?php
+
+namespace App\Blocks;
+
+use DNADesign\Elemental\Models\BaseElement;
+
+class {{ class }}Block extends BaseElement
+{
+    private static $icon = 'font-icon-block-layout';
+
+    private static $description = '';
+
+    private static $db = [];
+
+    private static $casting = [];
+
+    private static $indexes = [];
+
+    private static $table_name = '{{ class }}';
+
+    private static $default_sort = 'Sort';
+
+    private static $singular_name = 'block';
+
+    private static $plural_name = 'blocks';
+
+    private static $summary_fields = [];
+
+    private static $searchable_fields = [];
+
+    private static $disable_pretty_anchor_name = false;
+
+    private static $inline_editable = true;
+
+    private static $displays_title_in_template = true;
+
+    public function onBeforeWrite()
+    {
+        parent::onBeforeWrite();
+
+        // ..
+    }
+
+    public function getCMSFields()
+    {
+        $fields = parent::getCMSFields();
+
+        //
+
+        return $fields;
+    }
+}

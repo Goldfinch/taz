@@ -1,0 +1,20 @@
+<?php
+
+namespace App\Controllers;
+
+use SilverStripe\Control\Controller;
+use SilverStripe\Control\HTTPRequest;
+
+class {{ class }}Controller extends Controller
+{
+    private static $url_handlers = [];
+
+    private static $allowed_actions = [];
+
+    protected function init()
+    {
+        parent::init();
+
+        // ..
+    }
+}
