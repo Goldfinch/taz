@@ -16,7 +16,7 @@ class {{ class }}Block extends BaseElement
 
     private static $indexes = [];
 
-    private static $table_name = '{{ class }}';
+    private static $table_name = '{{ class }}Block';
 
     private static $default_sort = 'Sort';
 
