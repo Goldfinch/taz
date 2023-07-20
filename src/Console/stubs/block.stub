@@ -49,4 +49,14 @@ class {{ class }}Block extends BaseElement
 
         return $fields;
     }
+
+    public function getSummary(): string
+    {
+        return 'Block summary';
+    }
+
+    public function getType()
+    {
+        return 'Block title';
+    }
 }
