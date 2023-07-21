@@ -8,8 +8,6 @@ class {{ class }}Block extends BaseElement
 {
     private static $icon = 'font-icon-block-layout';
 
-    private static $description = '';
-
     private static $db = [];
 
     private static $casting = [];
@@ -23,6 +21,8 @@ class {{ class }}Block extends BaseElement
     private static $singular_name = 'block';
 
     private static $plural_name = 'blocks';
+
+    private static $description = '';
 
     private static $summary_fields = [];
 
@@ -50,13 +50,15 @@ class {{ class }}Block extends BaseElement
         return $fields;
     }
 
-    public function getSummary(): string
+    public function getSummary()
     {
-        return 'Block summary';
+        return $this->getDescription();
     }
 
     public function getType()
     {
-        return 'Block title';
+        $default = $this->i18n_singular_name() ?: 'Block';
+
+        return _t(__CLASS__ . '.BlockType', $default);
     }
 }
