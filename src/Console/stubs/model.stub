@@ -87,7 +87,7 @@ class {{ class }} extends DataObject
         return Permission::check('CMS_ACCESS_Company\Website\MyAdmin', 'any', $member);
     }
 
-    public function canCreate($member = null)
+    public function canCreate($member = null, $context = [])
     {
         return Permission::check('CMS_ACCESS_Company\Website\MyAdmin', 'any', $member);
     }
