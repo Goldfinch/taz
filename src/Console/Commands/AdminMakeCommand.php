@@ -18,7 +18,7 @@ class AdminMakeCommand extends GeneratorCommand
 
     protected $stub = 'admin.stub';
 
-    protected $prefix = '';
+    protected $prefix = 'Admin';
 
     protected function execute($input, $output): int
     {
