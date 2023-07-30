@@ -4,3 +4,4 @@ cp vendor/goldfinch/taz/taz taz
 ```
 
 - extension suboptions
+- shortcode
