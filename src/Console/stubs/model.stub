@@ -7,9 +7,9 @@ use SilverStripe\ORM\DataObject;
 
 class {{ class }} extends DataObject
 {
-    private static $singular_name = null;
+    private static $singular_name = '{{ class_singular }}';
 
-    private static $plural_name = null;
+    private static $plural_name = '{{ class_plural }}';
 
     private static $table_name = '{{ class }}';
 

@@ -363,7 +363,39 @@ abstract class GeneratorCommand extends Command
     {
         $stub = file_get_contents($this->getStub());
 
-        return $this->replaceNamespace($stub, $name)->replaceClass($stub, $name);
+        return $this
+          ->replaceNamespace($stub, $name)
+          ->replaceClassSingular($stub, $name)
+          ->replaceClassPlural($stub, $name)
+          ->replaceClassKebab($stub, $name)
+          ->replaceClass($stub, $name);
+    }
+
+    protected function replaceClassSingular(&$stub, $name)
+    {
+        $class = str_replace($this->getNamespace($name).'\\', '', $name);
+
+        $stub = str_replace(['DummyClassSingular', '{{ class_singular }}', '{{class_singular}}'], Str::singular(Str::of($class)->headline()), $stub);
+
+        return $this;
+    }
+
+    protected function replaceClassPlural(&$stub, $name)
+    {
+        $class = str_replace($this->getNamespace($name).'\\', '', $name);
+
+        $stub = str_replace(['DummyClassPlural', '{{ class_plural }}', '{{class_plural}}'], Str::pluralStudly(Str::of($class)->headline()), $stub);
+
+        return $this;
+    }
+
+    protected function replaceClassKebab(&$stub, $name)
+    {
+        $class = str_replace($this->getNamespace($name).'\\', '', $name);
+
+        $stub = str_replace(['DummyClassKebab', '{{ class_kebab }}', '{{class_kebab}}'], Str::of($class)->kebab(), $stub);
+
+        return $this;
     }
 
     /**

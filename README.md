@@ -6,3 +6,4 @@ cp vendor/goldfinch/taz/taz taz
 - extension suboptions
 - shortcode
 - cli-script
+- exists. rewrite (yes/no)

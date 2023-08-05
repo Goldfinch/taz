@@ -6,11 +6,11 @@ use SilverStripe\Dev\BuildTask;
 
 class {{ class }}BuildTask extends BuildTask
 {
-    private static $segment = '{{ class }}';
+    private static $segment = '{{ class_kebab }}';
 
     protected $enabled = true;
 
-    protected $title = '';
+    protected $title = '{{ class_singular }}';
 
     protected $description = '';
 
