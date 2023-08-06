@@ -38,6 +38,10 @@ class {{ class }} extends DataObject
 
     private static $field_labels = [];
 
+    // composer require goldfinch/helpers
+    private static $field_descriptions = [];
+    private static $required_fields = [];
+
     private static $summary_fields = [];
 
     public function validate()
