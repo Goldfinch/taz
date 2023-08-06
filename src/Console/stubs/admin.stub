@@ -21,7 +21,7 @@ class {{ class }}Admin extends ModelAdmin
     //    'product-category' => [
     //        'dataClass' => ExampleCategory::class,
     //        'title' => 'Product categories'
-    //   ]
+    //    ]
     // ];
 
     private static $menu_priority = -0.5;
