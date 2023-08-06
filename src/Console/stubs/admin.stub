@@ -18,13 +18,13 @@ class {{ class }}Admin extends ModelAdmin
     //    ExampleProduct::class,
     //
     //    ExampleCategory::class => [
-    //        'title' => 'All categories'
+    //        'title' => 'All categories',
     //    ],
     //
     //    'product-category' => [
     //        'dataClass' => ExampleCategory::class,
-    //        'title' => 'Product categories'
-    //    ]
+    //        'title' => 'Product categories',
+    //    ],
     // ];
 
     private static $menu_priority = -0.5;
