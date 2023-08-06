@@ -375,7 +375,7 @@ abstract class GeneratorCommand extends Command
     {
         $class = str_replace($this->getNamespace($name).'\\', '', $name);
 
-        $stub = str_replace(['DummyClassSingular', '{{ class_singular }}', '{{class_singular}}'], Str::singular(Str::of($class)->headline()), $stub);
+        $stub = str_replace(['DummyClassSingular', '{{ class_singular }}', '{{class_singular}}'], Str::lower(Str::singular(Str::of($class)->headline())), $stub);
 
         return $this;
     }
@@ -384,7 +384,7 @@ abstract class GeneratorCommand extends Command
     {
         $class = str_replace($this->getNamespace($name).'\\', '', $name);
 
-        $stub = str_replace(['DummyClassPlural', '{{ class_plural }}', '{{class_plural}}'], Str::pluralStudly(Str::of($class)->headline()), $stub);
+        $stub = str_replace(['DummyClassPlural', '{{ class_plural }}', '{{class_plural}}'], Str::lower(Str::pluralStudly(Str::of($class)->headline())), $stub);
 
         return $this;
     }

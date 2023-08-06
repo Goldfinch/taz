@@ -2,8 +2,11 @@
 
 namespace App\Admin;
 
-use SilverStripe\Forms\GridField\GridFieldConfig;
 use SilverStripe\Admin\ModelAdmin;
+use SilverStripe\Forms\GridField\GridFieldConfig;
+use SilverStripe\Forms\GridField\GridFieldPrintButton;
+use SilverStripe\Forms\GridField\GridFieldExportButton;
+use SilverStripe\Forms\GridField\GridFieldImportButton;
 
 class {{ class }}Admin extends ModelAdmin
 {
@@ -56,7 +59,9 @@ class {{ class }}Admin extends ModelAdmin
     {
         $config = parent::getGridFieldConfig();
 
-        // ..
+        // $config->removeComponentsByType(GridFieldExportButton::class);
+        // $config->removeComponentsByType(GridFieldPrintButton::class);
+        // $config->removeComponentsByType(GridFieldImportButton::class);
 
         return $config;
     }
