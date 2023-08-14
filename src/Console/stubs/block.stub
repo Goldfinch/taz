@@ -22,6 +22,15 @@ class {{ class }}Block extends BaseElement
 
     private static $plural_name = '{{ class_plural }}';
 
+    private static $has_one = [];
+    private static $belongs_to = [];
+    private static $has_many = [];
+    private static $many_many = [];
+    private static $many_many_extraFields = [];
+    private static $belongs_many_many = [];
+
+    private static $owns = [];
+
     private static $description = '';
 
     private static $field_labels = [];
