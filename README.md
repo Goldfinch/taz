@@ -11,3 +11,4 @@ cp vendor/goldfinch/taz/taz taz
 - #200 mkdir, create folder if not exists
 - stub nest ctrl
 - stub component
+- admin menu_title capitilize
