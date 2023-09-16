@@ -12,3 +12,4 @@ cp vendor/goldfinch/taz/taz taz
 - stub nest ctrl
 - stub component
 - admin menu_title capitilize
+- register shell command
