@@ -5,12 +5,12 @@ namespace Goldfinch\Taz\Console;
 // use Illuminate\Console\Concerns\CreatesMatchingTest;
 use Illuminate\Support\Str;
 use Symfony\Component\Finder\Finder;
+use Goldfinch\Taz\Services\InputOutput;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Goldfinch\Taz\Services\InputOutput;
 
 abstract class GeneratorCommand extends Command
 {
@@ -156,7 +156,21 @@ abstract class GeneratorCommand extends Command
      */
     protected function getStub()
     {
-        return __DIR__. '/stubs/' . $this->stub;
+        if ($this->stub[0] == '.')
+        {
+            $reflector = new \ReflectionClass(get_class($this));
+            $path = $reflector->getFileName();
+            $classname = $reflector->getShortName();
+            $dir = explode($classname, $path)[0];
+
+            $path = $dir. substr($this->stub, 2);
+        }
+        else
+        {
+            $path = __DIR__. '/stubs/' . $this->stub;
+        }
+
+        return $path;
     }
 
     protected function getAttrName($input)
@@ -366,6 +380,7 @@ abstract class GeneratorCommand extends Command
         return $this
           ->replaceNamespace($stub, $name)
           ->replaceClassSingular($stub, $name)
+          ->replaceClassSingularLowercase($stub, $name)
           ->replaceClassPlural($stub, $name)
           ->replaceClassKebab($stub, $name)
           ->replaceClass($stub, $name);
@@ -376,6 +391,15 @@ abstract class GeneratorCommand extends Command
         $class = str_replace($this->getNamespace($name).'\\', '', $name);
 
         $stub = str_replace(['DummyClassSingular', '{{ class_singular }}', '{{class_singular}}'], Str::lower(Str::singular(Str::of($class)->headline())), $stub);
+
+        return $this;
+    }
+
+    protected function replaceClassSingularLowercase(&$stub, $name)
+    {
+        $class = str_replace($this->getNamespace($name).'\\', '', $name);
+
+        $stub = str_replace(['DummyClassSingularLowercase', '{{ class_singular_lowercase }}', '{{class_singular_lowercase}}'], Str::lower(strtolower(Str::singular(Str::of($class)->headline()))), $stub);
 
         return $this;
     }

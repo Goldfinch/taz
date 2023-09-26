@@ -6,7 +6,42 @@ require __DIR__ . '/vendor/autoload.php';
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Console\Application;
+use Goldfinch\Taz\Console\GeneratorCommand;
 use Symfony\Component\Filesystem\Filesystem;
+
+$finder = Finder::create();
+$finder
+    ->in([
+        __DIR__ . '/vendor/**/*/src/Commands',
+        __DIR__ . '/app/src/Commands',
+    ])
+    ->depth(0)
+    ->filter(static function (SplFileInfo $file) {});
+
+$customCommands = [];
+
+foreach($finder as $f)
+{
+    if (is_dir($f->getPathname()))
+    {
+        continue;
+    }
+
+    $fileContent = (string)file_get_contents($f->getPathname());
+
+    preg_match('#namespace (.*);#', $fileContent, $matches);
+
+    if ($matches && isset($matches[1]))
+    {
+        $name = explode('.php', $f->getFilename())[0];
+        $class = $matches[1] . '\\' . $name;
+
+        if (is_subclass_of($class, GeneratorCommand::class))
+        {
+            $customCommands[] = $class;
+        }
+    }
+}
 
 $application = new Application();
 
@@ -14,15 +49,29 @@ $files = new Filesystem;
 
 $finder = Finder::create();
 $finder
-    ->in(__DIR__ . '/vendor/goldfinch/taz/src/Console/Commands')
+    ->in([
+        __DIR__ . '/vendor/goldfinch/taz/src/Console/Commands',
+    ])
     ->depth(0)
     ->filter(static function (SplFileInfo $file) {});
 
 foreach($finder as $f)
 {
-    $name = substr($f->getFilename(), 0, -4);
-    $class = '\Goldfinch\Taz\Console\Commands\\' . $name;
-    $application->add(new $class($files, __DIR__));
+    if (substr($f->getFilename(), -4) == '.php')
+    {
+        $name = substr($f->getFilename(), 0, -4);
+        $class = '\Goldfinch\Taz\Console\Commands\\' . $name;
+
+        $application->add(new $class($files, __DIR__));
+    }
+
+    if (count($customCommands))
+    {
+        foreach ($customCommands as $commandClass)
+        {
+            $application->add(new $commandClass($files, __DIR__));
+        }
+    }
 }
 
 $application->run();

@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Commands;
+
+use Goldfinch\Taz\Services\InputOutput;
+use Goldfinch\Taz\Console\GeneratorCommand;
+use Symfony\Component\Console\Command\Command;
+
+#[AsCommand(name: 'mycustom:command')]
+class {{ class }}Command extends GeneratorCommand
+{
+    protected static $defaultName = 'mycustom:command';
+
+    protected $description = 'New command description';
+
+    protected $path = 'app/src/CustomPath';
+
+    protected $type = '{{ class_singular_lowercase }}';
+
+    protected $stub = './stubs/{{ class_singular_lowercase }}.stub';
+
+    protected $prefix = 'CustomPrefix';
+
+    protected function execute($input, $output): int
+    {
+        parent::execute($input, $output);
+
+        return Command::SUCCESS;
+    }
+}
