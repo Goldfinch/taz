@@ -3,6 +3,7 @@ cd root-project
 cp vendor/goldfinch/taz/taz taz
 ```
 
+- get theme template 'main'
 - App/Pages folder not exists (make:page)
 - extension suboptions
 - shortcode
