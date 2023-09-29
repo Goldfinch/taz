@@ -5,10 +5,10 @@ namespace Goldfinch\Taz\Console\Commands;
 use Goldfinch\Taz\Console\GeneratorCommand;
 use Symfony\Component\Console\Command\Command;
 
-#[AsCommand(name: 'dev/build')]
+#[AsCommand(name: 'app:dev-build')]
 class SilverstripeCommand extends GeneratorCommand
 {
-    protected static $defaultName = 'dev/build';
+    protected static $defaultName = 'app:dev-build';
 
     protected $description = 'Silverstripe commands';
 

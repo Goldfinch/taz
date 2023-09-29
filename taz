@@ -10,35 +10,44 @@ use Goldfinch\Taz\Console\GeneratorCommand;
 use Symfony\Component\Filesystem\Filesystem;
 
 $finder = Finder::create();
-$finder
-    ->in([
-        __DIR__ . '/vendor/**/*/src/Commands',
-        __DIR__ . '/app/src/Commands',
-    ])
-    ->depth(0)
-    ->filter(static function (SplFileInfo $file) {});
+
+$dirs = [
+    __DIR__ . '/vendor/**/*/src/Commands',
+    __DIR__ . '/app/src/Commands',
+];
+
+$checkDirs = array_filter($dirs, static function ($dir){
+    return !empty(glob($dir));
+});
 
 $customCommands = [];
 
-foreach($finder as $f)
+if (count($checkDirs))
 {
-    if (is_dir($f->getPathname()))
+    $finder
+        ->in($checkDirs)
+        ->depth(0);
+
+    foreach($finder as $f)
     {
-        continue;
-    }
-
-    $fileContent = (string)file_get_contents($f->getPathname());
-
-    preg_match('#namespace (.*);#', $fileContent, $matches);
-
-    if ($matches && isset($matches[1]))
-    {
-        $name = explode('.php', $f->getFilename())[0];
-        $class = $matches[1] . '\\' . $name;
-
-        if (is_subclass_of($class, GeneratorCommand::class))
+        if (is_dir($f->getPathname()))
         {
-            $customCommands[] = $class;
+            continue;
+        }
+
+        $fileContent = (string)file_get_contents($f->getPathname());
+
+        preg_match('#namespace (.*);#', $fileContent, $matches);
+
+        if ($matches && isset($matches[1]))
+        {
+            $name = explode('.php', $f->getFilename())[0];
+            $class = $matches[1] . '\\' . $name;
+
+            if (is_subclass_of($class, GeneratorCommand::class))
+            {
+                $customCommands[] = $class;
+            }
         }
     }
 }
