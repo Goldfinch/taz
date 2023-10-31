@@ -6,12 +6,12 @@ use SilverStripe\Core\Extension;
 
 class {{ class }}Extension extends Extension
 {
-    private static $allowed_actions = [];
+    // private static $allowed_actions = [];
 
     private static $db = [];
 
     public function onAfterInit()
     {
-        //
+        // ..
     }
 }

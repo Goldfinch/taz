@@ -1,5 +1,11 @@
 ---
 Name: {{ class }}
 After:
+   - '#...'
 Before:
+   - '#...'
+Only:
+  moduleexists: some/module
+Except:
+  environment: dev
 ---

@@ -4,9 +4,6 @@ namespace App\Admin;
 
 use SilverStripe\Admin\ModelAdmin;
 use SilverStripe\Forms\GridField\GridFieldConfig;
-use SilverStripe\Forms\GridField\GridFieldPrintButton;
-use SilverStripe\Forms\GridField\GridFieldExportButton;
-use SilverStripe\Forms\GridField\GridFieldImportButton;
 
 class {{ class }}Admin extends ModelAdmin
 {
@@ -27,15 +24,11 @@ class {{ class }}Admin extends ModelAdmin
     //    ],
     // ];
 
-    private static $menu_priority = -0.5;
-
-    private static $menu_icon_class = 'font-icon-database';
-
-    public $showImportForm = true;
-
-    public $showSearchForm = true;
-
-    private static $page_length = 30;
+    // private static $menu_priority = -0.5;
+    // private static $menu_icon_class = 'font-icon-database';
+    // public $showImportForm = true;
+    // public $showSearchForm = true;
+    // private static $page_length = 30;
 
     public function getList()
     {
@@ -59,10 +52,6 @@ class {{ class }}Admin extends ModelAdmin
     {
         $config = parent::getGridFieldConfig();
 
-        // $config->removeComponentsByType(GridFieldExportButton::class);
-        // $config->removeComponentsByType(GridFieldPrintButton::class);
-        // $config->removeComponentsByType(GridFieldImportButton::class);
-
         return $config;
     }
 
@@ -75,11 +64,11 @@ class {{ class }}Admin extends ModelAdmin
         return $form;
     }
 
-    public function getExportFields()
-    {
-        return [
-            // 'Name' => 'Name',
-            // 'Category.Title' => 'Category'
-        ];
-    }
+    // public function getExportFields()
+    // {
+    //     return [
+    //         'Name' => 'Name',
+    //         'Category.Title' => 'Category'
+    //     ];
+    // }
 }

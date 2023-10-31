@@ -7,37 +7,41 @@ use App\Controllers\{{ class }}Controller;
 
 class {{ class }} extends Page
 {
-    private static $allowed_children = [];
-
+    private static $table_name = '{{ class }}';
     private static $controller_name = {{ class }}Controller::class;
 
+    // private static $allowed_children = [];
+
+    // private static $icon_class = 'font-icon-page';
+    // private static $base_description = 'Generic content page';
+    // private static $icon = null;
+    // private static $description = null;
+    // private static $owned_by = [];
+
     private static $db = [];
+    // private static $cascade_deletes = [];
+    // private static $cascade_duplicates = [];
+    // private static $casting = [];
+    // private static $indexes = null;
+    // private static $defaults = [];
 
-    private static $indexes = [];
 
-    private static $has_many = [];
+    // private static $has_one = [];
+    // private static $belongs_to = [];
+    // private static $has_many = [];
+    // private static $many_many = [];
+    // private static $many_many_extraFields = [];
+    // private static $belongs_many_many = [];
 
-    private static $owned_by = [];
+    // private static $owns = [];
+    // private static $default_sort = "\"Sort\"";
+    // private static $searchable_fields = [];
+    // private static $field_labels = [];
+    // private static $summary_fields = [];
 
-    private static $casting = [];
-
-    private static $defaults = [];
-
-    private static $table_name = '{{ class }}';
-
-    private static $default_sort = "\"Sort\"";
-
-    private static $icon = null;
-
-    private static $icon_class = 'font-icon-page';
-
-    private static $searchable_fields = [];
-
-    private static $field_labels = [];
-
-    private static $description = null;
-
-    private static $base_description = 'Generic content page';
+    // composer require goldfinch/helpers
+    // private static $field_descriptions = [];
+    // private static $required_fields = [];
 
     protected function onBeforeWrite()
     {
@@ -72,15 +76,5 @@ class {{ class }} extends Page
         // ..
 
         return $fields;
-    }
-
-    public function SchemaData()
-    {
-        // Spatie\SchemaOrg\Schema
-    }
-
-    public function OpenGraph()
-    {
-        // Astrotomic\OpenGraph\OpenGraph
     }
 }

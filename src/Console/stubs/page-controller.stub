@@ -6,9 +6,8 @@ use PageController;
 
 class {{ class }}Controller extends PageController
 {
-    private static $allowed_actions = [];
-
-    private static $casting = [];
+    // private static $allowed_actions = [];
+    // private static $casting = [];
 
     protected function init()
     {

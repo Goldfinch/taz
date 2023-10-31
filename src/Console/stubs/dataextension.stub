@@ -16,6 +16,6 @@ class {{ class }}Extension extends DataExtension
 
     public function updateCMSFields(FieldList $fields)
     {
-        //
+        // ..
     }
 }

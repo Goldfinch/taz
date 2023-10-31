@@ -16,6 +16,6 @@ class {{ class }}BuildTask extends BuildTask
 
     public function run($request)
     {
-        //
+        // ..
     }
 }

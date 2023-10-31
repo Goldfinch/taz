@@ -2,47 +2,37 @@
 
 namespace App\Models;
 
-use SilverStripe\Security\Permission;
 use SilverStripe\ORM\DataObject;
 
 class {{ class }} extends DataObject
 {
+    private static $table_name = '{{ class }}';
     private static $singular_name = '{{ class_singular }}';
-
     private static $plural_name = '{{ class_plural }}';
 
-    private static $table_name = '{{ class }}';
-
-    private static $cascade_deletes = [];
-
-    private static $cascade_duplicates = [];
-
     private static $db = [];
+    // private static $cascade_deletes = [];
+    // private static $cascade_duplicates = [];
+    // private static $casting = [];
+    // private static $indexes = null;
+    // private static $defaults = [];
 
-    private static $casting = [];
+    // private static $has_one = [];
+    // private static $belongs_to = [];
+    // private static $has_many = [];
+    // private static $many_many = [];
+    // private static $many_many_extraFields = [];
+    // private static $belongs_many_many = [];
 
-    private static $indexes = null;
-
-    private static $defaults = [];
-
-    private static $has_one = [];
-    private static $belongs_to = [];
-    private static $has_many = [];
-    private static $many_many = [];
-    private static $many_many_extraFields = [];
-    private static $belongs_many_many = [];
-
-    private static $default_sort = null;
-
-    private static $searchable_fields = [];
-
-    private static $field_labels = [];
+    // private static $owns = [];
+    // private static $default_sort = null;
+    // private static $searchable_fields = [];
+    // private static $field_labels = [];
+    // private static $summary_fields = [];
 
     // composer require goldfinch/helpers
-    private static $field_descriptions = [];
-    private static $required_fields = [];
-
-    private static $summary_fields = [];
+    // private static $field_descriptions = [];
+    // private static $required_fields = [];
 
     public function validate()
     {
@@ -71,7 +61,7 @@ class {{ class }} extends DataObject
     {
         $fields = parent::getCMSFields();
 
-        //
+        // ..
 
         return $fields;
     }
@@ -95,14 +85,4 @@ class {{ class }} extends DataObject
     // {
     //     return Permission::check('CMS_ACCESS_Company\Website\MyAdmin', 'any', $member);
     // }
-
-    public function SchemaData()
-    {
-        // Spatie\SchemaOrg\Schema
-    }
-
-    public function OpenGraph()
-    {
-        // Astrotomic\OpenGraph\OpenGraph
-    }
 }

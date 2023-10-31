@@ -6,5 +6,5 @@ use SilverStripe\View\ViewableData;
 
 class {{ class }} extends ViewableData
 {
-    private static array $my_configuration_property = [];
+    // private static array $my_configuration_property = [];
 }
