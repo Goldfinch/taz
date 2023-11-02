@@ -8,35 +8,34 @@ use SilverStripe\Forms\GridField\GridFieldConfig;
 class {{ class }}Admin extends ModelAdmin
 {
     private static $url_segment = '{{ class_kebab }}';
-
     private static $menu_title = '{{ class_singular }}';
-
-    // private static $managed_models = [
-    //    ExampleProduct::class,
-    //
-    //    ExampleCategory::class => [
-    //        'title' => 'All categories',
-    //    ],
-    //
-    //    'product-category' => [
-    //        'dataClass' => ExampleCategory::class,
-    //        'title' => 'Product categories',
-    //    ],
-    // ];
-
-    // private static $menu_priority = -0.5;
     // private static $menu_icon_class = 'font-icon-database';
+    // private static $menu_priority = -0.5;
+
+    private static $managed_models = [
+       Test::class,
+    ];
+
     // public $showImportForm = true;
     // public $showSearchForm = true;
     // private static $page_length = 30;
 
     public function getList()
     {
-        $list =  parent::getList();
+        $list = parent::getList();
 
         // ..
 
         return $list;
+    }
+
+    protected function getGridFieldConfig(): GridFieldConfig
+    {
+        $config = parent::getGridFieldConfig();
+
+        // ..
+
+        return $config;
     }
 
     public function getSearchContext()
@@ -46,13 +45,6 @@ class {{ class }}Admin extends ModelAdmin
         // ..
 
         return $context;
-    }
-
-    protected function getGridFieldConfig(): GridFieldConfig
-    {
-        $config = parent::getGridFieldConfig();
-
-        return $config;
     }
 
     public function getEditForm($id = null, $fields = null)
@@ -67,8 +59,8 @@ class {{ class }}Admin extends ModelAdmin
     // public function getExportFields()
     // {
     //     return [
-    //         'Name' => 'Name',
-    //         'Category.Title' => 'Category'
+    //         // 'Name' => 'Name',
+    //         // 'Category.Title' => 'Category'
     //     ];
     // }
 }

@@ -216,7 +216,7 @@ abstract class GeneratorCommand extends Command
 
             file_put_contents($path, $this->sortImports($this->buildClass($nameInput)), 0);
 
-            $io->right('The ' . $this->type . ' ' . $nameInput . ' has been created');
+            $io->right('The ' . $this->type . ' [' . $nameInput . '] has been created');
         }
 
         return Command::SUCCESS;
@@ -382,6 +382,7 @@ abstract class GeneratorCommand extends Command
           ->replaceClassSingular($stub, $name)
           ->replaceClassSingularLowercase($stub, $name)
           ->replaceClassPlural($stub, $name)
+          ->replaceClassPluralLowercase($stub, $name)
           ->replaceClassKebab($stub, $name)
           ->replaceClass($stub, $name);
     }
@@ -390,7 +391,7 @@ abstract class GeneratorCommand extends Command
     {
         $class = str_replace($this->getNamespace($name).'\\', '', $name);
 
-        $stub = str_replace(['DummyClassSingular', '{{ class_singular }}', '{{class_singular}}'], Str::lower(Str::singular(Str::of($class)->headline())), $stub);
+        $stub = str_replace(['DummyClassSingular', '{{ class_singular }}', '{{class_singular}}'], Str::singular(Str::of($class)->headline()), $stub);
 
         return $this;
     }
@@ -405,6 +406,15 @@ abstract class GeneratorCommand extends Command
     }
 
     protected function replaceClassPlural(&$stub, $name)
+    {
+        $class = str_replace($this->getNamespace($name).'\\', '', $name);
+
+        $stub = str_replace(['DummyClassPlural', '{{ class_plural }}', '{{class_plural}}'], Str::pluralStudly(Str::of($class)->headline()), $stub);
+
+        return $this;
+    }
+
+    protected function replaceClassPluralLowercase(&$stub, $name)
     {
         $class = str_replace($this->getNamespace($name).'\\', '', $name);
 

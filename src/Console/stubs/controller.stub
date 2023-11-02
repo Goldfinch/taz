@@ -8,7 +8,6 @@ use SilverStripe\Control\HTTPRequest;
 class {{ class }}Controller extends Controller
 {
     private static $url_handlers = [];
-
     private static $allowed_actions = [];
 
     protected function init()

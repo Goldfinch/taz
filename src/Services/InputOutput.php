@@ -8,12 +8,12 @@ class InputOutput extends SymfonyStyle
 {
     public function question(string $question): string
     {
-        return $this->ask(sprintf(' ✍️  %s', $question));
+        return $this->ask(sprintf(' ❓  %s', $question));
     }
 
     public function right(string $message): void
     {
-        $this->block(sprintf(' 🎉  %s', $message), null, 'fg=white;bg=green', ' ', true);
+        $this->block(sprintf(' 🔥  %s', $message), null, 'fg=white;bg=green', ' ', true);
     }
 
     public function wrong(string $message): void
