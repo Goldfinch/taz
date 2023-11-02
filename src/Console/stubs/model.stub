@@ -1,7 +1,5 @@
 <?php
-
-namespace App\Models;
-
+{{ namespace }}
 use SilverStripe\ORM\DataObject;
 
 class {{ class }} extends DataObject

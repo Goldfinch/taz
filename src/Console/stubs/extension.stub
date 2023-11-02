@@ -1,7 +1,5 @@
 <?php
-
-namespace App\Extensions;
-
+{{ namespace }}
 use SilverStripe\Core\Extension;
 
 class {{ class }}Extension extends Extension

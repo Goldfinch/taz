@@ -1,7 +1,5 @@
 <?php
-
-namespace App\Controllers;
-
+{{ namespace }}
 use PageController;
 
 class {{ class }}Controller extends PageController

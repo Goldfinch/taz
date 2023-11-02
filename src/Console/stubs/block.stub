@@ -1,7 +1,5 @@
 <?php
-
-namespace App\Blocks;
-
+{{ namespace }}
 use DNADesign\Elemental\Models\BaseElement;
 
 class {{ class }}Block extends BaseElement

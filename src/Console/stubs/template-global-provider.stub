@@ -1,7 +1,5 @@
 <?php
-
-namespace App\Providers;
-
+{{ namespace }}
 use SilverStripe\View\TemplateGlobalProvider;
 
 class {{ class }}TemplateProvider implements TemplateGlobalProvider

@@ -3,6 +3,7 @@
 namespace Goldfinch\Taz\Console;
 
 // use Illuminate\Console\Concerns\CreatesMatchingTest;
+use Exception;
 use Illuminate\Support\Str;
 use Symfony\Component\Finder\Finder;
 use Goldfinch\Taz\Services\InputOutput;
@@ -441,19 +442,36 @@ abstract class GeneratorCommand extends Command
      */
     protected function replaceNamespace(&$stub, $name)
     {
-        $searches = [
-            ['DummyNamespace', 'DummyRootNamespace', 'NamespacedDummyUserModel'],
-            ['{{ namespace }}', '{{ rootNamespace }}', '{{ namespacedUserModel }}'],
-            ['{{namespace}}', '{{rootNamespace}}', '{{namespacedUserModel}}'],
-        ];
+        // $searches = [
+        //     ['DummyNamespace', 'DummyRootNamespace', 'NamespacedDummyUserModel'],
+        //     ['{{ namespace }}', '{{ rootNamespace }}', '{{ namespacedUserModel }}'],
+        //     ['{{namespace}}', '{{rootNamespace}}', '{{namespacedUserModel}}'],
+        // ];
 
-        foreach ($searches as $search) {
-            $stub = str_replace(
-                $search,
-                [$this->getNamespace($name), $this->rootNamespace(), $stub],
-                $stub
-            );
+        // foreach ($searches as $search) {
+        //     $stub = str_replace(
+        //         $search,
+        //         [$this->getNamespace($name), $this->rootNamespace(), $stub],
+        //         $stub
+        //     );
+        // }
+
+        $composer = $this->get_composer_json();
+        $psr4 = '';
+
+        if ($composer && isset($composer['autoload']['psr-4']))
+        {
+            $psr4root = array_keys($composer['autoload']['psr-4']);
+
+            if (count($psr4root))
+            {
+                $psr4path = str_replace('app/src/', '', $this->path);
+                $psr4path = str_replace('/', '\\', $psr4path);
+                $psr4 = PHP_EOL.'namespace ' . $psr4root[0] . $psr4path . ';' . PHP_EOL;
+            }
         }
+
+        $stub = str_replace(['DummyNamespace', '{{ namespace }}', '{{namespace}}'], $psr4, $stub);
 
         return $this;
     }
@@ -553,5 +571,22 @@ abstract class GeneratorCommand extends Command
             }
         }
         return $file;
+    }
+
+    protected function get_composer_json()
+    {
+        $path = BASE_PATH . '/composer.json';
+        $result = null;
+
+        if (file_exists($path ?? '')) {
+            $content = file_get_contents($path ?? '');
+            $result = json_decode($content ?? '', true);
+            if (json_last_error()) {
+                $errorMessage = json_last_error_msg();
+                throw new Exception("$path: $errorMessage");
+            }
+        }
+
+        return $result;
     }
 }

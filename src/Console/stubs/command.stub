@@ -1,7 +1,5 @@
 <?php
-
-namespace App\Commands;
-
+{{ namespace }}
 use Goldfinch\Taz\Services\InputOutput;
 use Goldfinch\Taz\Console\GeneratorCommand;
 use Symfony\Component\Console\Command\Command;

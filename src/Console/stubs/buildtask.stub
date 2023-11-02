@@ -1,7 +1,5 @@
 <?php
-
-namespace App\Tasks;
-
+{{ namespace }}
 use SilverStripe\Dev\BuildTask;
 
 class {{ class }}BuildTask extends BuildTask

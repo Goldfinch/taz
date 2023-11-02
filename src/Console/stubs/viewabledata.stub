@@ -1,7 +1,5 @@
 <?php
-
-namespace App\Views;
-
+{{ namespace }}
 use SilverStripe\View\ViewableData;
 
 class {{ class }} extends ViewableData

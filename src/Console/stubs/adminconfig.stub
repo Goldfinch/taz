@@ -1,7 +1,5 @@
 <?php
-
-namespace App\Configs;
-
+{{ namespace }}
 use JonoM\SomeConfig\SomeConfig;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\View\TemplateGlobalProvider;

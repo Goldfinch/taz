@@ -1,7 +1,5 @@
 <?php
-
-namespace App\Traits;
-
+{{ namespace }}
 trait {{ class }}Trait
 {
     // ..
