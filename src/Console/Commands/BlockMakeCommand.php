@@ -32,7 +32,7 @@ class BlockMakeCommand extends GeneratorCommand
         $command = $this->getApplication()->find('make:block-template');
 
         $arguments = [
-            'name'    => $nameInput,
+            'name' => $nameInput,
         ];
 
         $greetInput = new ArrayInput($arguments);

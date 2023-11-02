@@ -32,7 +32,7 @@ class PageMakeCommand extends GeneratorCommand
         $command = $this->getApplication()->find('make:page-controller');
 
         $arguments = [
-            'name'    => $nameInput,
+            'name' => $nameInput,
         ];
 
         $greetInput = new ArrayInput($arguments);
@@ -43,7 +43,7 @@ class PageMakeCommand extends GeneratorCommand
         $command = $this->getApplication()->find('make:page-template');
 
         $arguments = [
-            'name'    => $nameInput,
+            'name' => $nameInput,
         ];
 
         $greetInput = new ArrayInput($arguments);
