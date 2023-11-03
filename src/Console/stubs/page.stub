@@ -1,7 +1,9 @@
 <?php
-{{ namespace }}
+
+namespace App\Pages;
+
 use Page;
-use App\Controllers\{{ class }}Controller;
+use {{ namespace_root }}Controllers\{{ class }}Controller;
 
 class {{ class }} extends Page
 {

@@ -465,8 +465,13 @@ abstract class GeneratorCommand extends Command
 
             if (count($psr4root))
             {
+                $stub = str_replace(['DummyRootNamespace', '{{ namespace_root }}', '{{namespace_root}}'], $psr4root[0], $stub);
+
                 $psr4path = str_replace('app/src/', '', $this->path);
                 $psr4path = str_replace('/', '\\', $psr4path);
+
+                $stub = str_replace(['DummyRootNamespacePath', '{{ namespace_path }}', '{{namespace_path}}'], $psr4path, $stub);
+
                 $psr4 = PHP_EOL.'namespace ' . $psr4root[0] . $psr4path . ';' . PHP_EOL;
             }
         }
