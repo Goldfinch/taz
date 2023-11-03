@@ -12,7 +12,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
     protected $description = 'Create a new controller class';
 
-    protected $path = 'app/src/Controllers';
+    protected $path = '[psr4]/Controllers';
 
     protected $type = 'controller';
 

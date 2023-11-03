@@ -12,7 +12,7 @@ class BuildTaskMakeCommand extends GeneratorCommand
 
     protected $description = 'Create a build task class';
 
-    protected $path = 'app/src/Tasks';
+    protected $path = '[psr4]/Tasks';
 
     protected $type = 'build task';
 

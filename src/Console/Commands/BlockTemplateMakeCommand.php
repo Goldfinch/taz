@@ -13,7 +13,7 @@ class BlockTemplateMakeCommand extends GeneratorCommand
 
     protected $description = 'Create a new block template';
 
-    protected $path = 'themes/main/templates/App/Blocks';
+    protected $path = 'themes/[theme]/templates/[namespace_root]/Blocks';
 
     protected $type = 'block template';
 

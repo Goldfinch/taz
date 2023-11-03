@@ -12,7 +12,7 @@ class AdminConfigMakeCommand extends GeneratorCommand
 
     protected $description = 'Create a new admin config';
 
-    protected $path = 'app/src/Configs';
+    protected $path = '[psr4]/Configs';
 
     protected $type = 'admin config';
 

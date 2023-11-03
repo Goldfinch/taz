@@ -12,7 +12,7 @@ class ExtensionMakeCommand extends GeneratorCommand
 
     protected $description = 'Create an extension class';
 
-    protected $path = 'app/src/Extensions';
+    protected $path = '[psr4]/Extensions';
 
     protected $type = 'extension';
 

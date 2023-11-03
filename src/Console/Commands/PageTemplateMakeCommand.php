@@ -13,7 +13,7 @@ class PageTemplateMakeCommand extends GeneratorCommand
 
     protected $description = 'Create a new page template';
 
-    protected $path = 'themes/main/templates/App/Pages/Layout';
+    protected $path = 'themes/[theme]/templates/[namespace_root]/Pages/Layout';
 
     protected $type = 'page template';
 

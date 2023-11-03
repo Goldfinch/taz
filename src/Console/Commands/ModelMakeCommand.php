@@ -12,7 +12,7 @@ class ModelMakeCommand extends GeneratorCommand
 
     protected $description = 'Create a new model class';
 
-    protected $path = 'app/src/Models';
+    protected $path = '[psr4]/Models';
 
     protected $type = 'model';
 

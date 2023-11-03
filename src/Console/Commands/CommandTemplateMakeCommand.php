@@ -13,7 +13,7 @@ class CommandTemplateMakeCommand extends GeneratorCommand
 
     protected $description = 'Create a new command template';
 
-    protected $path = 'app/src/Commands/stubs';
+    protected $path = '[psr4]/Commands/stubs';
 
     protected $type = 'command template';
 

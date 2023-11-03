@@ -12,7 +12,7 @@ class DataExtensionMakeCommand extends GeneratorCommand
 
     protected $description = 'Create a data extension class';
 
-    protected $path = 'app/src/Extensions';
+    protected $path = '[psr4]/Extensions';
 
     protected $type = 'data extension';
 

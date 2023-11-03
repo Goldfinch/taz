@@ -13,7 +13,7 @@ class BlockMakeCommand extends GeneratorCommand
 
     protected $description = 'Create a new block class';
 
-    protected $path = 'app/src/Blocks';
+    protected $path = '[psr4]/Blocks';
 
     protected $type = 'block';
 
@@ -40,7 +40,9 @@ class BlockMakeCommand extends GeneratorCommand
 
         // Register block
 
-        $newContent = $this->addToLine('app/_config/elements.yml' , 'allowed_elements:' , '    - App\Blocks\\' . $nameInput . 'Block');
+        $rootDir = $this->getNamespaceRootDir();
+
+        $newContent = $this->addToLine('app/_config/elements.yml' , 'allowed_elements:' , '    - '.$rootDir.'\Blocks\\' . $nameInput . 'Block');
 
         file_put_contents('app/_config/elements.yml', $newContent);
 

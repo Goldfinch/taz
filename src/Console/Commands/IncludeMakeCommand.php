@@ -13,7 +13,7 @@ class IncludeMakeCommand extends GeneratorCommand
 
     protected $description = 'Create include template file';
 
-    protected $path = 'themes/main/templates/Includes';
+    protected $path = 'themes/[theme]/templates/Includes';
 
     protected $type = 'include';
 

@@ -13,7 +13,7 @@ class PageMakeCommand extends GeneratorCommand
 
     protected $description = 'Create a new page class';
 
-    protected $path = 'app/src/Pages';
+    protected $path = '[psr4]/Pages';
 
     protected $type = 'page';
 

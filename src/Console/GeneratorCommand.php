@@ -5,8 +5,14 @@ namespace Goldfinch\Taz\Console;
 // use Illuminate\Console\Concerns\CreatesMatchingTest;
 use Exception;
 use Illuminate\Support\Str;
+use SilverStripe\View\SSViewer;
+use SilverStripe\Core\CoreKernel;
+use SilverStripe\Core\Config\Config;
 use Symfony\Component\Finder\Finder;
 use Goldfinch\Taz\Services\InputOutput;
+use SilverStripe\Control\HTTPApplication;
+use SilverStripe\View\ThemeResourceLoader;
+use SilverStripe\Control\HTTPRequestBuilder;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -15,6 +21,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class GeneratorCommand extends Command
 {
+    protected $ssKernel = null;
+    protected $composerJson = null;
+    protected $ssThemes = null;
+
     protected $files;
 
     // protected $name = 'make:model';
@@ -136,13 +146,14 @@ abstract class GeneratorCommand extends Command
     {
         parent::__construct();
 
+
         $this->appRoot = $appRoot;
         $this->files = $files;
     }
 
     protected function configure(): void
     {
-        if ($this->path)
+        if ($this->getCommandPath())
         {
             $this
                 ->addArgument('name', InputArgument::REQUIRED, 'How do you want to name it?')
@@ -188,7 +199,8 @@ abstract class GeneratorCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if ($this->path)
+
+        if ($this->getCommandPath())
         {
             $nameInput = $this->getAttrName($input);
 
@@ -200,7 +212,7 @@ abstract class GeneratorCommand extends Command
                 return false;
             }
 
-            $dirPath = $this->path . '/';
+            $dirPath = $this->getCommandPath() . '/';
             $path = $dirPath . $nameInput . $this->prefix . $this->extension;
 
             if ($this->files->exists($path)) {
@@ -456,18 +468,22 @@ abstract class GeneratorCommand extends Command
         //     );
         // }
 
-        $composer = $this->get_composer_json();
+        if (!$this->composerJson)
+        {
+            $this->composerJson = $this->get_composer_json();
+        }
+
         $psr4 = '';
 
-        if ($composer && isset($composer['autoload']['psr-4']))
+        if ($this->composerJson && isset($this->composerJson['autoload']['psr-4']))
         {
-            $psr4root = array_keys($composer['autoload']['psr-4']);
+            $psr4root = array_keys($this->composerJson['autoload']['psr-4']);
 
             if (count($psr4root))
             {
                 $stub = str_replace(['DummyRootNamespace', '{{ namespace_root }}', '{{namespace_root}}'], $psr4root[0], $stub);
 
-                $psr4path = str_replace('app/src/', '', $this->path);
+                $psr4path = str_replace('app/src/', '', $this->getCommandPath());
                 $psr4path = str_replace('/', '\\', $psr4path);
                 $psr4 = PHP_EOL.'namespace ' . $psr4root[0] . $psr4path . ';' . PHP_EOL;
             }
@@ -590,5 +606,91 @@ abstract class GeneratorCommand extends Command
         }
 
         return $result;
+    }
+
+    protected function getCommandPath()
+    {
+        $path = $this->path;
+
+        if ($path && is_string($path))
+        {
+            if (strpos($path, '[theme]') !== false || strpos($path, '[psr4]') !== false)
+            {
+                // default
+                $psr4 = 'app/src';
+                $namespace_root = 'App/';
+
+                if (!$this->composerJson)
+                {
+                    $this->composerJson = $this->get_composer_json();
+                }
+
+                if ($this->composerJson && isset($this->composerJson['autoload']['psr-4']))
+                {
+                    $psr4root = array_values($this->composerJson['autoload']['psr-4']);
+                    $psr4ns = array_keys($this->composerJson['autoload']['psr-4']);
+
+                    if (substr($psr4root[0], -1) == '/')
+                    {
+                        $psr4 = substr($psr4root[0], 0, -1);
+                    }
+                    else
+                    {
+                        $psr4 = $psr4root[0];
+                    }
+
+                    $namespace_root = $psr4ns[0];
+                }
+
+                $namespace_root = str_replace('\\', '/', $namespace_root);
+
+                if (substr($namespace_root, -1) == '/')
+                {
+                    $namespace_root = substr($namespace_root, 0, -1);
+                }
+
+                $path = str_replace('[namespace_root]', $namespace_root, $path);
+                $path = str_replace('[psr4]', $psr4, $path);
+
+                if (!$this->ssThemes || !$this->ssKernel)
+                {
+                    $this->ssKernel = new CoreKernel(BASE_PATH);
+                    $this->ssThemes = SSViewer::get_themes();
+                }
+
+                // default
+                $theme = 'main';
+
+                if (isset($this->ssThemes[1]))
+                {
+                    $theme = $this->ssThemes[1];
+                }
+
+                $path = str_replace('[theme]', $theme, $path);
+            }
+        }
+
+        return $path;
+    }
+
+    protected function getNamespaceRootDir()
+    {
+        $name = 'App';
+
+        if (!$this->composerJson)
+        {
+            $this->composerJson = $this->get_composer_json();
+        }
+
+        if ($this->composerJson && isset($this->composerJson['autoload']['psr-4']))
+        {
+            $namespace_root = array_keys($this->composerJson['autoload']['psr-4']);
+            $namespace_root = $namespace_root[0];
+            $namespace_root = str_replace('\\', '/', $namespace_root);
+            $namespace_root = explode('/', $namespace_root)[0];
+            $name = $namespace_root;
+        }
+
+        return $name;
     }
 }

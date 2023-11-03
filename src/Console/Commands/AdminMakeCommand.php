@@ -12,7 +12,7 @@ class AdminMakeCommand extends GeneratorCommand
 
     protected $description = 'Create a new admin model class';
 
-    protected $path = 'app/src/Admin';
+    protected $path = '[psr4]/Admin';
 
     protected $type = 'admin';
 

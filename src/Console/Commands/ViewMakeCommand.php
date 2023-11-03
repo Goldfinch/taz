@@ -12,7 +12,7 @@ class ViewMakeCommand extends GeneratorCommand
 
     protected $description = 'Create a viewable data class';
 
-    protected $path = 'app/src/Views';
+    protected $path = '[psr4]/Views';
 
     protected $type = 'view';
 

@@ -12,7 +12,7 @@ class HelperMakeCommand extends GeneratorCommand
 
     protected $description = 'Create service';
 
-    protected $path = 'app/src/Helpers';
+    protected $path = '[psr4]/Helpers';
 
     protected $type = 'helper';
 

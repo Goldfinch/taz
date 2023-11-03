@@ -12,7 +12,7 @@ class CronTaskMakeCommand extends GeneratorCommand
 
     protected $description = 'Create a cron task class';
 
-    protected $path = 'app/src/Tasks';
+    protected $path = '[psr4]/Tasks';
 
     protected $type = 'cron task';
 

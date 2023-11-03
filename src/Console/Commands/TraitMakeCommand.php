@@ -12,7 +12,7 @@ class TraitMakeCommand extends GeneratorCommand
 
     protected $description = 'Create trait';
 
-    protected $path = 'app/src/Traits';
+    protected $path = '[psr4]/Traits';
 
     protected $type = 'trait';
 

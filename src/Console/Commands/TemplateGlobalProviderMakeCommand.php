@@ -12,7 +12,7 @@ class TemplateGlobalProviderMakeCommand extends GeneratorCommand
 
     protected $description = 'Create template global provider';
 
-    protected $path = 'app/src/Providers';
+    protected $path = '[psr4]/Providers';
 
     protected $type = 'provider';
 

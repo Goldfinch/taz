@@ -12,7 +12,7 @@ class ServiceMakeCommand extends GeneratorCommand
 
     protected $description = 'Create service';
 
-    protected $path = 'app/src/Services';
+    protected $path = '[psr4]/Services';
 
     protected $type = 'service';
 

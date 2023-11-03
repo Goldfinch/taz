@@ -13,7 +13,7 @@ class CommandMakeCommand extends GeneratorCommand
 
     protected $description = 'Create a new command class';
 
-    protected $path = 'app/src/Commands';
+    protected $path = '[psr4]/Commands';
 
     protected $type = 'command';
 
