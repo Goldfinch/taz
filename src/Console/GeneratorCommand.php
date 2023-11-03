@@ -180,6 +180,13 @@ abstract class GeneratorCommand extends Command
         else
         {
             $path = __DIR__. '/stubs/' . $this->stub;
+
+            if (!file_exists($path))
+            {
+                $reflector = new \ReflectionClass($this);
+                $customCommandPath = explode($reflector->getShortName(), $reflector->getFileName())[0];
+                $path = $customCommandPath. '/stubs/' . $this->stub;
+            }
         }
 
         return $path;
