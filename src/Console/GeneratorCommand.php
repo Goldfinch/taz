@@ -212,7 +212,7 @@ abstract class GeneratorCommand extends Command
             $path = $this->appRoot .'/'. $path;
 
             if (!is_dir($dirPath)) {
-                mkdir($dirPath);
+                mkdir(BASE_PATH . '/' . $dirPath, 0777, true);
             }
 
             file_put_contents($path, $this->sortImports($this->buildClass($nameInput)), 0);
@@ -469,9 +469,6 @@ abstract class GeneratorCommand extends Command
 
                 $psr4path = str_replace('app/src/', '', $this->path);
                 $psr4path = str_replace('/', '\\', $psr4path);
-
-                $stub = str_replace(['DummyRootNamespacePath', '{{ namespace_path }}', '{{namespace_path}}'], $psr4path, $stub);
-
                 $psr4 = PHP_EOL.'namespace ' . $psr4root[0] . $psr4path . ';' . PHP_EOL;
             }
         }
