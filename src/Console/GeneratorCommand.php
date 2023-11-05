@@ -662,7 +662,9 @@ abstract class GeneratorCommand extends Command
                 if (!$this->ssThemes || !$this->ssKernel)
                 {
                     $this->ssKernel = new CoreKernel(BASE_PATH);
-                    $this->ssThemes = SSViewer::get_themes();
+                    try {
+                      $this->ssThemes = SSViewer::get_themes();
+                    } catch (\LogicException $e) {}
                 }
 
                 // default
