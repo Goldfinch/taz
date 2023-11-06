@@ -5,8 +5,8 @@ use DNADesign\Elemental\Models\BaseElement;
 class {{ class }}Block extends BaseElement
 {
     private static $table_name = '{{ class }}Block';
-    private static $singular_name = '{{ class_singular_lowercase }}';
-    private static $plural_name = '{{ class_plural_lowercase }}';
+    private static $singular_name = '{{ class_singular }}';
+    private static $plural_name = '{{ class_plural }}';
 
     private static $db = [];
 
