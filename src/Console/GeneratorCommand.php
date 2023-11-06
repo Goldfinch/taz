@@ -438,7 +438,7 @@ abstract class GeneratorCommand extends Command
     {
         $class = str_replace($this->getNamespace($name).'\\', '', $name);
 
-        $stub = str_replace(['DummyClassPlural', '{{ class_plural }}', '{{class_plural}}'], Str::lower(Str::pluralStudly(Str::of($class)->headline())), $stub);
+        $stub = str_replace(['DummyClassPluralLowercase', '{{ class_plural_lowercase }}', '{{class_plural_lowercase}}'], Str::lower(Str::pluralStudly(Str::of($class)->headline())), $stub);
 
         return $this;
     }
