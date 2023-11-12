@@ -12,9 +12,9 @@ Taz is the command line interface that can assist you in building your SilverStr
 * Silverstripe CMS ^5.0
 * PHP ^8.1
 
-## Install
+## Installation
 
-1. Install the plugin
+1. Install the module
 
 ```bash
 composer require goldfinch/taz
