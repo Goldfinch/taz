@@ -20,7 +20,6 @@ Taz is the command line interface that can assist you in building your SilverStr
 composer require goldfinch/taz
 ```
 
-
 2. Copy taz file to the root of your project
 
 ```bash
@@ -29,16 +28,17 @@ cp vendor/goldfinch/taz/taz taz
 
 All set. You can now call taz via console ```php taz```. See the list of available commands below.
 
-
 # List of available commands
 
-php taz app
+`php taz app:`
+
 ```
-app:dev-build     
+app:dev-build   
 app:ss-version
 ```
 
-php taz generate
+`php taz generate:`
+
 ```
 generate:base64-key
 generate:crypto-key
@@ -46,7 +46,8 @@ generate:encryption-key
 generate:password
 ```
 
-php taz make
+`php taz make:`
+
 ```
 make:admin
 make:adminconfig
@@ -82,4 +83,4 @@ You can create your own custom command for your application.
 php taz make:command MyCustom
 ```
 
-Custom commands can also be stored within a module. 
+Custom commands can also be stored within a module.
