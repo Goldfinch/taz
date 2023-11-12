@@ -3,9 +3,14 @@
 </p>
 <br/>
 
-# Silverstripe Taz Plugin
+# Introduction
 
-Taz is the command line interface that cab assist you building your Silverstripe application.
+Taz is the command line interface that can assist you in building your SilverStripe application.
+
+## Requirements
+
+* Silverstripe CMS ^5.0
+* PHP ^8.1
 
 ## Install
 
@@ -71,10 +76,10 @@ make:view
 
 # Custom commands
 
-You can create you own custom command for your application.
+You can create your own custom command for your application.
 
 ```
 php taz make:command
 ```
 
-Custom comman can also be store within a module. 
+Custom commands can also be stored within a module. 
