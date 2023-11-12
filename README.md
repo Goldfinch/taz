@@ -79,7 +79,7 @@ make:view
 You can create your own custom command for your application.
 
 ```
-php taz make:command
+php taz make:command MyCustom
 ```
 
 Custom commands can also be stored within a module. 
