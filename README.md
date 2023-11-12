@@ -27,18 +27,22 @@ All set. You can now call taz via console ```php taz```. See the list of availab
 
 # List of available commands
 
+php taz app
 ```
-# php taz app
 app:dev-build     
 app:ss-version
-    
-# php taz generate
+```
+
+php taz generate
+```
 generate:base64-key
 generate:crypto-key
 generate:encryption-key
 generate:password
+```
 
-# php taz make
+php taz make
+```
 make:admin
 make:adminconfig
 make:block
