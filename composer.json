@@ -13,7 +13,8 @@
         "php": ">=8.0",
         "silverstripe/framework": "^5.0",
         "silverstripe/admin": "^2.0",
-        "symfony/console": "^6.3"
+        "symfony/console": "^6.3",
+        "goldfinch/illuminate": "dev-master"
     },
     "autoload": {
         "psr-4": {
