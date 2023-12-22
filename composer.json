@@ -1,13 +1,17 @@
 {
     "name": "goldfinch/taz",
-    "description": "",
+    "description": "Command Line Interface (CLI) for Silverstripe, to help and speed up development process.",
     "type": "silverstripe-vendormodule",
     "keywords": [
-        "silverstripe"
+        "silverstripe",
+        "silverstripe-cli",
+        "silverstripe-taz",
+        "command-line-interface"
     ],
     "license": "MIT",
     "authors": [{
-        "name": "Artem Karasev"
+        "name": "Art Karasev",
+        "email": "art.karasev@proton.me"
     }],
     "require": {
         "php": ">=8.0",
