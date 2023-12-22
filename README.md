@@ -23,7 +23,7 @@ cp vendor/goldfinch/taz/taz taz
 
 ## Usage
 
-Call taz via console ```php taz```. See the list of available commands below.
+Call taz via console ```php taz```.
 
 #### List of available commands
 
