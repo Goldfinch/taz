@@ -7,7 +7,7 @@
 [![License](https://img.shields.io/packagist/l/goldfinch/taz.svg?labelColor=333&color=F8C630&label=License)](https://packagist.org/packages/spatie/schema-org) 
 
 <p><img width="200" src="https://raw.githubusercontent.com/goldfinch/taz/main/taz.png" alt="Taz"></p>
-Taz is the command line interface (CLI) that can assist you with the development of your Silverstripe application and save time.
+Taz 🌪️ is the command line interface (CLI) that can assist you with the development of your Silverstripe application and save time.
 
 ## Install
 
@@ -23,7 +23,7 @@ cp vendor/goldfinch/taz/taz taz
 
 ## Usage
 
-Call taz via console ```php taz```.
+Call taz via console ```php taz``` 💨
 
 #### List of available commands
 
