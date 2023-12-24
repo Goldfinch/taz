@@ -29,15 +29,21 @@ Call taz via console ```php taz``` 💨
 
 ```bash
 php taz app:dev-build
+php taz app:ss-version
+
+php taz generate:base64-key
+php taz generate:crypto-key
+php taz generate:password
+
 php taz make:admin
-php taz make:adminconfig
-php taz make:block
-php taz make:block-template
+php taz make:adminconfig # jonom/silverstripe-someconfig
+php taz make:block # silverstripe/silverstripe-elemental
+php taz make:block-template # silverstripe/silverstripe-elemental
 php taz make:command
 php taz make:command-template
 php taz make:config
 php taz make:controller
-php taz make:crontask
+php taz make:crontask # silverstripe/silverstripe-crontask
 php taz make:dataextension
 php taz make:extension
 php taz make:helper
