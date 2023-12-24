@@ -23,7 +23,7 @@ cp vendor/goldfinch/taz/taz taz
 
 ## Usage
 
-Call taz via console ```php taz``` 💨
+Call Taz via console ```php taz``` 💨
 
 #### List of available commands
 
@@ -60,6 +60,27 @@ php taz make:adminconfig # jonom/silverstripe-someconfig
 php taz make:block # silverstripe/silverstripe-elemental
 php taz make:block-template # silverstripe/silverstripe-elemental
 php taz make:crontask # silverstripe/silverstripe-crontask
+```
+
+#### Run dev/build in CLI
+
+Runing `php taz app:dev-build` can throw MySQL errors. If this is your case, you probably need to specify the path to your MySQL socket. Here is how you can do that.
+
+```php
+// you can place it to app/_config.php
+
+use SilverStripe\Core\Environment;
+use SilverStripe\Control\Director;
+
+if (Director::isDev() && Environment::hasEnv('SS_DATABASE_SOCKET'))
+{
+    ini_set('mysqli.default_socket', Environment::getEnv('SS_DATABASE_SOCKET'));
+}
+```
+
+```bash
+// .env
+SS_DATABASE_SOCKET="/path/to/mysql/mysql.sock"
 ```
 
 #### Create custom commands
