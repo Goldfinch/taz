@@ -36,14 +36,10 @@ php taz generate:crypto-key
 php taz generate:password
 
 php taz make:admin
-php taz make:adminconfig # jonom/silverstripe-someconfig
-php taz make:block # silverstripe/silverstripe-elemental
-php taz make:block-template # silverstripe/silverstripe-elemental
 php taz make:command
 php taz make:command-template
 php taz make:config
 php taz make:controller
-php taz make:crontask # silverstripe/silverstripe-crontask
 php taz make:dataextension
 php taz make:extension
 php taz make:helper
@@ -57,6 +53,13 @@ php taz make:service
 php taz make:task
 php taz make:trait
 php taz make:view
+
+# Commands for external modules
+
+php taz make:adminconfig # jonom/silverstripe-someconfig
+php taz make:block # silverstripe/silverstripe-elemental
+php taz make:block-template # silverstripe/silverstripe-elemental
+php taz make:crontask # silverstripe/silverstripe-crontask
 ```
 
 #### Create custom commands
