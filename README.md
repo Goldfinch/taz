@@ -70,6 +70,10 @@ You can create your own custom commands for your application. They can be widely
 php taz make:command MyCustom
 ```
 
+## Preview
+
+<img src="screenshots/taz.jpeg" alt="Screenshot" style="max-width: 600px">
+
 ## License
 
 The MIT License (MIT)
