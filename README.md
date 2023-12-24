@@ -78,8 +78,9 @@ if (Director::isDev() && Environment::hasEnv('SS_DATABASE_SOCKET'))
 }
 ```
 
+and add the var to your `.env`
+
 ```bash
-// .env
 SS_DATABASE_SOCKET="/path/to/mysql/mysql.sock"
 ```
 
