@@ -25,4 +25,3 @@ class GenerateCryptoKeyCommand extends GeneratorCommand
         return Command::SUCCESS;
     }
 }
-

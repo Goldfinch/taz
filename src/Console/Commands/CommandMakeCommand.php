@@ -32,7 +32,7 @@ class CommandMakeCommand extends GeneratorCommand
         $command = $this->getApplication()->find('make:command-template');
 
         $arguments = [
-            'name'    => strtolower($nameInput),
+            'name' => strtolower($nameInput),
         ];
 
         $greetInput = new ArrayInput($arguments);

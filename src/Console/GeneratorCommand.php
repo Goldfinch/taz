@@ -146,18 +146,18 @@ abstract class GeneratorCommand extends Command
     {
         parent::__construct();
 
-
         $this->appRoot = $appRoot;
         $this->files = $files;
     }
 
     protected function configure(): void
     {
-        if ($this->getCommandPath())
-        {
-            $this
-                ->addArgument('name', InputArgument::REQUIRED, 'How do you want to name it?')
-            ;
+        if ($this->getCommandPath()) {
+            $this->addArgument(
+                'name',
+                InputArgument::REQUIRED,
+                'How do you want to name it?',
+            );
         }
     }
 
@@ -168,24 +168,23 @@ abstract class GeneratorCommand extends Command
      */
     protected function getStub()
     {
-        if ($this->stub[0] == '.')
-        {
+        if ($this->stub[0] == '.') {
             $reflector = new \ReflectionClass(get_class($this));
             $path = $reflector->getFileName();
             $classname = $reflector->getShortName();
             $dir = explode($classname, $path)[0];
 
-            $path = $dir. substr($this->stub, 2);
-        }
-        else
-        {
-            $path = __DIR__. '/stubs/' . $this->stub;
+            $path = $dir . substr($this->stub, 2);
+        } else {
+            $path = __DIR__ . '/stubs/' . $this->stub;
 
-            if (!file_exists($path))
-            {
+            if (!file_exists($path)) {
                 $reflector = new \ReflectionClass($this);
-                $customCommandPath = explode($reflector->getShortName(), $reflector->getFileName())[0];
-                $path = $customCommandPath. '/stubs/' . $this->stub;
+                $customCommandPath = explode(
+                    $reflector->getShortName(),
+                    $reflector->getFileName(),
+                )[0];
+                $path = $customCommandPath . '/stubs/' . $this->stub;
             }
         }
 
@@ -206,16 +205,13 @@ abstract class GeneratorCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
-        if ($this->getCommandPath())
-        {
+        if ($this->getCommandPath()) {
             $nameInput = $this->getAttrName($input);
 
             $io = new InputOutput($input, $output);
 
             if ($this->isReservedName($nameInput)) {
-
-                $io->wrong('The name "'.$nameInput.'" is reserved by PHP.');
+                $io->wrong('The name "' . $nameInput . '" is reserved by PHP.');
                 return false;
             }
 
@@ -223,20 +219,31 @@ abstract class GeneratorCommand extends Command
             $path = $dirPath . $nameInput . $this->prefix . $this->extension;
 
             if ($this->files->exists($path)) {
-
-                $io->wrong('The  "'. $this->type . '' .$nameInput.'" is already exists.');
+                $io->wrong(
+                    'The  "' .
+                        $this->type .
+                        '' .
+                        $nameInput .
+                        '" is already exists.',
+                );
                 return false;
             }
 
-            $path = $this->appRoot .'/'. $path;
+            $path = $this->appRoot . '/' . $path;
 
             if (!is_dir($dirPath)) {
                 mkdir(BASE_PATH . '/' . $dirPath, 0777, true);
             }
 
-            file_put_contents($path, $this->sortImports($this->buildClass($nameInput)), 0);
+            file_put_contents(
+                $path,
+                $this->sortImports($this->buildClass($nameInput)),
+                0,
+            );
 
-            $io->right('The ' . $this->type . ' [' . $nameInput . '] has been created');
+            $io->right(
+                'The ' . $this->type . ' [' . $nameInput . '] has been created',
+            );
         }
 
         return Command::SUCCESS;
@@ -262,12 +269,18 @@ abstract class GeneratorCommand extends Command
      */
     protected function sortImports($stub)
     {
-        if (preg_match('/(?P<imports>(?:^use [^;{]+;$\n?)+)/m', $stub, $match)) {
+        if (
+            preg_match('/(?P<imports>(?:^use [^;{]+;$\n?)+)/m', $stub, $match)
+        ) {
             $imports = explode("\n", trim($match['imports']));
 
             sort($imports);
 
-            return str_replace(trim($match['imports']), implode("\n", $imports), $stub);
+            return str_replace(
+                trim($match['imports']),
+                implode("\n", $imports),
+                $stub,
+            );
         }
 
         return $stub;
@@ -292,7 +305,9 @@ abstract class GeneratorCommand extends Command
         }
 
         return $this->qualifyClass(
-            $this->getDefaultNamespace(trim($rootNamespace, '\\')).'\\'.$name
+            $this->getDefaultNamespace(trim($rootNamespace, '\\')) .
+                '\\' .
+                $name,
         );
     }
 
@@ -315,8 +330,8 @@ abstract class GeneratorCommand extends Command
         }
 
         return is_dir(app_path('Models'))
-                    ? $rootNamespace.'Models\\'.$model
-                    : $rootNamespace.$model;
+            ? $rootNamespace . 'Models\\' . $model
+            : $rootNamespace . $model;
     }
 
     /**
@@ -326,10 +341,17 @@ abstract class GeneratorCommand extends Command
      */
     protected function possibleModels()
     {
-        $modelPath = is_dir(app_path('Models')) ? app_path('Models') : app_path();
+        $modelPath = is_dir(app_path('Models'))
+            ? app_path('Models')
+            : app_path();
 
-        return collect((new Finder)->files()->depth(0)->in($modelPath))
-            ->map(fn ($file) => $file->getBasename($this->extension))
+        return collect(
+            (new Finder())
+                ->files()
+                ->depth(0)
+                ->in($modelPath),
+        )
+            ->map(fn($file) => $file->getBasename($this->extension))
             ->values()
             ->all();
     }
@@ -353,7 +375,9 @@ abstract class GeneratorCommand extends Command
      */
     protected function alreadyExists($rawName)
     {
-        return $this->files->exists($this->getPath($this->qualifyClass($rawName)));
+        return $this->files->exists(
+            $this->getPath($this->qualifyClass($rawName)),
+        );
     }
 
     /**
@@ -368,7 +392,7 @@ abstract class GeneratorCommand extends Command
 
         $path = ''; // app path
 
-        return $path.'/'.str_replace('\\', '/', $name).'.php';
+        return $path . '/' . str_replace('\\', '/', $name) . '.php';
     }
 
     /**
@@ -379,7 +403,7 @@ abstract class GeneratorCommand extends Command
      */
     protected function makeDirectory($path)
     {
-        if (! $this->files->isDirectory(dirname($path))) {
+        if (!$this->files->isDirectory(dirname($path))) {
             $this->files->makeDirectory(dirname($path), 0777, true, true);
         }
 
@@ -397,57 +421,88 @@ abstract class GeneratorCommand extends Command
     {
         $stub = file_get_contents($this->getStub());
 
-        return $this
-          ->replaceNamespace($stub, $name)
-          ->replaceClassSingular($stub, $name)
-          ->replaceClassSingularLowercase($stub, $name)
-          ->replaceClassPlural($stub, $name)
-          ->replaceClassPluralLowercase($stub, $name)
-          ->replaceClassKebab($stub, $name)
-          ->replaceClass($stub, $name);
+        return $this->replaceNamespace($stub, $name)
+            ->replaceClassSingular($stub, $name)
+            ->replaceClassSingularLowercase($stub, $name)
+            ->replaceClassPlural($stub, $name)
+            ->replaceClassPluralLowercase($stub, $name)
+            ->replaceClassKebab($stub, $name)
+            ->replaceClass($stub, $name);
     }
 
     protected function replaceClassSingular(&$stub, $name)
     {
-        $class = str_replace($this->getNamespace($name).'\\', '', $name);
+        $class = str_replace($this->getNamespace($name) . '\\', '', $name);
 
-        $stub = str_replace(['DummyClassSingular', '{{ class_singular }}', '{{class_singular}}'], Str::singular(Str::of($class)->headline()), $stub);
+        $stub = str_replace(
+            [
+                'DummyClassSingular',
+                '{{ class_singular }}',
+                '{{class_singular}}',
+            ],
+            Str::singular(Str::of($class)->headline()),
+            $stub,
+        );
 
         return $this;
     }
 
     protected function replaceClassSingularLowercase(&$stub, $name)
     {
-        $class = str_replace($this->getNamespace($name).'\\', '', $name);
+        $class = str_replace($this->getNamespace($name) . '\\', '', $name);
 
-        $stub = str_replace(['DummyClassSingularLowercase', '{{ class_singular_lowercase }}', '{{class_singular_lowercase}}'], Str::lower(strtolower(Str::singular(Str::of($class)->headline()))), $stub);
+        $stub = str_replace(
+            [
+                'DummyClassSingularLowercase',
+                '{{ class_singular_lowercase }}',
+                '{{class_singular_lowercase}}',
+            ],
+            Str::lower(strtolower(Str::singular(Str::of($class)->headline()))),
+            $stub,
+        );
 
         return $this;
     }
 
     protected function replaceClassPlural(&$stub, $name)
     {
-        $class = str_replace($this->getNamespace($name).'\\', '', $name);
+        $class = str_replace($this->getNamespace($name) . '\\', '', $name);
 
-        $stub = str_replace(['DummyClassPlural', '{{ class_plural }}', '{{class_plural}}'], Str::pluralStudly(Str::of($class)->headline()), $stub);
+        $stub = str_replace(
+            ['DummyClassPlural', '{{ class_plural }}', '{{class_plural}}'],
+            Str::pluralStudly(Str::of($class)->headline()),
+            $stub,
+        );
 
         return $this;
     }
 
     protected function replaceClassPluralLowercase(&$stub, $name)
     {
-        $class = str_replace($this->getNamespace($name).'\\', '', $name);
+        $class = str_replace($this->getNamespace($name) . '\\', '', $name);
 
-        $stub = str_replace(['DummyClassPluralLowercase', '{{ class_plural_lowercase }}', '{{class_plural_lowercase}}'], Str::lower(Str::pluralStudly(Str::of($class)->headline())), $stub);
+        $stub = str_replace(
+            [
+                'DummyClassPluralLowercase',
+                '{{ class_plural_lowercase }}',
+                '{{class_plural_lowercase}}',
+            ],
+            Str::lower(Str::pluralStudly(Str::of($class)->headline())),
+            $stub,
+        );
 
         return $this;
     }
 
     protected function replaceClassKebab(&$stub, $name)
     {
-        $class = str_replace($this->getNamespace($name).'\\', '', $name);
+        $class = str_replace($this->getNamespace($name) . '\\', '', $name);
 
-        $stub = str_replace(['DummyClassKebab', '{{ class_kebab }}', '{{class_kebab}}'], Str::of($class)->kebab(), $stub);
+        $stub = str_replace(
+            ['DummyClassKebab', '{{ class_kebab }}', '{{class_kebab}}'],
+            Str::of($class)->kebab(),
+            $stub,
+        );
 
         return $this;
     }
@@ -475,28 +530,50 @@ abstract class GeneratorCommand extends Command
         //     );
         // }
 
-        if (!$this->composerJson)
-        {
+        if (!$this->composerJson) {
             $this->composerJson = $this->get_composer_json();
         }
 
         $psr4 = '';
 
-        if ($this->composerJson && isset($this->composerJson['autoload']['psr-4']))
-        {
+        if (
+            $this->composerJson &&
+            isset($this->composerJson['autoload']['psr-4'])
+        ) {
             $psr4root = array_keys($this->composerJson['autoload']['psr-4']);
 
-            if (count($psr4root))
-            {
-                $stub = str_replace(['DummyRootNamespace', '{{ namespace_root }}', '{{namespace_root}}'], $psr4root[0], $stub);
+            if (count($psr4root)) {
+                $stub = str_replace(
+                    [
+                        'DummyRootNamespace',
+                        '{{ namespace_root }}',
+                        '{{namespace_root}}',
+                    ],
+                    $psr4root[0],
+                    $stub,
+                );
 
-                $psr4path = str_replace('app/src/', '', $this->getCommandPath());
+                $psr4path = str_replace(
+                    'app/src/',
+                    '',
+                    $this->getCommandPath(),
+                );
                 $psr4path = str_replace('/', '\\', $psr4path);
-                $psr4 = PHP_EOL.'namespace ' . $psr4root[0] . $psr4path . ';' . PHP_EOL;
+                $psr4 =
+                    PHP_EOL .
+                    'namespace ' .
+                    $psr4root[0] .
+                    $psr4path .
+                    ';' .
+                    PHP_EOL;
             }
         }
 
-        $stub = str_replace(['DummyNamespace', '{{ namespace }}', '{{namespace}}'], $psr4, $stub);
+        $stub = str_replace(
+            ['DummyNamespace', '{{ namespace }}', '{{namespace}}'],
+            $psr4,
+            $stub,
+        );
 
         return $this;
     }
@@ -509,7 +586,10 @@ abstract class GeneratorCommand extends Command
      */
     protected function getNamespace($name)
     {
-        return trim(implode('\\', array_slice(explode('\\', $name), 0, -1)), '\\');
+        return trim(
+            implode('\\', array_slice(explode('\\', $name), 0, -1)),
+            '\\',
+        );
     }
 
     /**
@@ -521,9 +601,13 @@ abstract class GeneratorCommand extends Command
      */
     protected function replaceClass($stub, $name)
     {
-        $class = str_replace($this->getNamespace($name).'\\', '', $name);
+        $class = str_replace($this->getNamespace($name) . '\\', '', $name);
 
-        return str_replace(['DummyClass', '{{ class }}', '{{class}}'], $class, $stub);
+        return str_replace(
+            ['DummyClass', '{{ class }}', '{{class}}'],
+            $class,
+            $stub,
+        );
     }
 
     /**
@@ -567,7 +651,11 @@ abstract class GeneratorCommand extends Command
     protected function getArguments()
     {
         return [
-            ['name', InputArgument::REQUIRED, 'The name of the '.strtolower($this->type)],
+            [
+                'name',
+                InputArgument::REQUIRED,
+                'The name of the ' . strtolower($this->type),
+            ],
         ];
     }
 
@@ -579,18 +667,17 @@ abstract class GeneratorCommand extends Command
     protected function promptForMissingArgumentsUsing()
     {
         return [
-            'name' => 'What should the '.strtolower($this->type).' be named?',
+            'name' =>
+                'What should the ' . strtolower($this->type) . ' be named?',
         ];
     }
 
-    protected function addToLine($file_src , $search_word , $new_text)
+    protected function addToLine($file_src, $search_word, $new_text)
     {
         $file = file($file_src);
 
-        for($i = 0 ; $i < count($file) ; $i++)
-        {
-            if(strstr($file[$i] , $search_word))
-            {
+        for ($i = 0; $i < count($file); $i++) {
+            if (strstr($file[$i], $search_word)) {
                 $file[$i] = $file[$i] . $new_text . PHP_EOL;
                 break;
             }
@@ -619,30 +706,33 @@ abstract class GeneratorCommand extends Command
     {
         $path = $this->path;
 
-        if ($path && is_string($path))
-        {
-            if (strpos($path, '[theme]') !== false || strpos($path, '[psr4]') !== false)
-            {
+        if ($path && is_string($path)) {
+            if (
+                strpos($path, '[theme]') !== false ||
+                strpos($path, '[psr4]') !== false
+            ) {
                 // default
                 $psr4 = 'app/src';
                 $namespace_root = 'App/';
 
-                if (!$this->composerJson)
-                {
+                if (!$this->composerJson) {
                     $this->composerJson = $this->get_composer_json();
                 }
 
-                if ($this->composerJson && isset($this->composerJson['autoload']['psr-4']))
-                {
-                    $psr4root = array_values($this->composerJson['autoload']['psr-4']);
-                    $psr4ns = array_keys($this->composerJson['autoload']['psr-4']);
+                if (
+                    $this->composerJson &&
+                    isset($this->composerJson['autoload']['psr-4'])
+                ) {
+                    $psr4root = array_values(
+                        $this->composerJson['autoload']['psr-4'],
+                    );
+                    $psr4ns = array_keys(
+                        $this->composerJson['autoload']['psr-4'],
+                    );
 
-                    if (substr($psr4root[0], -1) == '/')
-                    {
+                    if (substr($psr4root[0], -1) == '/') {
                         $psr4 = substr($psr4root[0], 0, -1);
-                    }
-                    else
-                    {
+                    } else {
                         $psr4 = $psr4root[0];
                     }
 
@@ -651,27 +741,25 @@ abstract class GeneratorCommand extends Command
 
                 $namespace_root = str_replace('\\', '/', $namespace_root);
 
-                if (substr($namespace_root, -1) == '/')
-                {
+                if (substr($namespace_root, -1) == '/') {
                     $namespace_root = substr($namespace_root, 0, -1);
                 }
 
                 $path = str_replace('[namespace_root]', $namespace_root, $path);
                 $path = str_replace('[psr4]', $psr4, $path);
 
-                if (!$this->ssThemes || !$this->ssKernel)
-                {
+                if (!$this->ssThemes || !$this->ssKernel) {
                     $this->ssKernel = new CoreKernel(BASE_PATH);
                     try {
-                      $this->ssThemes = SSViewer::get_themes();
-                    } catch (\LogicException $e) {}
+                        $this->ssThemes = SSViewer::get_themes();
+                    } catch (\LogicException $e) {
+                    }
                 }
 
                 // default
                 $theme = 'main';
 
-                if (isset($this->ssThemes[1]))
-                {
+                if (isset($this->ssThemes[1])) {
                     $theme = $this->ssThemes[1];
                 }
 
@@ -686,14 +774,17 @@ abstract class GeneratorCommand extends Command
     {
         $name = 'App';
 
-        if (!$this->composerJson)
-        {
+        if (!$this->composerJson) {
             $this->composerJson = $this->get_composer_json();
         }
 
-        if ($this->composerJson && isset($this->composerJson['autoload']['psr-4']))
-        {
-            $namespace_root = array_keys($this->composerJson['autoload']['psr-4']);
+        if (
+            $this->composerJson &&
+            isset($this->composerJson['autoload']['psr-4'])
+        ) {
+            $namespace_root = array_keys(
+                $this->composerJson['autoload']['psr-4'],
+            );
             $namespace_root = $namespace_root[0];
             $namespace_root = str_replace('\\', '/', $namespace_root);
             $namespace_root = explode('/', $namespace_root)[0];

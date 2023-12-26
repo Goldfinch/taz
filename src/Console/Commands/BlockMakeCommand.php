@@ -42,7 +42,11 @@ class BlockMakeCommand extends GeneratorCommand
 
         $rootDir = $this->getNamespaceRootDir();
 
-        $newContent = $this->addToLine('app/_config/elements.yml' , 'allowed_elements:' , '    - '.$rootDir.'\Blocks\\' . $nameInput . 'Block');
+        $newContent = $this->addToLine(
+            'app/_config/elements.yml',
+            'allowed_elements:',
+            '    - ' . $rootDir . '\Blocks\\' . $nameInput . 'Block',
+        );
 
         file_put_contents('app/_config/elements.yml', $newContent);
 
