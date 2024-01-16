@@ -54,12 +54,13 @@ php taz make:task
 php taz make:trait
 php taz make:view
 
-# Commands for external modules
+# Commands for external modules (each command depends on its module, make sure the module is installed in your project before using the dependent command below)
 
 php taz make:adminconfig # jonom/silverstripe-someconfig
 php taz make:block # silverstripe/silverstripe-elemental
 php taz make:block-template # silverstripe/silverstripe-elemental
 php taz make:crontask # silverstripe/silverstripe-crontask
+php taz generate:encryption-key # lekoala/silverstripe-encrypt
 ```
 
 #### Run dev/build in CLI
