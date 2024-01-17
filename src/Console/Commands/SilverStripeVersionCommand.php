@@ -3,7 +3,6 @@
 namespace Goldfinch\Taz\Console\Commands;
 
 use Composer\InstalledVersions;
-use SilverStripe\Admin\LeftAndMain;
 use Goldfinch\Taz\Services\InputOutput;
 use Goldfinch\Taz\Console\GeneratorCommand;
 use Symfony\Component\Console\Command\Command;
@@ -17,8 +16,6 @@ class SilverStripeVersionCommand extends GeneratorCommand
 
     protected function execute($input, $output): int
     {
-        // parent::execute($input, $output);
-
         $version = InstalledVersions::getVersion('silverstripe/recipe-cms');
 
         $io = new InputOutput($input, $output);

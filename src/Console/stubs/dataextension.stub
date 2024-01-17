@@ -1,7 +1,7 @@
 <?php
 {{ namespace }}
-use SilverStripe\ORM\DataExtension;
 use SilverStripe\Forms\FieldList;
+use SilverStripe\ORM\DataExtension;
 
 class {{ class }}Extension extends DataExtension
 {

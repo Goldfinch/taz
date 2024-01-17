@@ -1,9 +1,10 @@
 <?php
 {{ namespace }}
 use Page;
+// use SilverStripe\CMS\Model\SiteTree;
 use {{ namespace_root }}Controllers\{{ class }}Controller;
 
-class {{ class }} extends Page
+class {{ class }} extends Page // SiteTree
 {
     private static $table_name = '{{ class }}';
     private static $controller_name = {{ class }}Controller::class;

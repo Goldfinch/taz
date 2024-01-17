@@ -1,7 +1,6 @@
 <?php
 {{ namespace }}
 use SilverStripe\Control\Controller;
-use SilverStripe\Control\HTTPRequest;
 
 class {{ class }}Controller extends Controller
 {

@@ -2,15 +2,12 @@
 
 namespace Goldfinch\Taz\Console;
 
-// use Illuminate\Console\Concerns\CreatesMatchingTest;
 use Exception;
 use Illuminate\Support\Str;
 use SilverStripe\View\SSViewer;
 use SilverStripe\Core\CoreKernel;
-use SilverStripe\Core\Config\Config;
 use Symfony\Component\Finder\Finder;
 use Goldfinch\Taz\Services\InputOutput;
-use SilverStripe\Control\HTTPApplication;
 use SilverStripe\View\ThemeResourceLoader;
 use SilverStripe\Control\HTTPRequestBuilder;
 use Symfony\Component\Filesystem\Filesystem;

@@ -6,8 +6,6 @@ class {{ class }}Extension extends Extension
 {
     private static $db = [];
 
-    // private static $allowed_actions = [];
-
     public function onAfterInit()
     {
         // ..

@@ -4,7 +4,6 @@ namespace Goldfinch\Taz\Console\Commands;
 
 use Goldfinch\Taz\Console\GeneratorCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\ArrayInput;
 
 #[AsCommand(name: 'make:command-template')]
 class CommandTemplateMakeCommand extends GeneratorCommand

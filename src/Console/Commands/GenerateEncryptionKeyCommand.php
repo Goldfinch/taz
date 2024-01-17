@@ -16,8 +16,6 @@ class GenerateEncryptionKeyCommand extends GeneratorCommand
 
     protected function execute($input, $output): int
     {
-        // parent::execute($input, $output);
-
         $io = new InputOutput($input, $output);
         $io->text(EncryptHelper::generateKey());
 
