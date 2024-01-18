@@ -424,7 +424,47 @@ abstract class GeneratorCommand extends Command
             ->replaceClassPlural($stub, $name)
             ->replaceClassPluralLowercase($stub, $name)
             ->replaceClassKebab($stub, $name)
+            ->ssReplace($stub, $name)
+            ->customReplace($stub, $name)
             ->replaceClass($stub, $name);
+    }
+
+    protected function customReplace(&$stub, $name): self
+    {
+        // for upper classes to overwrite
+
+        return $this;
+    }
+
+    // for SilverStripe customs
+    protected function ssReplace(&$stub, $name): self
+    {
+        $this->composerJson = $this->get_composer_json();
+
+        if (
+            $this->composerJson &&
+            isset($this->composerJson['autoload']['psr-4'])
+        ) {
+            $psr4root = array_keys($this->composerJson['autoload']['psr-4']);
+
+            if (count($psr4root)) {
+
+                $stub = str_replace(
+                    ['{{namespace_root_extensions}}', '{{ namespace_root_extensions }}'],
+                    $psr4root[0] . 'Extensions\\',
+                    $stub,
+                );
+            }
+        }
+
+        // when not using PSR-4 - remove
+        $stub = str_replace(
+            ['{{namespace_root_extensions}}', '{{ namespace_root_extensions }}'],
+            '',
+            $stub,
+        );
+
+        return $this;
     }
 
     protected function replaceClassSingular(&$stub, $name)
