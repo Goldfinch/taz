@@ -12,7 +12,7 @@ class GenerateEncryptionKeyCommand extends GeneratorCommand
 {
     protected static $defaultName = 'generate:encryption-key';
 
-    protected $description = 'Generate Encryption Key (lekoala/silverstripe-encrypt)';
+    protected $description = 'Generate encryption key (ekoala/silverstripe-encrypt)';
 
     protected function execute($input, $output): int
     {

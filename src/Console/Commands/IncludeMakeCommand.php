@@ -10,7 +10,7 @@ class IncludeMakeCommand extends GeneratorCommand
 {
     protected static $defaultName = 'make:include';
 
-    protected $description = 'Create include template file';
+    protected $description = 'Create include template';
 
     protected $path = 'themes/[theme]/templates/Includes';
 

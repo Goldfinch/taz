@@ -10,7 +10,7 @@ class DataExtensionMakeCommand extends GeneratorCommand
 {
     protected static $defaultName = 'make:dataextension';
 
-    protected $description = 'Create a data extension class';
+    protected $description = 'Create extension [DataExtension]';
 
     protected $path = '[psr4]/Extensions';
 

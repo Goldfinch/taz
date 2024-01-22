@@ -12,7 +12,7 @@ class SilverStripeVersionCommand extends GeneratorCommand
 {
     protected static $defaultName = 'app:ss-version';
 
-    protected $description = 'Get SilverStripe version';
+    protected $description = 'Display SilverStripe version';
 
     protected function execute($input, $output): int
     {

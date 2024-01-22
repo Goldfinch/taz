@@ -10,7 +10,7 @@ class AdminMakeCommand extends GeneratorCommand
 {
     protected static $defaultName = 'make:admin';
 
-    protected $description = 'Create a new admin model class';
+    protected $description = 'Create admin model [ModelAdmin]';
 
     protected $path = '[psr4]/Admin';
 

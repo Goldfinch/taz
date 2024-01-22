@@ -10,7 +10,7 @@ class BuildTaskMakeCommand extends GeneratorCommand
 {
     protected static $defaultName = 'make:task';
 
-    protected $description = 'Create a build task class';
+    protected $description = 'Create build task [BuildTask]';
 
     protected $path = '[psr4]/Tasks';
 

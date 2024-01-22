@@ -133,6 +133,9 @@ abstract class GeneratorCommand extends Command
         '__TRAIT__',
     ];
 
+    protected $description = '';
+    protected $help = '';
+
     /**
      * Create a new controller creator command instance.
      *
@@ -149,6 +152,10 @@ abstract class GeneratorCommand extends Command
 
     protected function configure(): void
     {
+        $this
+            ->setDescription($this->description)
+            ->setHelp($this->help);
+
         if ($this->getCommandPath()) {
             $this->addArgument(
                 'name',
@@ -217,11 +224,10 @@ abstract class GeneratorCommand extends Command
 
             if ($this->files->exists($path)) {
                 $io->wrong(
-                    'The  "' .
+                    'The ' .
                         $this->type .
-                        '' .
-                        $nameInput .
-                        '" is already exists.',
+                        ' [' . $nameInput . ']' .
+                        ' is already exists.',
                 );
                 return false;
             }

@@ -10,7 +10,7 @@ class CronTaskMakeCommand extends GeneratorCommand
 {
     protected static $defaultName = 'make:crontask';
 
-    protected $description = 'Create a cron task class';
+    protected $description = 'Create cron task [CronTask]';
 
     protected $path = '[psr4]/Tasks';
 

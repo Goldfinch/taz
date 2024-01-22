@@ -1,9 +1,7 @@
 ---
 Name: {{ class }}
-After:
-  # - '#...'
-Before:
-  # - '#...'
+# After: "#..."
+# Before: "#..."
 Only:
   # moduleexists: some/module
   # classexists: SilverStripe\CMS\Model\SiteTree

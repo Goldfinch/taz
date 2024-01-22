@@ -11,7 +11,7 @@ class PageMakeCommand extends GeneratorCommand
 {
     protected static $defaultName = 'make:page';
 
-    protected $description = 'Create a new page class';
+    protected $description = 'Create Page [Page]';
 
     protected $path = '[psr4]/Pages';
 

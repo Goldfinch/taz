@@ -10,13 +10,13 @@ class ServiceMakeCommand extends GeneratorCommand
 {
     protected static $defaultName = 'make:service';
 
-    protected $description = 'Create service';
+    protected $description = 'Create service class';
 
     protected $path = '[psr4]/Services';
 
     protected $type = 'service';
 
-    protected $stub = 'service.stub';
+    protected $stub = './stubs/service.stub';
 
     protected $prefix = '';
 

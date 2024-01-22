@@ -11,7 +11,7 @@ class CommandMakeCommand extends GeneratorCommand
 {
     protected static $defaultName = 'make:command';
 
-    protected $description = 'Create a new command class';
+    protected $description = 'Create Taz command [GeneratorCommand]';
 
     protected $path = '[psr4]/Commands';
 

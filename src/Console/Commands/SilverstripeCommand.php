@@ -10,7 +10,7 @@ class SilverstripeCommand extends GeneratorCommand
 {
     protected static $defaultName = 'app:dev-build';
 
-    protected $description = 'Silverstripe commands';
+    protected $description = 'Run dev/build';
 
     protected function execute($input, $output): int
     {

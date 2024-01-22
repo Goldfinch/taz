@@ -10,7 +10,7 @@ class BlockTemplateMakeCommand extends GeneratorCommand
 {
     protected static $defaultName = 'make:block-template';
 
-    protected $description = 'Create a new block template';
+    protected $description = 'Create block template';
 
     protected $path = 'themes/[theme]/templates/[namespace_root]/Blocks';
 

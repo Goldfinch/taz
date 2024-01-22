@@ -10,7 +10,7 @@ class CommandTemplateMakeCommand extends GeneratorCommand
 {
     protected static $defaultName = 'make:command-template';
 
-    protected $description = 'Create a new command template';
+    protected $description = 'Create Taz command template';
 
     protected $path = '[psr4]/Commands/stubs';
 

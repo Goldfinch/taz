@@ -10,7 +10,7 @@ class ModelMakeCommand extends GeneratorCommand
 {
     protected static $defaultName = 'make:model';
 
-    protected $description = 'Create a new model class';
+    protected $description = 'Create model [DataObject]';
 
     protected $path = '[psr4]/Models';
 

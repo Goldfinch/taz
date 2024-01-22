@@ -11,7 +11,7 @@ class BlockMakeCommand extends GeneratorCommand
 {
     protected static $defaultName = 'make:block';
 
-    protected $description = 'Create a new block class';
+    protected $description = 'Create block [BaseElement]';
 
     protected $path = '[psr4]/Blocks';
 

@@ -10,7 +10,7 @@ class ConfigMakeCommand extends GeneratorCommand
 {
     protected static $defaultName = 'make:config';
 
-    protected $description = 'Create config';
+    protected $description = 'Create YML config';
 
     protected $path = 'app/_config';
 

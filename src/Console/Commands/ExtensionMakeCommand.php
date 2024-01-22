@@ -10,7 +10,7 @@ class ExtensionMakeCommand extends GeneratorCommand
 {
     protected static $defaultName = 'make:extension';
 
-    protected $description = 'Create an extension class';
+    protected $description = 'Create extensions [Extensions]';
 
     protected $path = '[psr4]/Extensions';
 

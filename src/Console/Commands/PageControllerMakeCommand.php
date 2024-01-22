@@ -10,7 +10,7 @@ class PageControllerMakeCommand extends GeneratorCommand
 {
     protected static $defaultName = 'make:page-controller';
 
-    protected $description = 'Create a new page controller class';
+    protected $description = 'Create Page controller [PageController]';
 
     protected $path = '[psr4]/Controllers';
 

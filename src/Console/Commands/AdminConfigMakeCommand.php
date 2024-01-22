@@ -10,7 +10,7 @@ class AdminConfigMakeCommand extends GeneratorCommand
 {
     protected static $defaultName = 'make:adminconfig';
 
-    protected $description = 'Create a new admin config';
+    protected $description = 'Create admin config [SomeConfig]';
 
     protected $path = '[psr4]/Configs';
 

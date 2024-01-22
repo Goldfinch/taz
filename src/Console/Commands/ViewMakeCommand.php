@@ -10,7 +10,7 @@ class ViewMakeCommand extends GeneratorCommand
 {
     protected static $defaultName = 'make:view';
 
-    protected $description = 'Create a viewable data class';
+    protected $description = 'Create view [ViewableData]';
 
     protected $path = '[psr4]/Views';
 
