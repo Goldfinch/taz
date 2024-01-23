@@ -1,0 +1,14 @@
+<?php
+{{ namespace }}
+use SilverStripe\Forms\Form;
+use SilverStripe\Control\RequestHandler;
+
+class {{ class }} extends Form
+{
+    public function __construct($storageId, RequestHandler $controller, $formConstructor)
+    {
+        parent::__construct($storageId, $controller, $formConstructor);
+
+        // ..
+    }
+}

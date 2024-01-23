@@ -15,11 +15,14 @@ class GenerateCryptoKeyCommand extends GeneratorCommand
 
     protected function execute($input, $output): int
     {
-        $key = bin2hex(random_bytes(16));
-
         $io = new InputOutput($input, $output);
-        $io->text($key);
+        $io->text($this->generateKey());
 
         return Command::SUCCESS;
+    }
+
+    public function generateKey()
+    {
+        return bin2hex(random_bytes(16));
     }
 }

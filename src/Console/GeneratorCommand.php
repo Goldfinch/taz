@@ -150,6 +150,40 @@ abstract class GeneratorCommand extends Command
         $this->files = $files;
     }
 
+    protected function interact(InputInterface $input, OutputInterface $output)
+    {
+        parent::interact($input, $output);
+
+        $args = collect($this->getDefinition()->getArguments())
+            ->filter(fn ($argument) => $argument->isRequired() && is_null($input->getArgument($argument->getName())))
+            ->filter(fn ($argument) => $argument->getName() !== 'command');
+
+        foreach ($args as $arg) {
+            if ($arg->getName() == 'name') {
+                $io = new InputOutput($input, $output);
+                $answer = $io->question('What should the '.strtolower($this->type).' be named', null, function ($answer) use ($io) {
+
+                    if (!is_string($answer) || $answer === null) {
+                        throw new \RuntimeException(
+                            'Invalid name'
+                        );
+                    } else if (strlen($answer) < 2) {
+                        throw new \RuntimeException(
+                            'Too short name'
+                        );
+                    } else if(!preg_match('/^([A-z0-9\_\-]+)$/', $answer)) {
+                        throw new \RuntimeException(
+                            'Name can contains letters, numbers and underscore'
+                        );
+                    }
+
+                    return $answer;
+                });
+                $input->setArgument('name', $answer);
+            }
+        }
+    }
+
     protected function configure(): void
     {
         $this

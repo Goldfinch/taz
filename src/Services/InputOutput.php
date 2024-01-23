@@ -6,9 +6,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class InputOutput extends SymfonyStyle
 {
-    public function question(string $question): string
+    public function question(string $question, $default = null, callable $validator = null): string
     {
-        return $this->ask(sprintf(' ❓  %s', $question));
+        return $this->ask(sprintf(' ❓  %s', $question), $default, $validator);
     }
 
     public function right(string $message): void
