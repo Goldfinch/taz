@@ -9,7 +9,7 @@ use Symfony\Component\Console\Application;
 use Goldfinch\Taz\Console\GeneratorCommand;
 use Symfony\Component\Filesystem\Filesystem;
 
-if (in_array(PHP_SAPI, ['cli', 'cgi', 'cgi-fcgi'])) {
+if (!in_array(PHP_SAPI, ['cli', 'cgi', 'cgi-fcgi'])) {
     echo 'Taz has escaped! Sorry, can\'t run it here.';
     exit;
 }
