@@ -14,6 +14,8 @@ class GeneratePasswordCommand extends GeneratorCommand
 
     protected $description = 'Generate password';
 
+    protected $no_arguments = true;
+
     protected function execute($input, $output): int
     {
         $generator = new ComputerPasswordGenerator();

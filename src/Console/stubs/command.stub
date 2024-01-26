@@ -18,6 +18,9 @@ class {{ class }}Command extends GeneratorCommand
 
     // protected $prefix = 'MyPrefix';
 
+    // if the command does not have arguments:
+    // protected $no_arguments = true;
+
     protected function execute($input, $output): int
     {
         parent::execute($input, $output);
@@ -26,4 +29,14 @@ class {{ class }}Command extends GeneratorCommand
 
         return Command::SUCCESS;
     }
+
+    // protected function promptForMissingArgumentsUsing()
+    // {
+    //     return [];
+    // }
+
+    // protected function validationForMissingArgumentsUsing()
+    // {
+    //     return [];
+    // }
 }

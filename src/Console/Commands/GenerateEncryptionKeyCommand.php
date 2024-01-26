@@ -14,6 +14,8 @@ class GenerateEncryptionKeyCommand extends GeneratorCommand
 
     protected $description = 'Generate encryption key (ekoala/silverstripe-encrypt)';
 
+    protected $no_arguments = true;
+
     protected function execute($input, $output): int
     {
         $io = new InputOutput($input, $output);

@@ -13,6 +13,8 @@ class GenerateCryptoKeyCommand extends GeneratorCommand
 
     protected $description = 'Generate bin2hex key';
 
+    protected $no_arguments = true;
+
     protected function execute($input, $output): int
     {
         $io = new InputOutput($input, $output);

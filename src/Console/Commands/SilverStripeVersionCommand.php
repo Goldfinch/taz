@@ -14,6 +14,8 @@ class SilverStripeVersionCommand extends GeneratorCommand
 
     protected $description = 'Display SilverStripe version';
 
+    protected $no_arguments = true;
+
     protected function execute($input, $output): int
     {
         $version = InstalledVersions::getVersion('silverstripe/recipe-cms');

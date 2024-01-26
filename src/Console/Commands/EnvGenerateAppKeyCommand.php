@@ -13,6 +13,8 @@ class EnvGenerateAppKeyCommand extends GeneratorCommand
 
     protected $description = 'Generate APP_KEY in .env';
 
+    protected $no_arguments = true;
+
     protected function execute($input, $output): int
     {
         $io = new InputOutput($input, $output);

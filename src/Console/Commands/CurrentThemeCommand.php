@@ -14,6 +14,8 @@ class CurrentThemeCommand extends GeneratorCommand
 
     protected $description = 'Display current theme';
 
+    protected $no_arguments = true;
+
     protected function execute($input, $output): int
     {
         $themes = SSViewer::get_themes();

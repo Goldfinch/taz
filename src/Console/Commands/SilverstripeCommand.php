@@ -12,6 +12,8 @@ class SilverstripeCommand extends GeneratorCommand
 
     protected $description = 'Run dev/build';
 
+    protected $no_arguments = true;
+
     protected function execute($input, $output): int
     {
         parent::execute($input, $output);

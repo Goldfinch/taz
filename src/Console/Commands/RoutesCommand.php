@@ -14,6 +14,8 @@ class RoutesCommand extends GeneratorCommand
 
     protected $description = 'Display current routes';
 
+    protected $no_arguments = true;
+
     protected function execute($input, $output): int
     {
         $routes = Director::config()->get('rules');

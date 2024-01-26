@@ -13,6 +13,8 @@ class GenerateBase64KeyCommand extends GeneratorCommand
 
     protected $description = 'Generate base64 key';
 
+    protected $no_arguments = true;
+
     protected function execute($input, $output): int
     {
         $key = substr(base64_encode(random_bytes(32)), 0, 32) . "\n";

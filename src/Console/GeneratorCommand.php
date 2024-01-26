@@ -136,6 +136,8 @@ abstract class GeneratorCommand extends Command
     protected $description = '';
     protected $help = '';
 
+    protected $no_arguments = false;
+
     /**
      * Create a new controller creator command instance.
      *
@@ -158,28 +160,20 @@ abstract class GeneratorCommand extends Command
             ->filter(fn ($argument) => $argument->isRequired() && is_null($input->getArgument($argument->getName())))
             ->filter(fn ($argument) => $argument->getName() !== 'command');
 
+        $promts = $this->promptForMissingArgumentsUsing();
+        $validations = $this->validationForMissingArgumentsUsing();
+
         foreach ($args as $arg) {
-            if ($arg->getName() == 'name') {
+
+            if (isset($promts[$arg->getName()])) {
+
+                $prompt = $promts[$arg->getName()];
+
+                $validation = isset($validations[$arg->getName()]) ? $validations[$arg->getName()] : null;
+
                 $io = new InputOutput($input, $output);
-                $answer = $io->question('What should the '.strtolower($this->type).' be named', null, function ($answer) use ($io) {
-
-                    if (!is_string($answer) || $answer === null) {
-                        throw new \RuntimeException(
-                            'Invalid name'
-                        );
-                    } else if (strlen($answer) < 2) {
-                        throw new \RuntimeException(
-                            'Too short name'
-                        );
-                    } else if(!preg_match('/^([A-z0-9\_\-]+)$/', $answer)) {
-                        throw new \RuntimeException(
-                            'Name can contains letters, numbers and underscore'
-                        );
-                    }
-
-                    return $answer;
-                });
-                $input->setArgument('name', $answer);
+                $answer = $io->question($prompt, null, $validation);
+                $input->setArgument($arg->getName(), $answer);
             }
         }
     }
@@ -743,9 +737,41 @@ abstract class GeneratorCommand extends Command
      */
     protected function promptForMissingArgumentsUsing()
     {
+        if ($this->no_arguments) {
+            return [];
+        }
+
         return [
             'name' =>
                 'What should the ' . strtolower($this->type) . ' be named?',
+        ];
+    }
+
+    protected function validationForMissingArgumentsUsing()
+    {
+        if ($this->no_arguments) {
+            return [];
+        }
+
+        return [
+            'name' => function ($answer) {
+
+                if (!is_string($answer) || $answer === null) {
+                    throw new \RuntimeException(
+                        'Invalid name'
+                    );
+                } else if (strlen($answer) < 2) {
+                    throw new \RuntimeException(
+                        'Too short name'
+                    );
+                } else if(!preg_match('/^([A-z0-9\_\-]+)$/', $answer)) {
+                    throw new \RuntimeException(
+                        'Name can contains letters, numbers and underscore'
+                    );
+                }
+
+                return $answer;
+            },
         ];
     }
 
