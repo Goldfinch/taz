@@ -32,4 +32,16 @@ class InputOutput extends SymfonyStyle
             true,
         );
     }
+
+    public function display(string $message): void
+    {
+        $this->block(
+            // sprintf(' 💨  %s', $message),
+            $message,
+            null,
+            'fg=white;bg=yellow',
+            ' ',
+            true,
+        );
+    }
 }

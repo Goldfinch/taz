@@ -18,7 +18,7 @@ class GenerateCryptoKeyCommand extends GeneratorCommand
     protected function execute($input, $output): int
     {
         $io = new InputOutput($input, $output);
-        $io->text($this->generateKey());
+        $io->display($this->generateKey());
 
         return Command::SUCCESS;
     }

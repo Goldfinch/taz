@@ -30,7 +30,7 @@ class GeneratePasswordCommand extends GeneratorCommand
         $password = $generator->generatePasswords(1);
 
         $io = new InputOutput($input, $output);
-        $io->text($password);
+        $io->display($password[0]);
 
         return Command::SUCCESS;
     }

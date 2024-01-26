@@ -10,7 +10,7 @@ class HelperMakeCommand extends GeneratorCommand
 {
     protected static $defaultName = 'make:helper';
 
-    protected $description = 'Create service';
+    protected $description = 'Create helper';
 
     protected $path = '[psr4]/Helpers';
 

@@ -30,7 +30,7 @@ class CurrentThemeCommand extends GeneratorCommand
         }
 
         $io = new InputOutput($input, $output);
-        $io->text($currentTheme);
+        $io->display($currentTheme);
 
         return Command::SUCCESS;
     }

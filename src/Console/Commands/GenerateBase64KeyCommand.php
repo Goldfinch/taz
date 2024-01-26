@@ -20,7 +20,7 @@ class GenerateBase64KeyCommand extends GeneratorCommand
         $key = substr(base64_encode(random_bytes(32)), 0, 32) . "\n";
 
         $io = new InputOutput($input, $output);
-        $io->text($key);
+        $io->display($key);
 
         return Command::SUCCESS;
     }

@@ -21,7 +21,7 @@ class SilverStripeVersionCommand extends GeneratorCommand
         $version = InstalledVersions::getVersion('silverstripe/recipe-cms');
 
         $io = new InputOutput($input, $output);
-        $io->text($version);
+        $io->display($version);
 
         return Command::SUCCESS;
     }
