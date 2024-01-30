@@ -1,0 +1,8 @@
+---
+Name: goldfinch-taz-cli-supplier
+After: "goldfinch/cli-supplier"
+---
+Goldfinch\CLISupplier\Controllers\CLISupplierController:
+  registered_supplies:
+    memberslist: Goldfinch\Taz\Console\Suppliers\MemberListSupplier
+    adminlist: Goldfinch\Taz\Console\Suppliers\AdminListSupplier

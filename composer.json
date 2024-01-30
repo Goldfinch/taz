@@ -21,6 +21,7 @@
         "silverstripe/admin": "^2.0",
         "symfony/console": "^6.3",
         "hackzilla/password-generator": "^1.6",
+        "goldfinch/cli-supplier": "^1.0",
         "goldfinch/illuminate": "^1.0"
     },
     "autoload": {

@@ -29,9 +29,12 @@ Call Taz via console ```php taz``` 💨
 
 ```bash
 php taz app:dev-build
-php taz app:routes
 php taz app:ss-version
 php taz app:theme
+
+php taz display:routes
+php taz display:members
+php taz display:admins
 
 php taz generate:base64-key
 php taz generate:crypto-key

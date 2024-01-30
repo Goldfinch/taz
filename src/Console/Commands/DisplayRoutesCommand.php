@@ -7,10 +7,10 @@ use Goldfinch\Taz\Console\GeneratorCommand;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Command\Command;
 
-#[AsCommand(name: 'app:routes')]
-class RoutesCommand extends GeneratorCommand
+#[AsCommand(name: 'display:routes')]
+class DisplayRoutesCommand extends GeneratorCommand
 {
-    protected static $defaultName = 'app:routes';
+    protected static $defaultName = 'display:routes';
 
     protected $description = 'Display current routes';
 
