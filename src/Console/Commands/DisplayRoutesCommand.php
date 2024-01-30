@@ -27,7 +27,9 @@ class DisplayRoutesCommand extends GeneratorCommand
         }
 
         $table = new Table($output);
-        $table->setRows($list);
+        $table
+            ->setHeaders(['URL', 'Controller'])
+            ->setRows($list);
         $table->render();
 
         return Command::SUCCESS;
