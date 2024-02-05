@@ -5,6 +5,7 @@ namespace Goldfinch\Taz\Console;
 use Exception;
 use Illuminate\Support\Str;
 use SilverStripe\View\SSViewer;
+use Symfony\Component\Yaml\Yaml;
 use SilverStripe\Core\CoreKernel;
 use Symfony\Component\Finder\Finder;
 use Goldfinch\Taz\Services\InputOutput;
@@ -441,6 +442,11 @@ abstract class GeneratorCommand extends Command
         return $path;
     }
 
+    public function buildStr(&$content, $name)
+    {
+        $this->runStubReplacement($content, $name);
+    }
+
     /**
      * Build the class with the given name.
      *
@@ -452,7 +458,13 @@ abstract class GeneratorCommand extends Command
     {
         $stub = file_get_contents($this->getStub());
 
+        return $this->runStubReplacement($stub, $name);
+    }
+
+    protected function runStubReplacement(&$stub, $name)
+    {
         return $this->replaceNamespace($stub, $name)
+            ->replaceNamespaceClass($stub, $name)
             ->replaceClassSingular($stub, $name)
             ->replaceClassSingularLowercase($stub, $name)
             ->replaceClassPlural($stub, $name)
@@ -496,6 +508,52 @@ abstract class GeneratorCommand extends Command
             ['{{namespace_root_extensions}}', '{{ namespace_root_extensions }}'],
             '',
             $stub,
+        );
+
+        return $this;
+    }
+
+    protected function replaceNamespaceClass(&$stub, $name)
+    {
+        if (!$this->composerJson) {
+            $this->composerJson = $this->get_composer_json();
+        }
+
+        $psr4 = '';
+
+        if (
+            $this->composerJson &&
+            isset($this->composerJson['autoload']['psr-4'])
+        ) {
+            $psr4root = array_keys($this->composerJson['autoload']['psr-4']);
+
+            if (count($psr4root)) {
+                $stub = str_replace(
+                    [
+                        'DummyRootNamespace',
+                        '{{ namespace_root }}',
+                        '{{namespace_root}}',
+                    ],
+                    $psr4root[0],
+                    $stub,
+                );
+
+                $psr4path = str_replace(
+                    'app/src/',
+                    '',
+                    $this->getCommandPath(),
+                );
+                $psr4path = str_replace('/', '\\', $psr4path);
+                $psr4 =
+                    $psr4root[0] .
+                    $psr4path;
+            }
+        }
+
+        $stub = str_replace(
+            ['DummyNamespaceClass', '{{ namespace_class }}', '{{namespace_class}}'],
+            $psr4,
+            $stub .'\\'. $name,
         );
 
         return $this;
@@ -786,6 +844,81 @@ abstract class GeneratorCommand extends Command
             }
         }
         return $file;
+    }
+
+    protected function updateYmal($content, $nestPath, $value)
+    {
+        $parsedConfig = $this->parseYmalConfig($content);
+
+        foreach ($parsedConfig as $config) {
+
+            $original = Yaml::parse($config['original']);
+
+            $i = 0;
+
+            foreach ($nestPath as $key) {
+                dump($original, $nestPath, $key);
+                $o = $original;
+                do {
+                    $o = $o[$key];
+                    $i++;
+                } while (isset($o[$key]));
+
+                dd($i, count($nestPath));
+
+            }
+
+        }
+
+        return $this->dumpYmalConfig($parsedConfig);
+
+    }
+
+    protected function parseYmalConfig($content)
+    {
+        $configItems = explode('---'.PHP_EOL.'Name:', $content);
+
+        $configs = [];
+
+        foreach ($configItems as $item) {
+            if (!empty($item)) {
+                $ex = explode('---', $item);
+
+                $configs[] = [
+                    'head' => '---'.PHP_EOL.'Name:'.$ex[0].PHP_EOL.'---'.PHP_EOL,
+                    'original' => $ex[1],
+                ];
+            }
+        }
+
+        return $configs;
+    }
+
+    protected function dumpYmalConfig($parsedConfig)
+    {
+        $output = '';
+
+        foreach ($parsedConfig as $item) {
+            if (isset($item['altered'])) {
+
+                // put back comments (if exists)
+
+                $altered_contents = Yaml::dump($item['altered'], PHP_INT_MAX, 2, Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK);
+
+                $commentManager = new Comments();
+                $commentManager->collect(explode("\n", $item['original']));
+                $altered_with_comments = $commentManager->inject(explode("\n", $altered_contents));
+
+                $result = implode("\n", $altered_with_comments);
+
+                $output .= $item['head'] . $result;
+
+            } else {
+                $output .= $item['head'] . $item['original'];
+            }
+        }
+
+        return $output;
     }
 
     protected function get_composer_json()
