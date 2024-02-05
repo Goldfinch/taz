@@ -22,6 +22,7 @@
         "symfony/console": "^6.3",
         "hackzilla/password-generator": "^1.6",
         "consolidation/comments": "^1.0",
+        "minwork/array": "^1.13",
         "goldfinch/cli-supplier": "^1.0",
         "goldfinch/illuminate": "^1.0"
     },

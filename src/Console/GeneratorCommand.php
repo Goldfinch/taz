@@ -3,10 +3,12 @@
 namespace Goldfinch\Taz\Console;
 
 use Exception;
+use Minwork\Helper\Arr;
 use Illuminate\Support\Str;
 use SilverStripe\View\SSViewer;
 use Symfony\Component\Yaml\Yaml;
 use SilverStripe\Core\CoreKernel;
+use Consolidation\Comments\Comments;
 use Symfony\Component\Finder\Finder;
 use Goldfinch\Taz\Services\InputOutput;
 use SilverStripe\View\ThemeResourceLoader;
@@ -846,32 +848,83 @@ abstract class GeneratorCommand extends Command
         return $file;
     }
 
-    protected function updateYmal($content, $nestPath, $value)
+    /**
+     * $determinationLine - in case when there is a possibility to have multiple configs within one .yml, this parameter helps to pick one (that has $determinationLine)
+     */
+    protected function updateYmal($content, $nestPath, $value, $determinationLine = null)
+    {
+        $subConfs = explode('---' . PHP_EOL, $content);
+
+        if ($determinationLine && count($subConfs) > 2) {
+            // $determinationLine is supplied and .yml file has sub-configs, we need to pick the one
+            $aimSubConf = null;
+
+            foreach ($subConfs as $k => $sc) {
+                if (strpos($sc, $determinationLine) !== false) {
+                    $aimSubConf = $k;
+                    break;
+                }
+            }
+
+            // 1 - check if parsed config has sub-configs
+            $newContent = $this->updateYamlHandler($subConfs[$aimSubConf], $nestPath, $value);
+
+            $subConfs[$aimSubConf] = $newContent;
+
+            $newContent = implode('---' . PHP_EOL, $subConfs);
+
+        } else {
+            // No sub configs
+
+            $newContent = $this->updateYamlHandler($content, $nestPath, $value);
+        }
+
+        return $newContent;
+    }
+
+    protected function updateYamlHandler($content, $nestPath, $value)
     {
         $parsedConfig = $this->parseYmalConfig($content);
 
-        foreach ($parsedConfig as $config) {
+        foreach ($parsedConfig as $k => $config) {
 
             $original = Yaml::parse($config['original']);
 
             $i = 0;
 
-            foreach ($nestPath as $key) {
-                dump($original, $nestPath, $key);
-                $o = $original;
-                do {
-                    $o = $o[$key];
+            $o = $original;
+
+            foreach (explode('.', $nestPath) as $el) {
+
+                while (isset($o[$el]))
+                {
+                    $o = $o[$el];
                     $i++;
-                } while (isset($o[$key]));
-
-                dd($i, count($nestPath));
-
+                }
             }
 
+            $parsedConfig[$k]['matches'] = $i;
         }
 
-        return $this->dumpYmalConfig($parsedConfig);
+        // take config item with the most matches
+        foreach ($parsedConfig as $k => $config) {
+            $matches[$k] = $config['matches'];
+        }
+        $sortedParsedConfig = $parsedConfig;
+        array_multisort($matches, SORT_DESC, $sortedParsedConfig);
+        $theConfig = current($sortedParsedConfig);
+        $theConfig = $parsedConfig[$theConfig['key']];
 
+        // add to nested chain to the config
+        $cpath = Yaml::parse($theConfig['original']);
+
+        $nestPathAssembled = Arr::set([], $nestPath, [$value]);
+
+        $theConfig['altered'] = array_merge_recursive($cpath, $nestPathAssembled);
+
+        $parsedConfig[$theConfig['key']] = $theConfig;
+
+        return $this->dumpYmalConfig($parsedConfig);
     }
 
     protected function parseYmalConfig($content)
@@ -884,9 +937,12 @@ abstract class GeneratorCommand extends Command
             if (!empty($item)) {
                 $ex = explode('---', $item);
 
+                $isConfigWithHeader = count($ex) > 1;
+
                 $configs[] = [
-                    'head' => '---'.PHP_EOL.'Name:'.$ex[0].PHP_EOL.'---'.PHP_EOL,
-                    'original' => $ex[1],
+                    'key' => count($configs),
+                    'head' => $isConfigWithHeader ? PHP_EOL . '---'.PHP_EOL.'Name:'.$ex[0].'---' . PHP_EOL : '',
+                    'original' => $isConfigWithHeader ? $ex[1] : $ex[0],
                 ];
             }
         }
@@ -898,8 +954,14 @@ abstract class GeneratorCommand extends Command
     {
         $output = '';
 
+        // make sure it has original ordering
+        foreach ($parsedConfig as $k => $config) {
+            $keys[$k] = $config['key'];
+        }
+        array_multisort($keys, SORT_ASC, $parsedConfig);
+
         foreach ($parsedConfig as $item) {
-            if (isset($item['altered'])) {
+            if (isset($item['altered']) && $item['altered']) {
 
                 // put back comments (if exists)
 
@@ -910,14 +972,14 @@ abstract class GeneratorCommand extends Command
                 $altered_with_comments = $commentManager->inject(explode("\n", $altered_contents));
 
                 $result = implode("\n", $altered_with_comments);
-
-                $output .= $item['head'] . $result;
+                $output .= preg_replace("/([\r\n]{4,}|[\n]{2,}|[\r]{2,})/", "\n", $item['head'] . $result . PHP_EOL);
 
             } else {
-                $output .= $item['head'] . $item['original'];
+                $output .= preg_replace("/([\r\n]{4,}|[\n]{2,}|[\r]{2,})/", "\n", $item['head'] . $item['original'] . PHP_EOL);
             }
         }
 
+        // return substr($output, strpos($output, "\n") + 1); ! removes first line when config without header
         return $output;
     }
 
