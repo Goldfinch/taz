@@ -554,7 +554,7 @@ abstract class GeneratorCommand extends Command
 
         $stub = str_replace(
             ['DummyNamespaceClass', '{{ namespace_class }}', '{{namespace_class}}'],
-            $psr4 .'\\'. $name,
+            $psr4 .'\\'. $name . ($this->prefix ?? ''),
             $stub,
         );
 
