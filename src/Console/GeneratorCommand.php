@@ -822,11 +822,11 @@ abstract class GeneratorCommand extends Command
                     );
                 } else if (strlen($answer) < 2) {
                     throw new \RuntimeException(
-                        'Too short name'
+                        'The name is too short'
                     );
                 } else if(!preg_match('/^([A-z0-9\_\-]+)$/', $answer)) {
                     throw new \RuntimeException(
-                        'Name can contains letters, numbers and underscore'
+                        'The name can contains letters, numbers and underscore'
                     );
                 }
 
@@ -1071,18 +1071,21 @@ abstract class GeneratorCommand extends Command
 
             $o = $original;
 
-            foreach (explode('.', $nestPath) as $el) {
+            $children = explode('.', $nestPath);
 
-                while (isset($o[$el]))
+            foreach ($children as $child) {
+
+                while (isset($o[$child]))
                 {
-                    $o = $o[$el];
-                    $i++;
+                    if ($child != '') {
+                        $o = $o[$child];
+                        $i++;
+                    }
                 }
             }
 
             $config['config']['skeleton'][$bk]['matches'] = $i;
         }
-
 
         // take config item with the most matches
         foreach ($config['config']['skeleton'] as $k => $c) {
@@ -1095,7 +1098,7 @@ abstract class GeneratorCommand extends Command
         // add to nested chain to the config
         $cpath = Yaml::parse($theConfig['content']);
 
-        $nestPathAssembled = Arr::set([], $nestPath, [$value]);
+        $nestPathAssembled = Arr::set([], $nestPath, $value);
 
         $theConfig['altered'] = array_merge_recursive($cpath ?? [], $nestPathAssembled);
 
@@ -1111,11 +1114,11 @@ abstract class GeneratorCommand extends Command
         return $this->dumpingYamlConfig($config);
     }
 
-    protected function askClassNameQuestion($text, $input, $output)
+    protected function askClassNameQuestion($text, $input, $output, $extraRule = '/^([A-z0-9\_]+)$/', $extraMessage = 'Name can contains letter, numbers and underscore')
     {
         $io = new InputOutput($input, $output);
 
-        return $io->question($text, null, function ($answer) use ($io) {
+        return $io->question($text, null, function ($answer) use ($io, $extraRule, $extraMessage) {
 
             if (!is_string($answer) || $answer === null) {
                 throw new \RuntimeException(
@@ -1123,12 +1126,10 @@ abstract class GeneratorCommand extends Command
                 );
             } else if (strlen($answer) < 2) {
                 throw new \RuntimeException(
-                    'Too short name'
+                    'The name is too short'
                 );
-            } else if(!preg_match('/^([A-z0-9\_]+)$/', $answer)) {
-                throw new \RuntimeException(
-                    'Name can contains letter, numbers and underscore'
-                );
+            } else if($extraRule && !preg_match($extraRule, $answer)) {
+                throw new \RuntimeException($extraMessage);
             }
 
             return $answer;

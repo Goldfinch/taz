@@ -29,9 +29,9 @@ Call Taz via console ```php taz``` 💨
 
 ```bash
 php taz dev/build
+
 php taz display:version
 php taz display:theme
-
 php taz display:routes
 php taz display:members
 php taz display:admins
@@ -39,6 +39,7 @@ php taz display:admins
 php taz generate:base64-key
 php taz generate:crypto-key
 php taz generate:password
+php taz generate:app-key
 
 php taz make:admin
 php taz make:command
@@ -62,11 +63,11 @@ php taz make:view
 
 # Commands for external modules (each command depends on its module, make sure the module is installed in your project before using the dependent command below)
 
+php taz generate:encryption-key # lekoala/silverstripe-encrypt
 php taz make:adminconfig # jonom/silverstripe-someconfig
 php taz make:element # silverstripe/silverstripe-elemental
 php taz make:element-template # silverstripe/silverstripe-elemental
 php taz make:crontask # silverstripe/silverstripe-crontask
-php taz generate:encryption-key # lekoala/silverstripe-encrypt
 ```
 
 #### Run dev/build in CLI
