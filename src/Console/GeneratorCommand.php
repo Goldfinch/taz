@@ -976,85 +976,6 @@ abstract class GeneratorCommand extends Command
         ] : null;
     }
 
-    /**
-     * $determinationLine - in case when there is a possibility to have multiple configs within one .yml, this parameter helps to pick one (that has $determinationLine)
-     */
-    protected function updateYaml($content, $nestPath, $value, $determinationLine = null)
-    {
-        $subConfs = explode('---' . PHP_EOL, $content);
-
-        if ($determinationLine && count($subConfs) > 2) {
-            // $determinationLine is supplied and .yml file has sub-configs, we need to pick the one
-            $aimSubConf = null;
-
-            foreach ($subConfs as $k => $sc) {
-                if (strpos($sc, $determinationLine) !== false) {
-                    $aimSubConf = $k;
-                    break;
-                }
-            }
-
-            // 1 - check if parsed config has sub-configs
-            $newContent = $this->updateYamlHandler($subConfs[$aimSubConf], $nestPath, $value);
-
-            $subConfs[$aimSubConf] = $newContent;
-
-            $newContent = implode('---' . PHP_EOL, $subConfs);
-
-        } else {
-            // No sub configs
-
-            $newContent = $this->updateYamlHandler($content, $nestPath, $value);
-        }
-
-        return $newContent;
-    }
-
-    protected function updateYamlHandler($content, $nestPath, $value)
-    {
-        $parsedConfig = $this->parseYamlConfig($content);
-
-        foreach ($parsedConfig as $k => $config) {
-
-            $original = Yaml::parse($config['original']);
-
-            $i = 0;
-
-            $o = $original;
-
-            foreach (explode('.', $nestPath) as $el) {
-
-                while (isset($o[$el]))
-                {
-                    $o = $o[$el];
-                    $i++;
-                }
-            }
-
-            $parsedConfig[$k]['matches'] = $i;
-        }
-
-        // take config item with the most matches
-        foreach ($parsedConfig as $k => $config) {
-            $matches[$k] = $config['matches'];
-        }
-        $sortedParsedConfig = $parsedConfig;
-        array_multisort($matches, SORT_DESC, $sortedParsedConfig);
-        $theConfig = current($sortedParsedConfig);
-        $theConfig = $parsedConfig[$theConfig['key']];
-
-        // add to nested chain to the config
-        $cpath = Yaml::parse($theConfig['original']);
-
-        $nestPathAssembled = Arr::set([], $nestPath, [$value]);
-
-        $theConfig['altered'] = array_merge_recursive($cpath, $nestPathAssembled);
-
-        $parsedConfig[$theConfig['key']] = $theConfig;
-
-        return $this->dumpYamlConfig($parsedConfig);
-    }
-
     protected function updateYamlConfig($config, $nestPath, $value)
     {
         // $newContent = '';
@@ -1111,7 +1032,7 @@ abstract class GeneratorCommand extends Command
             $config['config']['skeleton'][$bk] = $theConfig;
         }
 
-        return $this->dumpingYamlConfig($config);
+        return $this->dumpYamlConfig($config);
     }
 
     protected function askClassNameQuestion($text, $input, $output, $extraRule = '/^([A-z0-9\_]+)$/', $extraMessage = 'Name can contains letter, numbers and underscore')
@@ -1136,8 +1057,7 @@ abstract class GeneratorCommand extends Command
         });
     }
 
-    // TODO rename dumping to dump after the clean up
-    protected function dumpingYamlConfig($config)
+    protected function dumpYamlConfig($config)
     {
         $output = '';
 
@@ -1171,62 +1091,6 @@ abstract class GeneratorCommand extends Command
         if ($output !== '') {
             file_put_contents($config['config']['file']->getPathname(), $output);
         }
-    }
-
-    protected function parseYamlConfig($content)
-    {
-        $configItems = explode('---'.PHP_EOL.'Name:', $content);
-
-        $configs = [];
-
-        foreach ($configItems as $item) {
-            if (!empty($item)) {
-                $ex = explode('---', $item);
-
-                $isConfigWithHeader = count($ex) > 1;
-
-                $configs[] = [
-                    'key' => count($configs),
-                    'head' => $isConfigWithHeader ? PHP_EOL . '---'.PHP_EOL.'Name:'.$ex[0].'---' . PHP_EOL : '',
-                    'original' => $isConfigWithHeader ? $ex[1] : $ex[0],
-                ];
-            }
-        }
-
-        return $configs;
-    }
-
-    protected function dumpYamlConfig($parsedConfig)
-    {
-        $output = '';
-
-        // make sure it has original ordering
-        foreach ($parsedConfig as $k => $config) {
-            $keys[$k] = $config['key'];
-        }
-        array_multisort($keys, SORT_ASC, $parsedConfig);
-
-        foreach ($parsedConfig as $item) {
-            if (isset($item['altered']) && $item['altered']) {
-
-                // put back comments (if exists)
-
-                $altered_contents = Yaml::dump($item['altered'], PHP_INT_MAX, 2, Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK);
-
-                $commentManager = new Comments();
-                $commentManager->collect(explode("\n", $item['original']));
-                $altered_with_comments = $commentManager->inject(explode("\n", $altered_contents));
-
-                $result = implode("\n", $altered_with_comments);
-                $output .= preg_replace("/([\r\n]{4,}|[\n]{2,}|[\r]{2,})/", "\n", $item['head'] . $result . PHP_EOL);
-
-            } else {
-                $output .= preg_replace("/([\r\n]{4,}|[\n]{2,}|[\r]{2,})/", "\n", $item['head'] . $item['original'] . PHP_EOL);
-            }
-        }
-
-        // return substr($output, strpos($output, "\n") + 1); ! removes first line when config without header
-        return $output;
     }
 
     protected function get_composer_json()
