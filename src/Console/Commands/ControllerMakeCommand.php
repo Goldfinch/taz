@@ -17,5 +17,5 @@ class ControllerMakeCommand extends GeneratorCommand
 
     protected $stub = 'controller.stub';
 
-    protected $prefix = 'Controller';
+    protected $suffix = 'Controller';
 }

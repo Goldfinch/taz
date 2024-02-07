@@ -17,5 +17,5 @@ class TemplateGlobalProviderMakeCommand extends GeneratorCommand
 
     protected $stub = 'template-global-provider.stub';
 
-    protected $prefix = 'TemplateProvider';
+    protected $suffix = 'TemplateProvider';
 }

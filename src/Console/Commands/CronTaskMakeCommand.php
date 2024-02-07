@@ -17,5 +17,5 @@ class CronTaskMakeCommand extends GeneratorCommand
 
     protected $stub = 'crontask.stub';
 
-    protected $prefix = 'CronTask';
+    protected $suffix = 'CronTask';
 }

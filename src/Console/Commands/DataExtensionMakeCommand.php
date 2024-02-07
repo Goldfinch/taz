@@ -17,5 +17,5 @@ class DataExtensionMakeCommand extends GeneratorCommand
 
     protected $stub = 'dataextension.stub';
 
-    protected $prefix = 'Extension';
+    protected $suffix = 'Extension';
 }

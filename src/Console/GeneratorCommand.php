@@ -25,6 +25,9 @@ abstract class GeneratorCommand extends Command
     protected $composerJson = null;
     protected $ssThemes = null;
 
+    protected $input;
+    protected $output;
+
     protected $files;
 
     // protected $name = 'make:model';
@@ -42,7 +45,7 @@ abstract class GeneratorCommand extends Command
 
     protected $type;
 
-    protected $prefix;
+    protected $suffix;
 
     protected $extension = '.php';
 
@@ -240,6 +243,9 @@ abstract class GeneratorCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->input = $input;
+        $this->output = $output;
+
         if ($this->getCommandPath()) {
             $nameInput = $this->getAttrName($input);
 
@@ -251,7 +257,7 @@ abstract class GeneratorCommand extends Command
             }
 
             $dirPath = $this->getCommandPath() . '/';
-            $path = $dirPath . $nameInput . $this->prefix . $this->extension;
+            $path = $dirPath . $nameInput . $this->suffix . $this->extension;
 
             if ($this->files->exists($path)) {
                 $io->wrong(
@@ -477,9 +483,32 @@ abstract class GeneratorCommand extends Command
             ->replaceClass($stub, $name);
     }
 
+    /**
+     * state: skip or run the replacement (true / false)
+     * from: things to replace
+     * to: what replace to
+     * fallback: when 'state' is false ('' by default, removes replacement tag)
+     */
+    protected function replacer()
+    {
+        return [
+            // [state, from, to, fallback]
+        ];
+    }
+
     protected function customReplace(&$stub, $name): self
     {
-        // for upper classes to overwrite
+        $replacements = $this->replacer();
+
+        if (count($replacements)) {
+            foreach ($replacements as $replace) {
+                if ($replace[0]) {
+                    $stub = str_replace($replace[1], $replace[2], $stub);
+                } else {
+                    $stub = str_replace($replace[1], isset($replace[3]) ? $replace[3] : '', $stub);
+                }
+            }
+        }
 
         return $this;
     }
@@ -554,7 +583,7 @@ abstract class GeneratorCommand extends Command
 
         $stub = str_replace(
             ['DummyNamespaceClass', '{{ namespace_class }}', '{{namespace_class}}'],
-            $psr4 .'\\'. $name . ($this->prefix ?? ''),
+            $psr4 .'\\'. $name . ($this->suffix ?? ''),
             $stub,
         );
 
@@ -1050,6 +1079,20 @@ abstract class GeneratorCommand extends Command
                     'The name is too short'
                 );
             } else if($extraRule && !preg_match($extraRule, $answer)) {
+                throw new \RuntimeException($extraMessage);
+            }
+
+            return $answer;
+        });
+    }
+
+    protected function askStringQuestion($text, $input, $output, $extraRule = '', $extraMessage = '')
+    {
+        $io = new InputOutput($input, $output);
+
+        return $io->question($text, null, function ($answer) use ($io, $extraRule, $extraMessage) {
+
+            if($extraRule && !preg_match($extraRule, $answer)) {
                 throw new \RuntimeException($extraMessage);
             }
 

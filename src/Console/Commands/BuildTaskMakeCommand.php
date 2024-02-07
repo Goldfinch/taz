@@ -17,5 +17,5 @@ class BuildTaskMakeCommand extends GeneratorCommand
 
     protected $stub = 'buildtask.stub';
 
-    protected $prefix = 'BuildTask';
+    protected $suffix = 'BuildTask';
 }

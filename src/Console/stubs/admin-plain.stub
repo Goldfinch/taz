@@ -1,0 +1,13 @@
+<?php
+{{ namespace }}{{ __modesl_namespace_str }}
+use SilverStripe\Admin\ModelAdmin;
+
+class {{ class }}Admin extends ModelAdmin
+{
+    private static $url_segment = '{{ __url }}';
+    private static $menu_title = '{{ __title }}';
+    private static $menu_icon_class = '{{ __icon }}';
+    private static $menu_priority = {{ __priority }};
+
+    private static $managed_models = {{ __models }};
+}

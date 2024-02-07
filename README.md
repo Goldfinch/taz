@@ -41,10 +41,10 @@ php taz generate:crypto-key
 php taz generate:password
 php taz generate:app-key
 
-php taz make:admin
+php taz make:admin # --plain
 php taz make:command
 php taz make:command-template
-php taz make:config
+php taz make:config # --plain --after=*
 php taz make:controller
 php taz make:dataextension
 php taz make:extension

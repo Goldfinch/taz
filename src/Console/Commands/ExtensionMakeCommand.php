@@ -17,5 +17,5 @@ class ExtensionMakeCommand extends GeneratorCommand
 
     protected $stub = 'extension.stub';
 
-    protected $prefix = 'Extension';
+    protected $suffix = 'Extension';
 }

@@ -17,7 +17,7 @@ class ElementTemplateMakeCommand extends GeneratorCommand
 
     protected $stub = 'element-template.stub';
 
-    protected $prefix = 'Element';
+    protected $suffix = 'Element';
 
     protected $extension = '.ss';
 }

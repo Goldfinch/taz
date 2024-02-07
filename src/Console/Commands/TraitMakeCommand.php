@@ -17,5 +17,5 @@ class TraitMakeCommand extends GeneratorCommand
 
     protected $stub = 'trait.stub';
 
-    protected $prefix = 'Trait';
+    protected $suffix = 'Trait';
 }

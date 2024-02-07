@@ -19,7 +19,7 @@ class ElementMakeCommand extends GeneratorCommand
 
     protected $stub = 'element.stub';
 
-    protected $prefix = 'Element';
+    protected $suffix = 'Element';
 
     protected function execute($input, $output): int
     {
@@ -27,7 +27,7 @@ class ElementMakeCommand extends GeneratorCommand
             return Command::FAILURE;
         }
 
-        $className = $this->askClassNameQuestion('What [class name] this element need to be assigned to (eg: Page, App/Pages/Page)', $input, $output);
+        $className = $this->askClassNameQuestion('What [class name] this element need to be assigned to? (eg: Page, App/Pages/Page)', $input, $output);
 
         $nameInput = $this->getAttrName($input);
 
@@ -36,15 +36,20 @@ class ElementMakeCommand extends GeneratorCommand
         $command->run(new ArrayInput(['name' => $nameInput]), $output);
 
         // find config
-        $config = $this->findYamlConfigFileByName('elements');
+        $config = $this->findYamlConfigFileByName('app-elements');
 
         // create new config if not exists
         if (!$config) {
 
             $command = $this->getApplication()->find('make:config');
-            $command->run(new ArrayInput(['name' => 'elements']), $output);
+            $command->run(new ArrayInput([
+                'name' => 'elements',
+                '--plain' => true,
+                '--after' => 'dnadesign/silverstripe-elemental',
+                '--namesuffix' => 'app-',
+            ]), $output);
 
-            $config = $this->findYamlConfigFileByName('elements');
+            $config = $this->findYamlConfigFileByName('app-elements');
         }
 
         // update config

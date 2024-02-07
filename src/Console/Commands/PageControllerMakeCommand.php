@@ -17,5 +17,5 @@ class PageControllerMakeCommand extends GeneratorCommand
 
     protected $stub = 'page-controller.stub';
 
-    protected $prefix = 'Controller';
+    protected $suffix = 'Controller';
 }

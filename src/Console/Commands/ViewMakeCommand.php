@@ -17,5 +17,5 @@ class ViewMakeCommand extends GeneratorCommand
 
     protected $stub = 'viewabledata.stub';
 
-    protected $prefix = '';
+    protected $suffix = '';
 }

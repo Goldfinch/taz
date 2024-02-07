@@ -19,7 +19,7 @@ class CommandMakeCommand extends GeneratorCommand
 
     protected $stub = 'command.stub';
 
-    protected $prefix = 'Command';
+    protected $suffix = 'Command';
 
     protected function execute($input, $output): int
     {

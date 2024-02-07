@@ -17,5 +17,5 @@ class AdminConfigMakeCommand extends GeneratorCommand
 
     protected $stub = 'adminconfig.stub';
 
-    protected $prefix = 'Config';
+    protected $suffix = 'Config';
 }
