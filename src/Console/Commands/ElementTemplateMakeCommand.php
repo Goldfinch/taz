@@ -3,7 +3,6 @@
 namespace Goldfinch\Taz\Console\Commands;
 
 use Goldfinch\Taz\Console\GeneratorCommand;
-use Symfony\Component\Console\Command\Command;
 
 #[AsCommand(name: 'make:element-template')]
 class ElementTemplateMakeCommand extends GeneratorCommand
@@ -21,11 +20,4 @@ class ElementTemplateMakeCommand extends GeneratorCommand
     protected $prefix = 'Element';
 
     protected $extension = '.ss';
-
-    protected function execute($input, $output): int
-    {
-        parent::execute($input, $output);
-
-        return Command::SUCCESS;
-    }
 }

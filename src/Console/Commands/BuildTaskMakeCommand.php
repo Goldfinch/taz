@@ -3,7 +3,6 @@
 namespace Goldfinch\Taz\Console\Commands;
 
 use Goldfinch\Taz\Console\GeneratorCommand;
-use Symfony\Component\Console\Command\Command;
 
 #[AsCommand(name: 'make:task')]
 class BuildTaskMakeCommand extends GeneratorCommand
@@ -19,11 +18,4 @@ class BuildTaskMakeCommand extends GeneratorCommand
     protected $stub = 'buildtask.stub';
 
     protected $prefix = 'BuildTask';
-
-    protected function execute($input, $output): int
-    {
-        parent::execute($input, $output);
-
-        return Command::SUCCESS;
-    }
 }

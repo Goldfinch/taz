@@ -3,7 +3,6 @@
 namespace Goldfinch\Taz\Console\Commands;
 
 use Goldfinch\Taz\Console\GeneratorCommand;
-use Symfony\Component\Console\Command\Command;
 
 #[AsCommand(name: 'make:page-template')]
 class PageTemplateMakeCommand extends GeneratorCommand
@@ -18,14 +17,5 @@ class PageTemplateMakeCommand extends GeneratorCommand
 
     protected $stub = 'page-template.stub';
 
-    protected $prefix = '';
-
     protected $extension = '.ss';
-
-    protected function execute($input, $output): int
-    {
-        parent::execute($input, $output);
-
-        return Command::SUCCESS;
-    }
 }

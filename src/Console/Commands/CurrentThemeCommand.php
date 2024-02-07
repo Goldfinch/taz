@@ -7,10 +7,10 @@ use Goldfinch\Taz\Services\InputOutput;
 use Goldfinch\Taz\Console\GeneratorCommand;
 use Symfony\Component\Console\Command\Command;
 
-#[AsCommand(name: 'app:theme')]
+#[AsCommand(name: 'display:theme')]
 class CurrentThemeCommand extends GeneratorCommand
 {
-    protected static $defaultName = 'app:theme';
+    protected static $defaultName = 'display:theme';
 
     protected $description = 'Display current theme';
 

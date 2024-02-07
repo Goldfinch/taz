@@ -11,7 +11,7 @@ class CommandMakeCommand extends GeneratorCommand
 {
     protected static $defaultName = 'make:command';
 
-    protected $description = 'Create Taz command [GeneratorCommand]';
+    protected $description = 'Create Taz command';
 
     protected $path = '[psr4]/Commands';
 
@@ -23,20 +23,15 @@ class CommandMakeCommand extends GeneratorCommand
 
     protected function execute($input, $output): int
     {
-        parent::execute($input, $output);
+        if (parent::execute($input, $output) === false) {
+            return Command::FAILURE;
+        }
 
         $nameInput = $this->getAttrName($input);
 
         // Create command template (.stub file)
-
         $command = $this->getApplication()->find('make:command-template');
-
-        $arguments = [
-            'name' => strtolower($nameInput),
-        ];
-
-        $greetInput = new ArrayInput($arguments);
-        $returnCode = $command->run($greetInput, $output);
+        $command->run(new ArrayInput(['name' => strtolower($nameInput)]), $output);
 
         return Command::SUCCESS;
     }

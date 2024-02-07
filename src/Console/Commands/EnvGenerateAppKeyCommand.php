@@ -6,10 +6,10 @@ use Goldfinch\Taz\Services\InputOutput;
 use Goldfinch\Taz\Console\GeneratorCommand;
 use Symfony\Component\Console\Command\Command;
 
-#[AsCommand(name: 'app:generate-app-key')]
+#[AsCommand(name: 'generate:app-key')]
 class EnvGenerateAppKeyCommand extends GeneratorCommand
 {
-    protected static $defaultName = 'app:generate-app-key';
+    protected static $defaultName = 'generate:app-key';
 
     protected $description = 'Generate APP_KEY in .env';
 

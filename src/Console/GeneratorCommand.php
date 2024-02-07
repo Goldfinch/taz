@@ -848,10 +848,138 @@ abstract class GeneratorCommand extends Command
         return $file;
     }
 
+    protected function contentExistsDeterminator($content, $determinationLines, $chainer)
+    {
+        if (is_array($determinationLines)) {
+
+            if ($chainer == 'or' || $chainer == '||') {
+                $state = false;
+                foreach ($determinationLines as $dl) {
+                    if (strpos($content, $dl) !== false) {
+                        $state = true;
+                        break;
+                    }
+                }
+                return $state;
+            } else { // and &&
+                $state = false;
+                foreach ($determinationLines as $dl) {
+                    if (strpos($content, $dl) !== false) {
+                        $state = true;
+                    } else {
+                        $state = false;
+                        break;
+                    }
+                }
+                return $state;
+            }
+
+        } else {
+            if (strpos($content, $determinationLines) !== false) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    protected function findYamlConfigFile($determinationLines, $chainer = 'or')
+    {
+        $finder = new Finder();
+        $files = $finder->in(BASE_PATH . '/app/_config')->files();
+
+        foreach ($files as $file) {
+
+            if ($this->contentExistsDeterminator($file->getContents(), $determinationLines, $chainer) === true) {
+                $ymlFile = $file;
+                break;
+            }
+        }
+
+        return isset($ymlFile) ? $ymlFile : null;
+    }
+
+    protected function skeletonTargetKeyDeterminator($config, $determinationLines, $chainer = 'or', $searchArea = null)
+    {
+        foreach ($config['skeleton'] as $bone) {
+            if (isset($bone[$searchArea])) {
+                if ($this->contentExistsDeterminator($bone[$searchArea], $determinationLines, $chainer) === true) {
+                    return $bone['key'];
+                }
+            }
+        }
+    }
+
+    protected function findYamlConfigFileByContent($determinationLines, $chainer = 'or')
+    {
+        $ymlFile = $this->findYamlConfigFile($determinationLines, $chainer);
+
+        if (isset($ymlFile)) {
+
+            $skeleton = $this->ymlConfigSkeleton($ymlFile);
+
+            return $skeleton ? [
+                'key' => $this->skeletonTargetKeyDeterminator($skeleton, $determinationLines, $chainer, 'content'),
+                'config' => $skeleton,
+            ] : null;
+        }
+    }
+
+    protected function getNamespaceClass($input)
+    {
+        $namespaceClass = '{{namespace_class}}';
+        $this->buildStr($namespaceClass, $input->getArgument('name'));
+        return $namespaceClass;
+    }
+
+    protected function findYamlConfigFileByName($name)
+    {
+        $determinationLines = [
+            'Name: ' . $name,
+            'Name:' . $name,
+        ];
+
+        $ymlFile = $this->findYamlConfigFile($determinationLines);
+
+        if (isset($ymlFile)) {
+
+            $skeleton = $this->ymlConfigSkeleton($ymlFile);
+
+            return $skeleton ? [
+                'key' => $this->skeletonTargetKeyDeterminator($skeleton, $determinationLines, 'or', 'head'),
+                'config' => $skeleton,
+            ] : null;
+        }
+    }
+
+    protected function ymlConfigSkeleton($ymlFile)
+    {
+        $configSkeleton = explode('---' . PHP_EOL, $ymlFile->getContents());
+
+        $assembledConfig = [];
+
+        foreach ($configSkeleton as $bk => $bone) {
+            if ($bone !== '') {
+                if (substr($bone, 0, 5) == 'Name:' || substr($bone, 0, 6) == 'Name :') {
+                    $assembledConfig[] = [
+                        'key' => $bk,
+                        'head' => '---' . PHP_EOL . $bone . '---',
+                        'content' => isset($configSkeleton[$bk + 1]) ? $configSkeleton[$bk + 1] : '',
+                    ];
+                }
+            }
+        }
+
+        return !empty($assembledConfig) ? [
+            'skeleton' => $assembledConfig,
+            'file' => $ymlFile,
+        ] : null;
+    }
+
     /**
      * $determinationLine - in case when there is a possibility to have multiple configs within one .yml, this parameter helps to pick one (that has $determinationLine)
      */
-    protected function updateYmal($content, $nestPath, $value, $determinationLine = null)
+    protected function updateYaml($content, $nestPath, $value, $determinationLine = null)
     {
         $subConfs = explode('---' . PHP_EOL, $content);
 
@@ -884,7 +1012,7 @@ abstract class GeneratorCommand extends Command
 
     protected function updateYamlHandler($content, $nestPath, $value)
     {
-        $parsedConfig = $this->parseYmalConfig($content);
+        $parsedConfig = $this->parseYamlConfig($content);
 
         foreach ($parsedConfig as $k => $config) {
 
@@ -924,10 +1052,127 @@ abstract class GeneratorCommand extends Command
 
         $parsedConfig[$theConfig['key']] = $theConfig;
 
-        return $this->dumpYmalConfig($parsedConfig);
+        return $this->dumpYamlConfig($parsedConfig);
     }
 
-    protected function parseYmalConfig($content)
+    protected function updateYamlConfig($config, $nestPath, $value)
+    {
+        // $newContent = '';
+
+        foreach ($config['config']['skeleton'] as $bk => $bone) {
+            if ($config['key'] !== $bone['key']) {
+                $config['config']['skeleton'][$bk]['matches'] = 0;
+                continue;
+            }
+
+            $original = Yaml::parse($bone['content']);
+
+            $i = 0;
+
+            $o = $original;
+
+            foreach (explode('.', $nestPath) as $el) {
+
+                while (isset($o[$el]))
+                {
+                    $o = $o[$el];
+                    $i++;
+                }
+            }
+
+            $config['config']['skeleton'][$bk]['matches'] = $i;
+        }
+
+
+        // take config item with the most matches
+        foreach ($config['config']['skeleton'] as $k => $c) {
+            $matches[$k] = $c['matches'];
+        }
+        $sortedMatchedConfig = $config['config']['skeleton'];
+        array_multisort($matches, SORT_DESC, $sortedMatchedConfig);
+        $theConfig = current($sortedMatchedConfig);
+
+        // add to nested chain to the config
+        $cpath = Yaml::parse($theConfig['content']);
+
+        $nestPathAssembled = Arr::set([], $nestPath, [$value]);
+
+        $theConfig['altered'] = array_merge_recursive($cpath ?? [], $nestPathAssembled);
+
+        // updating bone
+        foreach ($config['config']['skeleton'] as $bk => $bone) {
+            if ($theConfig['key'] !== $bone['key']) {
+                continue;
+            }
+
+            $config['config']['skeleton'][$bk] = $theConfig;
+        }
+
+        return $this->dumpingYamlConfig($config);
+    }
+
+    protected function askClassNameQuestion($text, $input, $output)
+    {
+        $io = new InputOutput($input, $output);
+
+        return $io->question($text, null, function ($answer) use ($io) {
+
+            if (!is_string($answer) || $answer === null) {
+                throw new \RuntimeException(
+                    'Invalid name'
+                );
+            } else if (strlen($answer) < 2) {
+                throw new \RuntimeException(
+                    'Too short name'
+                );
+            } else if(!preg_match('/^([A-z0-9\_]+)$/', $answer)) {
+                throw new \RuntimeException(
+                    'Name can contains letter, numbers and underscore'
+                );
+            }
+
+            return $answer;
+        });
+    }
+
+    // TODO rename dumping to dump after the clean up
+    protected function dumpingYamlConfig($config)
+    {
+        $output = '';
+
+        // make sure it has original ordering
+        foreach ($config['config']['skeleton'] as $bk => $bone) {
+            $keys[$bk] = $bone['key'];
+        }
+        array_multisort($keys, SORT_ASC, $config['config']['skeleton']);
+
+        foreach ($config['config']['skeleton'] as $bone) {
+            if (isset($bone['altered']) && $bone['altered']) {
+
+                // put back comments (if exists)
+
+                $altered_contents = Yaml::dump($bone['altered'], PHP_INT_MAX, 2, Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK);
+
+                $commentManager = new Comments();
+                $commentManager->collect(explode("\n", $bone['content']));
+                $altered_with_comments = $commentManager->inject(explode("\n", $altered_contents));
+
+                $result = implode("\n", $altered_with_comments);
+                $output .= $bone['head'] . PHP_EOL . $result . PHP_EOL;
+                // $output .= preg_replace("/([\r\n]{4,}|[\n]{2,}|[\r]{2,})/", "\n", $bone['head'] . $result . PHP_EOL);
+
+            } else {
+                $output .= $bone['head'] . PHP_EOL . $bone['content'] . PHP_EOL;
+                // $output .= preg_replace("/([\r\n]{4,}|[\n]{2,}|[\r]{2,})/", "\n", $bone['head'] . $bone['content'] . PHP_EOL);
+            }
+        }
+
+        if ($output !== '') {
+            file_put_contents($config['config']['file']->getPathname(), $output);
+        }
+    }
+
+    protected function parseYamlConfig($content)
     {
         $configItems = explode('---'.PHP_EOL.'Name:', $content);
 
@@ -950,7 +1195,7 @@ abstract class GeneratorCommand extends Command
         return $configs;
     }
 
-    protected function dumpYmalConfig($parsedConfig)
+    protected function dumpYamlConfig($parsedConfig)
     {
         $output = '';
 

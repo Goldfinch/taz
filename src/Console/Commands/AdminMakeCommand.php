@@ -3,7 +3,6 @@
 namespace Goldfinch\Taz\Console\Commands;
 
 use Goldfinch\Taz\Console\GeneratorCommand;
-use Symfony\Component\Console\Command\Command;
 
 #[AsCommand(name: 'make:admin')]
 class AdminMakeCommand extends GeneratorCommand
@@ -19,11 +18,4 @@ class AdminMakeCommand extends GeneratorCommand
     protected $stub = 'admin.stub';
 
     protected $prefix = 'Admin';
-
-    protected function execute($input, $output): int
-    {
-        parent::execute($input, $output);
-
-        return Command::SUCCESS;
-    }
 }

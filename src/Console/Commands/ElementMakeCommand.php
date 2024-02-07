@@ -23,32 +23,36 @@ class ElementMakeCommand extends GeneratorCommand
 
     protected function execute($input, $output): int
     {
-        parent::execute($input, $output);
+        if (parent::execute($input, $output) === false) {
+            return Command::FAILURE;
+        }
+
+        $className = $this->askClassNameQuestion('What [class name] this element need to be assigned to (eg: Page, App/Pages/Page)', $input, $output);
 
         $nameInput = $this->getAttrName($input);
 
-        // Create page template
-
+        // create page template
         $command = $this->getApplication()->find('make:element-template');
+        $command->run(new ArrayInput(['name' => $nameInput]), $output);
 
-        $arguments = [
-            'name' => $nameInput,
-        ];
+        // find config
+        $config = $this->findYamlConfigFileByName('elements');
 
-        $greetInput = new ArrayInput($arguments);
-        $returnCode = $command->run($greetInput, $output);
+        // create new config if not exists
+        if (!$config) {
 
-        // Register element
+            $command = $this->getApplication()->find('make:config');
+            $command->run(new ArrayInput(['name' => 'elements']), $output);
 
-        $rootDir = $this->getNamespaceRootDir();
+            $config = $this->findYamlConfigFileByName('elements');
+        }
 
-        $newContent = $this->addToLine(
-            'app/_config/elements.yml',
-            'allowed_elements:',
-            '    - ' . $rootDir . '\Elements\\' . $nameInput . 'Element',
+        // update config
+        $this->updateYamlConfig(
+            $config,
+            $className . '.allowed_elements',
+            $this->getNamespaceClass($input),
         );
-
-        file_put_contents('app/_config/elements.yml', $newContent);
 
         return Command::SUCCESS;
     }

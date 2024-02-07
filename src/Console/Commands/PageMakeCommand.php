@@ -11,7 +11,7 @@ class PageMakeCommand extends GeneratorCommand
 {
     protected static $defaultName = 'make:page';
 
-    protected $description = 'Create Page [Page]';
+    protected $description = 'Create page';
 
     protected $path = '[psr4]/Pages';
 
@@ -19,35 +19,21 @@ class PageMakeCommand extends GeneratorCommand
 
     protected $stub = 'page.stub';
 
-    protected $prefix = '';
-
     protected function execute($input, $output): int
     {
-        parent::execute($input, $output);
+        if (parent::execute($input, $output) === false) {
+            return Command::FAILURE;
+        }
 
         $nameInput = $this->getAttrName($input);
 
         // Create page controller
-
         $command = $this->getApplication()->find('make:page-controller');
-
-        $arguments = [
-            'name' => $nameInput,
-        ];
-
-        $greetInput = new ArrayInput($arguments);
-        $returnCode = $command->run($greetInput, $output);
+        $command->run(new ArrayInput(['name' => $nameInput]), $output);
 
         // Create page template
-
         $command = $this->getApplication()->find('make:page-template');
-
-        $arguments = [
-            'name' => $nameInput,
-        ];
-
-        $greetInput = new ArrayInput($arguments);
-        $returnCode = $command->run($greetInput, $output);
+        $command->run(new ArrayInput(['name' => $nameInput]), $output);
 
         return Command::SUCCESS;
     }

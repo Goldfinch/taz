@@ -28,9 +28,9 @@ Call Taz via console ```php taz``` 💨
 #### List of available commands
 
 ```bash
-php taz app:dev-build
-php taz app:ss-version
-php taz app:theme
+php taz dev/build
+php taz display:version
+php taz display:theme
 
 php taz display:routes
 php taz display:members
@@ -71,7 +71,7 @@ php taz generate:encryption-key # lekoala/silverstripe-encrypt
 
 #### Run dev/build in CLI
 
-Runing `php taz app:dev-build` can throw MySQL errors. If this is your case, you probably need to specify the path to your MySQL socket. Here is how you can do that.
+Runing `php taz dev/build` can throw MySQL errors. If this is your case, you probably need to specify the path to your MySQL socket. Here is how you can do that.
 
 ```php
 // you can place it to app/_config.php

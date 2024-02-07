@@ -2,9 +2,9 @@
 Name: {{ class }}
 # After: "#..."
 # Before: "#..."
-Only:
-  # moduleexists: some/module
-  # classexists: SilverStripe\CMS\Model\SiteTree
-Except:
-  # environment: dev
+# Only:
+#   moduleexists: some/module
+#   classexists: SilverStripe\CMS\Model\SiteTree
+# Except:
+#   environment: dev
 ---

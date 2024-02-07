@@ -2,7 +2,6 @@
 
 namespace Goldfinch\Taz\Console\Commands;
 
-use SilverStripe\Admin\CMSMenu;
 use Goldfinch\CLISupplier\SupplyHelper;
 use Goldfinch\Taz\Console\GeneratorCommand;
 use Symfony\Component\Console\Helper\Table;
@@ -33,14 +32,4 @@ class DisplayModelAdminsCommand extends GeneratorCommand
 
         return Command::SUCCESS;
     }
-
-    // protected function promptForMissingArgumentsUsing()
-    // {
-    //     return [];
-    // }
-
-    // protected function validationForMissingArgumentsUsing()
-    // {
-    //     return [];
-    // }
 }

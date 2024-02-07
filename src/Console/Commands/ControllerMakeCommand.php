@@ -3,14 +3,13 @@
 namespace Goldfinch\Taz\Console\Commands;
 
 use Goldfinch\Taz\Console\GeneratorCommand;
-use Symfony\Component\Console\Command\Command;
 
 #[AsCommand(name: 'make:controller')]
 class ControllerMakeCommand extends GeneratorCommand
 {
     protected static $defaultName = 'make:controller';
 
-    protected $description = 'Create controller [Controller]';
+    protected $description = 'Create controller';
 
     protected $path = '[psr4]/Controllers';
 
@@ -19,11 +18,4 @@ class ControllerMakeCommand extends GeneratorCommand
     protected $stub = 'controller.stub';
 
     protected $prefix = 'Controller';
-
-    protected function execute($input, $output): int
-    {
-        parent::execute($input, $output);
-
-        return Command::SUCCESS;
-    }
 }

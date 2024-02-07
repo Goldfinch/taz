@@ -3,7 +3,6 @@
 namespace Goldfinch\Taz\Console\Commands;
 
 use Goldfinch\Taz\Console\GeneratorCommand;
-use Symfony\Component\Console\Command\Command;
 
 #[AsCommand(name: 'make:trait')]
 class TraitMakeCommand extends GeneratorCommand
@@ -19,11 +18,4 @@ class TraitMakeCommand extends GeneratorCommand
     protected $stub = 'trait.stub';
 
     protected $prefix = 'Trait';
-
-    protected function execute($input, $output): int
-    {
-        parent::execute($input, $output);
-
-        return Command::SUCCESS;
-    }
 }

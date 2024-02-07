@@ -7,10 +7,10 @@ use Goldfinch\Taz\Services\InputOutput;
 use Goldfinch\Taz\Console\GeneratorCommand;
 use Symfony\Component\Console\Command\Command;
 
-#[AsCommand(name: 'app:ss-version')]
+#[AsCommand(name: 'display:version')]
 class SilverStripeVersionCommand extends GeneratorCommand
 {
-    protected static $defaultName = 'app:ss-version';
+    protected static $defaultName = 'display:version';
 
     protected $description = 'Display SilverStripe version';
 

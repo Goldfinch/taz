@@ -32,14 +32,4 @@ class DisplayMembersCommand extends GeneratorCommand
 
         return Command::SUCCESS;
     }
-
-    // protected function promptForMissingArgumentsUsing()
-    // {
-    //     return [];
-    // }
-
-    // protected function validationForMissingArgumentsUsing()
-    // {
-    //     return [];
-    // }
 }
