@@ -53,7 +53,7 @@ class ElementMakeCommand extends GeneratorCommand
             return Command::FAILURE;
         }
 
-        $className = $this->askClassNameQuestion('What [class name] this element need to be assigned to? (eg: Page, App\Pages\Page)', $input, $output);
+        $className = $this->askClassNameQuestion('What [class name] does this element need to be assigned to? (eg: Page, App\Pages\Page)', $input, $output);
 
         $nameInput = $this->getAttrName($input);
 

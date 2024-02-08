@@ -12,7 +12,7 @@
 ## Install
 
 1. Install module
-```
+```bash
 composer require goldfinch/taz
 ```
 
