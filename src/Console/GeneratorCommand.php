@@ -286,7 +286,8 @@ abstract class GeneratorCommand extends Command
 
             file_put_contents(
                 $path,
-                $this->sortImports($this->buildClass($nameInput)),
+                $this->buildClass($nameInput),
+                // $this->sortImports($this->buildClass($nameInput)),
                 0,
             );
 

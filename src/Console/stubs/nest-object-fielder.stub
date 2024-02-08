@@ -1,0 +1,50 @@
+<?php
+{{ namespace }}
+use Goldfinch\Nest\Pages\Nest;
+use Goldfinch\Fielder\Fielder;
+use Goldfinch\Nest\Models\NestedObject;
+use Goldfinch\Fielder\Traits\FielderTrait;
+
+class {{ class }} extends NestedObject
+{
+    use FielderTrait;
+
+    public static $nest_up = null;
+    public static $nest_up_children = [];
+    public static $nest_down = Nest::class; // or custom one
+    public static $nest_down_parents = [];
+    // private static $required_title = true;
+    // private static $settings_tab = true;
+    // private static $searchable_list_fields = [];
+
+    private static $table_name = '{{ class }}';
+    private static $singular_name = '{{ class_singular }}';
+    private static $plural_name = '{{ class_plural }}';
+
+    private static $db = [];
+
+    // private static $has_one = [];
+    // private static $belongs_to = [];
+    // private static $has_many = [];
+    // private static $many_many = [];
+    // private static $many_many_extraFields = [];
+    // private static $belongs_many_many = [];
+
+    // private static $default_sort = null;
+    // private static $indexes = null;
+    // private static $owns = [];
+    // private static $casting = [];
+    // private static $defaults = [];
+
+    // private static $summary_fields = [];
+    // private static $field_labels = [];
+    // private static $searchable_fields = [];
+
+    // private static $cascade_deletes = [];
+    // private static $cascade_duplicates = [];
+
+    public function fielder(Fielder $fielder): void
+    {
+        //
+    }
+}
