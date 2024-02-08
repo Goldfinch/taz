@@ -1108,8 +1108,6 @@ abstract class GeneratorCommand extends Command
         if (is_array($text)) {
             $text = $text[0];
             $default = $text[1];
-        } else {
-            $default = null;
         }
 
         $io = new InputOutput($input, $output);
