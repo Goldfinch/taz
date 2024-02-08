@@ -1,0 +1,21 @@
+<?php
+{{ namespace }}
+use SilverStripe\ORM\DataObject;
+
+class {{ class }} extends DataObject
+{
+    private static $table_name = '{{ class }}';
+    private static $singular_name = '{{ class_singular_lowercase }}';
+    private static $plural_name = '{{ class_plural_lowercase }}';
+
+    private static $db = [];
+
+    public function getCMSFields()
+    {
+        $fields = parent::getCMSFields();
+
+        // ..
+
+        return $fields;
+    }
+}

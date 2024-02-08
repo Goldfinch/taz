@@ -25,6 +25,8 @@ abstract class GeneratorCommand extends Command
     protected $composerJson = null;
     protected $ssThemes = null;
 
+    protected $questions = [];
+
     protected $input;
     protected $output;
 
@@ -227,6 +229,13 @@ abstract class GeneratorCommand extends Command
         }
 
         return $path;
+    }
+
+    protected function callInnerReplace($str, $replaceTo)
+    {
+        $this->runStubReplacement($str, $replaceTo);
+
+        return $str;
     }
 
     protected function getAttrName($input)
@@ -500,7 +509,7 @@ abstract class GeneratorCommand extends Command
     {
         $replacements = $this->replacer();
 
-        if (count($replacements)) {
+        if ($replacements && count($replacements)) {
             foreach ($replacements as $replace) {
                 if ($replace[0]) {
                     $stub = str_replace($replace[1], $replace[2], $stub);
@@ -1066,9 +1075,16 @@ abstract class GeneratorCommand extends Command
 
     protected function askClassNameQuestion($text, $input, $output, $extraRule = '/^([A-z0-9\_]+)$/', $extraMessage = 'Name can contains letter, numbers and underscore')
     {
+        if (is_array($text)) {
+            $text = $text[0];
+            $default = $text[1];
+        } else {
+            $default = null;
+        }
+
         $io = new InputOutput($input, $output);
 
-        return $io->question($text, null, function ($answer) use ($io, $extraRule, $extraMessage) {
+        return $io->question($text, $default, function ($answer) use ($io, $extraRule, $extraMessage) {
 
             if (!is_string($answer) || $answer === null) {
                 throw new \RuntimeException(
@@ -1086,11 +1102,18 @@ abstract class GeneratorCommand extends Command
         });
     }
 
-    protected function askStringQuestion($text, $input, $output, $extraRule = '', $extraMessage = '')
+    protected function askStringQuestion($text, $input, $output, $default = null, $extraRule = '', $extraMessage = '')
     {
+        if (is_array($text)) {
+            $text = $text[0];
+            $default = $text[1];
+        } else {
+            $default = null;
+        }
+
         $io = new InputOutput($input, $output);
 
-        return $io->question($text, null, function ($answer) use ($io, $extraRule, $extraMessage) {
+        return $io->question($text, $default, function ($answer) use ($io, $extraRule, $extraMessage) {
 
             if($extraRule && !preg_match($extraRule, $answer)) {
                 throw new \RuntimeException($extraMessage);

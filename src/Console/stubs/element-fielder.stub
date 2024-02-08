@@ -1,0 +1,47 @@
+<?php
+{{ namespace }}
+use Goldfinch\Fielder\Fielder;
+use Goldfinch\Fielder\Traits\FielderTrait;
+use DNADesign\Elemental\Models\BaseElement;
+
+class {{ class }}Element extends BaseElement
+{
+    use FielderTrait;
+
+    private static $table_name = '{{ class }}Block';
+    private static $singular_name = '{{ class_singular }}';
+    private static $plural_name = '{{ class_plural }}';
+
+    private static $db = [];
+
+    private static $inline_editable = false;
+    private static $description = '';
+    // private static $icon = 'font-icon-block-layout';
+    // private static $disable_pretty_anchor_name = false;
+    // private static $displays_title_in_template = true;
+
+    // private static $has_one = [];
+    // private static $belongs_to = [];
+    // private static $has_many = [];
+    // private static $many_many = [];
+    // private static $many_many_extraFields = [];
+    // private static $belongs_many_many = [];
+
+    // private static $default_sort = null;
+    // private static $indexes = null;
+    // private static $owns = [];
+    // private static $casting = [];
+    // private static $defaults = [];
+
+    // private static $summary_fields = [];
+    // private static $field_labels = [];
+    // private static $searchable_fields = [];
+
+    // private static $cascade_deletes = [];
+    // private static $cascade_duplicates = [];
+
+    public function fielder(Fielder $fielder): void
+    {
+        //
+    }
+}

@@ -40,7 +40,14 @@ class ConfigMakeCommand extends GeneratorCommand
         );
 
         $this->addOption(
-            'namesuffix',
+            'before',
+            null,
+            InputOption::VALUE_REQUIRED,
+            'Set yaml parameter Before'
+        );
+
+        $this->addOption(
+            'nameprefix',
             null,
             InputOption::VALUE_REQUIRED,
             'Set name suffix to Yaml config name'
@@ -65,11 +72,22 @@ class ConfigMakeCommand extends GeneratorCommand
     protected function replacer()
     {
         $after = $this->input->getOption('after');
-        $namesuffix = $this->input->getOption('namesuffix');
+        $before = $this->input->getOption('before');
+        $nameprefix = $this->input->getOption('nameprefix');
 
         return [
             [$after, '{{ yaml_after }}', 'After: "' . $after . '"'],
-            [$namesuffix, '{{ yaml_namesuffix }}', $namesuffix],
+            [$before, '{{ yaml_before }}', 'Before: "' . $before . '"'],
+            [$nameprefix, '{{ yaml_nameprefix }}', $nameprefix],
         ];
+    }
+
+    protected function customReplace(&$stub, $name): self
+    {
+        $replace = parent::customReplace($stub, $name);
+
+        $stub = str_replace(["\n\n\n\n", "\n\n\n", "\n\n"], ["\n", "\n", "\n"], $stub);
+
+        return $this;
     }
 }

@@ -3,20 +3,20 @@
 use Goldfinch\Taz\Console\GeneratorCommand;
 use Symfony\Component\Console\Command\Command;
 
-#[AsCommand(name: 'make:my_custom_command')]
+#[AsCommand(name: '{{ __clicommand }}')]
 class {{ class }}Command extends GeneratorCommand
 {
-    protected static $defaultName = 'make:my_custom_command';
+    protected static $defaultName = '{{ __clicommand }}';
 
-    protected $description = 'Command description';
+    protected $description = '{{ __description }}';
 
-    protected $path = 'app/src/Commands';
+    protected $path = '{{ __path }}';
 
     protected $type = '{{ class_singular_lowercase }}';
 
     protected $stub = './stubs/{{ class_singular_lowercase }}.stub';
 
-    // protected $suffix = 'Suffix';
+    protected $suffix = '{{ __suffix }}';
 
     // if the command does not have arguments:
     // protected $no_arguments = true;

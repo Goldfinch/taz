@@ -44,15 +44,15 @@ php taz generate:app-key
 php taz make:admin # --plain
 php taz make:command
 php taz make:command-template
-php taz make:config # --plain --after=*
+php taz make:config # --plain --after=* --before=*
 php taz make:controller
 php taz make:dataextension
 php taz make:extension
 php taz make:form
 php taz make:helper
 php taz make:include
-php taz make:model
-php taz make:page
+php taz make:model # --plain --fielder
+php taz make:page # --plain --fielder
 php taz make:page-controller
 php taz make:page-template
 php taz make:provider
@@ -63,11 +63,20 @@ php taz make:view
 
 # Commands for external modules (each command depends on its module, make sure the module is installed in your project before using the dependent command below)
 
-php taz generate:encryption-key # lekoala/silverstripe-encrypt
-php taz make:adminconfig # jonom/silverstripe-someconfig
-php taz make:element # silverstripe/silverstripe-elemental
-php taz make:element-template # silverstripe/silverstripe-elemental
-php taz make:crontask # silverstripe/silverstripe-crontask
+# (lekoala/silverstripe-encrypt)
+php taz generate:encryption-key
+
+# (jonom/silverstripe-someconfig)
+php taz make:adminconfig # --fielder
+
+# (silverstripe/silverstripe-elemental)
+php taz make:element # --plain --fielder
+
+# (silverstripe/silverstripe-elemental)
+php taz make:element-template
+
+# (silverstripe/silverstripe-crontask)
+php taz make:crontask
 ```
 
 #### Run dev/build in CLI

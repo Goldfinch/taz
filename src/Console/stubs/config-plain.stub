@@ -1,4 +1,5 @@
 ---
 Name: {{ yaml_nameprefix }}{{ class }}
+{{ yaml_before }}
 {{ yaml_after }}
 ---

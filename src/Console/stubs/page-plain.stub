@@ -50,30 +50,4 @@ class {{ class }} extends {{ __pagetype }}
 
         return $fields;
     }
-
-    // public function getSettingsFields()
-    // {
-    //     $fields = parent::getSettingsFields();
-
-    //     // ..
-
-    //     return $fields;
-    // }
-
-    // public function validate()
-    // {
-    //     $result = parent::validate();
-
-    //     return $result;
-    // }
-
-    // protected function onBeforeWrite()
-    // {
-    //     parent::onBeforeWrite();
-    // }
-
-    // public function onBeforeDelete()
-    // {
-    //     parent::onBeforeDelete();
-    // }
 }

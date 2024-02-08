@@ -1,6 +1,6 @@
 <?php
 {{ namespace }}
-class {{ class }}
+class {{ class }}Service
 {
     // ..
 }

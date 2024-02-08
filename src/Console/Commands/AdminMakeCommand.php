@@ -21,8 +21,6 @@ class AdminMakeCommand extends GeneratorCommand
 
     protected $suffix = 'Admin';
 
-    protected $questions = [];
-
     protected function configure(): void
     {
         parent::configure();
@@ -39,15 +37,20 @@ class AdminMakeCommand extends GeneratorCommand
     {
         $stubOption = $input->getOption('plain');
 
-
         if ($stubOption !== false) {
             $this->stub = 'admin-plain.stub';
 
-            $this->questions['url'] = $this->askStringQuestion('$url_segment:', $input, $output);
-            $this->questions['title'] = $this->askStringQuestion('$menu_title:', $input, $output);
-            $this->questions['icon'] = $this->askStringQuestion('$menu_icon_class:', $input, $output);
-            $this->questions['priority'] = $this->askStringQuestion('$menu_priority:', $input, $output);
-            $this->questions['models'] = $this->askStringQuestion('$managed_models: (eg: App\Models\Fruit,App\Models\Worker:The Workers Title:workersurl,Page:Pages', $input, $output);
+            $url_default = $this->callInnerReplace('{{ class_kebab }}', $this->getAttrName($input));
+            $title_default = $this->callInnerReplace('{{ class_singular }}', $this->getAttrName($input));
+            $icon_default = 'font-icon-database';
+            $priority_default = -0.5;
+            $models_default = '';
+
+            $this->questions['url'] = $this->askStringQuestion('$url_segment:', $input, $output, $url_default);
+            $this->questions['title'] = $this->askStringQuestion('$menu_title:', $input, $output, $title_default);
+            $this->questions['icon'] = $this->askStringQuestion('$menu_icon_class:', $input, $output, $icon_default);
+            $this->questions['priority'] = $this->askStringQuestion('$menu_priority:', $input, $output, $priority_default);
+            $this->questions['models'] = $this->askStringQuestion('$managed_models: (eg: App\Models\Fruit,App\Models\Worker:The Workers Title:workersurl,Page:Pages', $input, $output, $models_default);
         }
 
         if (parent::execute($input, $output) === false) {
@@ -145,6 +148,9 @@ class AdminMakeCommand extends GeneratorCommand
 
                 $modesl_str .= PHP_EOL . '    ]';
 
+            } else {
+                $modesl_str = '[]';
+                $modesl_namespace_str = '';
             }
 
             return [
@@ -152,7 +158,7 @@ class AdminMakeCommand extends GeneratorCommand
                 [$title, '{{ __title }}', $title],
                 [$icon, '{{ __icon }}', $icon],
                 [$priority, '{{ __priority }}', $priority],
-                [$models, '{{ __models }}', $modesl_str],
+                [true, '{{ __models }}', $modesl_str],
                 [$modesl_namespace_str, '{{ __modesl_namespace_str }}', $modesl_namespace_str],
             ];
         }

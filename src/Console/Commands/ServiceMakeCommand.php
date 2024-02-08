@@ -15,5 +15,7 @@ class ServiceMakeCommand extends GeneratorCommand
 
     protected $type = 'service';
 
-    protected $stub = './stubs/service.stub';
+    protected $stub = 'service.stub';
+
+    protected $suffix = 'Service';
 }

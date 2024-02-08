@@ -5,6 +5,7 @@ namespace Goldfinch\Taz\Console\Commands;
 use Goldfinch\Taz\Console\GeneratorCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\InputOption;
 
 #[AsCommand(name: 'make:element')]
 class ElementMakeCommand extends GeneratorCommand
@@ -21,8 +22,33 @@ class ElementMakeCommand extends GeneratorCommand
 
     protected $suffix = 'Element';
 
+    protected function configure(): void
+    {
+        parent::configure();
+
+        $this->addOption(
+            'plain',
+            null,
+            InputOption::VALUE_NONE,
+            'Plane model template'
+        );
+
+        $this->addOption(
+            'fielder',
+            null,
+            InputOption::VALUE_NONE,
+            'Fielder model template'
+        );
+    }
+
     protected function execute($input, $output): int
     {
+        if ($input->getOption('fielder') !== false) {
+            $this->stub = 'element-fielder.stub';
+        } else if ($input->getOption('plain') !== false) {
+            $this->stub = 'element-plain.stub';
+        }
+
         if (parent::execute($input, $output) === false) {
             return Command::FAILURE;
         }
@@ -46,7 +72,7 @@ class ElementMakeCommand extends GeneratorCommand
                 'name' => 'elements',
                 '--plain' => true,
                 '--after' => 'dnadesign/silverstripe-elemental',
-                '--namesuffix' => 'app-',
+                '--nameprefix' => 'app-',
             ]), $output);
 
             $config = $this->findYamlConfigFileByName('app-elements');
