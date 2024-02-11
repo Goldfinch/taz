@@ -12,7 +12,15 @@ class MemberListSupplier implements CLISupplier
         $list = [];
 
         foreach (Member::get() as $member) {
-            $list[] = [$member->FirstName, $member->Surname, $member->Email];
+            $groups = $member->Groups();
+
+            if ($groups->Count()) {
+                $groups = implode(', ', $groups->column('Title'));
+            } else {
+                $groups = '';
+            }
+
+            $list[] = [$member->FirstName, $member->Surname, $member->Email, $groups];
         }
 
         return $list;

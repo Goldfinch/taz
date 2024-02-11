@@ -24,7 +24,7 @@ class DisplayMembersCommand extends GeneratorCommand
 
             $table = new Table($output);
             $table
-                ->setHeaders(['First name', 'Surname', 'Email'])
+                ->setHeaders(['First name', 'Surname', 'Email', 'Groups'])
                 ->setRows($response)
             ;
             $table->render();
