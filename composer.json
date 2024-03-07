@@ -24,8 +24,8 @@
         "consolidation/comments": "^1.0",
         "minwork/array": "^1.13",
         "goldfinch/helpers": "^2.0",
-        "goldfinch/cli-supplier": "^1.0",
-        "goldfinch/illuminate": "^1.0"
+        "goldfinch/cli-supplier": "^2.0",
+        "goldfinch/illuminate": "^2.0"
     },
     "autoload": {
         "psr-4": {
