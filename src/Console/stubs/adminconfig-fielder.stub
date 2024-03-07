@@ -1,21 +1,25 @@
 <?php
 {{ namespace }}
-use Goldfinch\Fielder\Fielder;
 use SilverStripe\ORM\DataObject;
 use JonoM\SomeConfig\SomeConfig;
-use Goldfinch\Fielder\Traits\FielderTrait;
 use SilverStripe\View\TemplateGlobalProvider;
 
 class {{ class }}Config extends DataObject implements TemplateGlobalProvider
 {
-    use SomeConfig, FielderTrait;
+    use SomeConfig;
 
     private static $table_name = '{{ class }}Config';
 
     private static $db = [];
 
-    public function fielder(Fielder $fielder): void
+    public function getCMSFields()
     {
-        //
+        $fields = parent::getCMSFields();
+
+        $fielder = $fields->fielder($this);
+
+        // ..
+
+        return $fields;
     }
 }

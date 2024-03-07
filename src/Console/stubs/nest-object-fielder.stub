@@ -1,14 +1,10 @@
 <?php
 {{ namespace }}
 use Goldfinch\Nest\Pages\Nest;
-use Goldfinch\Fielder\Fielder;
 use Goldfinch\Nest\Models\NestedObject;
-use Goldfinch\Fielder\Traits\FielderTrait;
 
 class {{ class }} extends NestedObject
 {
-    use FielderTrait;
-
     public static $nest_up = null;
     public static $nest_up_children = [];
     public static $nest_down = Nest::class; // or custom one
@@ -43,8 +39,14 @@ class {{ class }} extends NestedObject
     // private static $cascade_deletes = [];
     // private static $cascade_duplicates = [];
 
-    public function fielder(Fielder $fielder): void
+    public function getCMSFields()
     {
-        //
+        $fields = parent::getCMSFields();
+
+        $fielder = $fields->fielder($this);
+
+        // ..
+
+        return $fields;
     }
 }

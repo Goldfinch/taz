@@ -1,13 +1,9 @@
 <?php
 {{ namespace }}
-use Goldfinch\Fielder\Fielder;
-use Goldfinch\Fielder\Traits\FielderTrait;
 use DNADesign\Elemental\Models\BaseElement;
 
 class {{ class }}Element extends BaseElement
 {
-    use FielderTrait;
-
     private static $table_name = '{{ class }}Block';
     private static $singular_name = '{{ class_singular }}';
     private static $plural_name = '{{ class_plural }}';
@@ -40,8 +36,14 @@ class {{ class }}Element extends BaseElement
     // private static $cascade_deletes = [];
     // private static $cascade_duplicates = [];
 
-    public function fielder(Fielder $fielder): void
+    public function getCMSFields()
     {
-        //
+        $fields = parent::getCMSFields();
+
+        $fielder = $fields->fielder($this);
+
+        // ..
+
+        return $fields;
     }
 }

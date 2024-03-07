@@ -1,14 +1,10 @@
 <?php
 {{ namespace }}
 use {{ __use_pagetype }};
-use Goldfinch\Fielder\Fielder;
-use Goldfinch\Fielder\Traits\FielderTrait;
 use {{ namespace_root }}Controllers\{{ class }}Controller;
 
 class {{ class }} extends {{ __pagetype }}
 {
-    use FielderTrait;
-
     private static $table_name = '{{ class }}';
     private static $controller_name = {{ class }}Controller::class;
 
@@ -42,8 +38,25 @@ class {{ class }} extends {{ __pagetype }}
     // private static $cascade_deletes = [];
     // private static $cascade_duplicates = [];
 
-    public function fielder(Fielder $fielder): void
+    public function getCMSFields()
     {
-        //
+        $fields = parent::getCMSFields();
+
+        $fielder = $fields->fielder($this);
+
+        // ..
+
+        return $fields;
+    }
+
+    public function getSettingsFields()
+    {
+        $fields = parent::getSettingsFields();
+
+        $fielder = $fields->fielder($this);
+
+        // ..
+
+        return $fields;
     }
 }
