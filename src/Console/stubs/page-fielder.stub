@@ -42,7 +42,7 @@ class {{ class }} extends {{ __pagetype }}
     {
         $fields = parent::getCMSFields();
 
-        $fielder = $fields->fielder($this);
+        $fielder = $this->intFielder($fields)->getFielder();
 
         // ..
 
@@ -53,7 +53,7 @@ class {{ class }} extends {{ __pagetype }}
     {
         $fields = parent::getSettingsFields();
 
-        $fielder = $fields->fielder($this);
+        $fielder = $this->intFielder($fields)->getFielder();
 
         // ..
 
