@@ -40,9 +40,9 @@ class {{ class }} extends {{ __pagetype }}
 
     public function getCMSFields()
     {
-        $fields = parent::getCMSFields();
+        $fields = parent::getCMSFields()->initFielder($this);
 
-        $fielder = $this->intFielder($fields)->getFielder();
+        $fielder = $fields->getFielder();
 
         // ..
 
@@ -51,9 +51,9 @@ class {{ class }} extends {{ __pagetype }}
 
     public function getSettingsFields()
     {
-        $fields = parent::getSettingsFields();
+        $fields = parent::getSettingsFields()->initFielder($this);
 
-        $fielder = $this->intFielder($fields)->getFielder();
+        $fielder = $fields->getFielder();
 
         // ..
 
