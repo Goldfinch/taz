@@ -1,3 +1,4 @@
+- create sitetree extension with updateSettings
 - create siteconfig extension
 - route list
 - App/Pages folder not exists (make:page)
