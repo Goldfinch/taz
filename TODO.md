@@ -1,3 +1,4 @@
+- make:view with template forTemplate and .ss
 - create sitetree extension with updateSettings
 - create siteconfig extension
 - route list
