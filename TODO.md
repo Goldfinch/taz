@@ -1,3 +1,4 @@
+- block adding options in yml to avoid mess and unsupported arrays (optional feature when needed)
 - make:view with template forTemplate and .ss
 - create sitetree extension with updateSettings
 - create siteconfig extension
