@@ -85,7 +85,7 @@ class ConfigMakeCommand extends GeneratorCommand
 
     protected function replacer()
     {
-        $after = $this->input->getOption('after');
+        $after = $this->input->getOption('after') ?? "*";
         $before = $this->input->getOption('before');
         $nameprefix = $this->input->getOption('nameprefix');
 
