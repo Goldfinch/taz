@@ -19,6 +19,11 @@ class ConfigMakeCommand extends GeneratorCommand
 
     protected $stub = 'config.stub';
 
+    protected $stubTemplates = [
+        'config.stub' => 'full',
+        'config-plain.stub' => 'plain',
+    ];
+
     protected $extension = '.yml';
 
     protected function configure(): void
@@ -52,6 +57,13 @@ class ConfigMakeCommand extends GeneratorCommand
             InputOption::VALUE_REQUIRED,
             'Set name suffix to Yaml config name'
         );
+
+        $this->addOption(
+            'template',
+            null,
+            InputOption::VALUE_REQUIRED,
+            'Specify template'
+        );
     }
 
     protected function execute($input, $output): int
@@ -60,6 +72,8 @@ class ConfigMakeCommand extends GeneratorCommand
 
         if ($stubOption !== false) {
             $this->stub = 'config-plain.stub';
+        } else {
+            $this->chooseStubTemplate($input, $output);
         }
 
         if (parent::execute($input, $output) === false) {

@@ -1,0 +1,55 @@
+<?php
+{{ namespace }}
+use {{ __use_pagetype }};
+use {{ namespace_root }}Controllers\{{ class }}Controller;
+
+class {{ class }} extends {{ __pagetype }}
+{
+    private static $table_name = '{{ class }}';
+    private static $controller_name = {{ class }}Controller::class;
+
+    private static $db = [];
+
+    // private static $allowed_children = [];
+
+    // private static $icon_class = 'font-icon-page';
+    // private static $base_description = 'Generic content page';
+    // private static $icon = null;
+    // private static $description = null;
+    // private static $owned_by = [];
+
+    // private static $has_one = [];
+    // private static $belongs_to = [];
+    // private static $has_many = [];
+    // private static $many_many = [];
+    // private static $many_many_extraFields = [];
+    // private static $belongs_many_many = [];
+
+    // private static $default_sort = null;
+    // private static $indexes = null;
+    // private static $owns = [];
+    // private static $casting = [];
+    // private static $defaults = [];
+
+    // private static $summary_fields = [];
+    // private static $field_labels = [];
+    // private static $searchable_fields = [];
+
+    // private static $cascade_deletes = [];
+    // private static $cascade_duplicates = [];
+
+    // * goldfinch/helpers
+    // private static $field_descriptions = [];
+    // private static $required_fields = [];
+
+    public function getCMSFields()
+    {
+        $fields = parent::getSettingsFields()->initFielder($this);
+
+        $fielder = $fields->getFielder();
+
+        // ..
+
+        return $fields;
+    }
+}

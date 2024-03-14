@@ -19,6 +19,11 @@ class AdminMakeCommand extends GeneratorCommand
 
     protected $stub = 'admin.stub';
 
+    protected $stubTemplates = [
+        'admin.stub' => 'full',
+        'admin-plain.stub' => 'plain',
+    ];
+
     protected $suffix = 'Admin';
 
     protected function configure(): void
@@ -26,19 +31,18 @@ class AdminMakeCommand extends GeneratorCommand
         parent::configure();
 
         $this->addOption(
-            'plain',
+            'template',
             null,
-            InputOption::VALUE_NONE,
-            'Use clean config template with no placeholder attributes'
+            InputOption::VALUE_REQUIRED,
+            'Specify template'
         );
     }
 
     protected function execute($input, $output): int
     {
-        $stubOption = $input->getOption('plain');
+        $template = $this->chooseStubTemplate($input, $output);
 
-        if ($stubOption !== false) {
-            $this->stub = 'admin-plain.stub';
+        if ($template == 'plain') {
 
             $url_default = $this->callInnerReplace('{{ class_kebab }}', $this->getAttrName($input));
             $title_default = $this->callInnerReplace('{{ class_singular }}', $this->getAttrName($input));

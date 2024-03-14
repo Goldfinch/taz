@@ -2,6 +2,7 @@
 
 namespace Goldfinch\Taz\Console\Commands;
 
+use Composer\InstalledVersions;
 use Goldfinch\Taz\Console\GeneratorCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -20,6 +21,13 @@ class ElementMakeCommand extends GeneratorCommand
 
     protected $stub = 'element.stub';
 
+    protected $stubTemplates = [
+        'element.stub' => 'full',
+        'element-plain.stub' => 'plain',
+        'element-fielder.stub' => ['full-fielder', 'full (fielder)', 'goldfinch/fielder'],
+        'element-plain-fielder.stub' => ['plain-fielder', 'plain (fielder)', 'goldfinch/fielder'],
+    ];
+
     protected $suffix = 'Element';
 
     protected function configure(): void
@@ -27,27 +35,16 @@ class ElementMakeCommand extends GeneratorCommand
         parent::configure();
 
         $this->addOption(
-            'plain',
+            'template',
             null,
-            InputOption::VALUE_NONE,
-            'Plane model template'
-        );
-
-        $this->addOption(
-            'fielder',
-            null,
-            InputOption::VALUE_NONE,
-            'Fielder model template'
+            InputOption::VALUE_REQUIRED,
+            'Specify template'
         );
     }
 
     protected function execute($input, $output): int
     {
-        if ($input->getOption('fielder') !== false) {
-            $this->stub = 'element-fielder.stub';
-        } else if ($input->getOption('plain') !== false) {
-            $this->stub = 'element-plain.stub';
-        }
+        $this->chooseStubTemplate($input, $output);
 
         if (parent::execute($input, $output) === false) {
             return Command::FAILURE;

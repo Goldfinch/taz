@@ -41,18 +41,17 @@ php taz generate:crypto-key
 php taz generate:password
 php taz generate:app-key
 
-php taz make:admin # --plain
+php taz make:admin # --template=(full/plain)
 php taz make:command
 php taz make:command-template
-php taz make:config # --plain --after=* --before=*
+php taz make:config # --template=(full/plain) --plain --after=* --before=*
 php taz make:controller
-php taz make:dataextension
-php taz make:extension
+php taz make:extension # --fielder
 php taz make:form
 php taz make:helper
 php taz make:include
-php taz make:model # --plain --fielder
-php taz make:page # --plain --fielder
+php taz make:model # --template=(full/plain/full-fielder/plain-fielder)
+php taz make:page # --template=(full/plain/full-fielder/plain-fielder)
 php taz make:page-controller
 php taz make:page-template
 php taz make:provider
@@ -67,10 +66,10 @@ php taz make:view
 php taz generate:encryption-key
 
 # (jonom/silverstripe-someconfig)
-php taz make:adminconfig # --fielder
+php taz make:adminconfig # --template=(full/full-fielder)
 
 # (silverstripe/silverstripe-elemental)
-php taz make:element # --plain --fielder
+php taz make:element # --template=(full/plain/full-fielder/plain-fielder)
 
 # (silverstripe/silverstripe-elemental)
 php taz make:element-template

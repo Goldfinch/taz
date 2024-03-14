@@ -2,6 +2,7 @@
 
 namespace Goldfinch\Taz\Console\Commands;
 
+use Composer\InstalledVersions;
 use Goldfinch\Taz\Console\GeneratorCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -21,22 +22,22 @@ class PageMakeCommand extends GeneratorCommand
 
     protected $stub = 'page.stub';
 
+    protected $stubTemplates = [
+        'page.stub' => 'full',
+        'page-plain.stub' => 'plain',
+        'page-fielder.stub' => ['full-fielder', 'full (fielder)', 'goldfinch/fielder'],
+        'page-plain-fielder.stub' => ['plain-fielder', 'plain (fielder)', 'goldfinch/fielder'],
+    ];
+
     protected function configure(): void
     {
         parent::configure();
 
         $this->addOption(
-            'plain',
+            'template',
             null,
-            InputOption::VALUE_NONE,
-            'Plane model template'
-        );
-
-        $this->addOption(
-            'fielder',
-            null,
-            InputOption::VALUE_NONE,
-            'Fielder model template'
+            InputOption::VALUE_REQUIRED,
+            'Specify template'
         );
     }
 
@@ -48,14 +49,9 @@ class PageMakeCommand extends GeneratorCommand
             ['Page', 'SiteTree'],
             0,
         );
-        $question->setErrorMessage('Page type %s is invalid.');
         $this->questions['parentPageType'] = $helper->ask($input, $output, $question);
 
-        if ($input->getOption('fielder') !== false) {
-            $this->stub = 'page-fielder.stub';
-        } else if ($input->getOption('plain') !== false) {
-            $this->stub = 'page-plain.stub';
-        }
+        $this->chooseStubTemplate($input, $output);
 
         if (parent::execute($input, $output) === false) {
             return Command::FAILURE;

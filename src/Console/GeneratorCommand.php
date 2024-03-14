@@ -5,6 +5,7 @@ namespace Goldfinch\Taz\Console;
 use Exception;
 use Minwork\Helper\Arr;
 use Illuminate\Support\Str;
+use Composer\InstalledVersions;
 use SilverStripe\View\SSViewer;
 use Symfony\Component\Yaml\Yaml;
 use SilverStripe\Core\CoreKernel;
@@ -18,6 +19,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 
 abstract class GeneratorCommand extends Command
 {
@@ -1265,5 +1267,46 @@ abstract class GeneratorCommand extends Command
         }
 
         return $name;
+    }
+
+    protected function chooseStubTemplate($input, $output)
+    {
+        if (!$this->stubTemplates) {
+            return;
+        }
+
+        $this->stubTemplates = array_filter($this->stubTemplates, function($i) {
+            if (is_array($i) && count($i) === 3) {
+                if (!InstalledVersions::isInstalled($i[2])) {
+                    return;
+                }
+            }
+            return $i;
+        });
+
+        $stubTemplates = array_map(function($i) {
+            return is_array($i) ? $i[1] : $i;
+        }, $this->stubTemplates);
+
+        if ($input->getOption('template') !== null) {
+
+            $template = $input->getOption('template');
+        } else {
+
+            $helper = $this->getHelper('question');
+            $question = new ChoiceQuestion(
+                'What template to use?',
+                array_values($stubTemplates)
+            );
+            $template = $helper->ask($input, $output, $question);
+        }
+
+        $chosenTemplate = array_search($template, $stubTemplates);
+
+        if ($chosenTemplate !== false) {
+            $this->stub = $chosenTemplate;
+        }
+
+        return $template;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Goldfinch\Taz\Console\Commands;
 
+use Composer\InstalledVersions;
 use Goldfinch\Taz\Console\GeneratorCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
@@ -19,6 +20,11 @@ class AdminConfigMakeCommand extends GeneratorCommand
 
     protected $stub = 'adminconfig.stub';
 
+    protected $stubTemplates = [
+        'adminconfig.stub' => 'full',
+        'adminconfig-fielder.stub' => ['full-fielder', 'full (fielder)', 'goldfinch/fielder'],
+    ];
+
     protected $suffix = 'Config';
 
     protected function configure(): void
@@ -26,18 +32,16 @@ class AdminConfigMakeCommand extends GeneratorCommand
         parent::configure();
 
         $this->addOption(
-            'fielder',
+            'template',
             null,
-            InputOption::VALUE_NONE,
-            'Fielder model template'
+            InputOption::VALUE_REQUIRED,
+            'Specify template'
         );
     }
 
     protected function execute($input, $output): int
     {
-        if ($input->getOption('fielder') !== false) {
-            $this->stub = 'adminconfig-fielder.stub';
-        }
+        $this->chooseStubTemplate($input, $output);
 
         if (parent::execute($input, $output) === false) {
             return Command::FAILURE;

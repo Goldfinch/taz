@@ -1,12 +1,13 @@
 <?php
 {{ namespace }}
-use SilverStripe\Core\Extension;
+use {{ __use_pagetype }};
+use SilverStripe\Forms\FieldList;
 
-class {{ class }}Extension extends Extension
+class {{ class }}Extension extends {{ __pagetype }}
 {
     private static $db = [];
 
-    public function onAfterInit()
+    public function updateCMSFields(FieldList $fields)
     {
         // ..
     }

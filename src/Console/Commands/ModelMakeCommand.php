@@ -19,32 +19,28 @@ class ModelMakeCommand extends GeneratorCommand
 
     protected $stub = 'model.stub';
 
+    protected $stubTemplates = [
+        'model.stub' => 'full',
+        'model-plain.stub' => 'plain',
+        'model-fielder.stub' => ['full-fielder', 'full (fielder)', 'goldfinch/fielder'],
+        'model-plain-fielder.stub' => ['plain-fielder', 'plain (fielder)', 'goldfinch/fielder'],
+    ];
+
     protected function configure(): void
     {
         parent::configure();
 
         $this->addOption(
-            'plain',
+            'template',
             null,
-            InputOption::VALUE_NONE,
-            'Plane model template'
-        );
-
-        $this->addOption(
-            'fielder',
-            null,
-            InputOption::VALUE_NONE,
-            'Fielder model template'
+            InputOption::VALUE_REQUIRED,
+            'Specify template'
         );
     }
 
     protected function execute($input, $output): int
     {
-        if ($input->getOption('fielder') !== false) {
-            $this->stub = 'model-fielder.stub';
-        } else if ($input->getOption('plain') !== false) {
-            $this->stub = 'model-plain.stub';
-        }
+        $this->chooseStubTemplate($input, $output);
 
         if (parent::execute($input, $output) === false) {
             return Command::FAILURE;

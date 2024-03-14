@@ -1,19 +1,18 @@
 <?php
 {{ namespace }}
+use {{ __use_pagetype }};
 use SilverStripe\Forms\FieldList;
-use SilverStripe\ORM\DataExtension;
 
-class {{ class }}Extension extends DataExtension
+class {{ class }}Extension extends {{ __pagetype }}
 {
     private static $db = [];
 
-    public function updateValidator($validator)
-    {
-        // ..
-    }
-
     public function updateCMSFields(FieldList $fields)
     {
+        $fields->initFielder($this->owner);
+
+        $fielder = $fields->getFielder();
+
         // ..
     }
 }
