@@ -68,7 +68,7 @@ class AdminMakeCommand extends GeneratorCommand
     {
         $questions = $this->questions;
 
-        if ($questions && is_array($questions) && !empty($questions)) {
+        if ($questions && is_array($questions) && ! empty($questions)) {
 
             $url = $questions['url'];
             $title = $questions['title'];
@@ -89,20 +89,20 @@ class AdminMakeCommand extends GeneratorCommand
                         if ($mexCount > 1) {
 
                             if ($mexCount == 2) {
-                                $models_array[$mex[0] . '::class'] = [
+                                $models_array[$mex[0].'::class'] = [
                                     'title' => $mex[1],
                                 ];
-                            } else if ($mexCount == 3) {
+                            } elseif ($mexCount == 3) {
                                 $models_array[$mex[2]] = [
-                                    'dataClass' => $mex[0] . '::class',
+                                    'dataClass' => $mex[0].'::class',
                                     'title' => $mex[1],
                                 ];
                             }
-                            $modesl_namespace_str .= PHP_EOL . 'use ' . $mex[0] . ';';
+                            $modesl_namespace_str .= PHP_EOL.'use '.$mex[0].';';
                         }
                     } else {
-                        $models_array[] = $model . '::class';
-                        $modesl_namespace_str .= PHP_EOL . 'use ' . $model . ';';
+                        $models_array[] = $model.'::class';
+                        $modesl_namespace_str .= PHP_EOL.'use '.$model.';';
                     }
                 }
 
@@ -114,15 +114,15 @@ class AdminMakeCommand extends GeneratorCommand
                         if (strpos($k, '::class') != false) {
                             $st = $k;
                         } else {
-                            $st = '\'' . $k . '\'';
+                            $st = '\''.$k.'\'';
                         }
-                        $modesl_str .= PHP_EOL . '        ' . $st . ' => ';
-                    } else if (is_string($ma)) {
+                        $modesl_str .= PHP_EOL.'        '.$st.' => ';
+                    } elseif (is_string($ma)) {
                         if (strpos($ma, '\\') !== false) {
                             $x = explode('\\', $ma);
                             $ma = $x ? end($x) : $x;
                         }
-                        $modesl_str .= PHP_EOL . '        ' . $ma . ',';
+                        $modesl_str .= PHP_EOL.'        '.$ma.',';
                     }
 
                     if (is_array($ma)) {
@@ -133,8 +133,8 @@ class AdminMakeCommand extends GeneratorCommand
                         foreach ($ma as $ki => $mai) {
 
                             if ($ki == 'title') {
-                                $maiMod = '\'' . $mai . '\'';
-                            } else if ($ki == 'dataClass') {
+                                $maiMod = '\''.$mai.'\'';
+                            } elseif ($ki == 'dataClass') {
 
                                 if (strpos($mai, '\\') !== false) {
                                     $x = explode('\\', $mai);
@@ -144,13 +144,13 @@ class AdminMakeCommand extends GeneratorCommand
                                 $maiMod = $mai;
                             }
 
-                            $modesl_str .= PHP_EOL . '            \'' . $ki . '\'' . ' => ' . $maiMod . ',';
+                            $modesl_str .= PHP_EOL.'            \''.$ki.'\''.' => '.$maiMod.',';
                         }
-                        $modesl_str .= PHP_EOL . '        ],';
+                        $modesl_str .= PHP_EOL.'        ],';
                     }
                 }
 
-                $modesl_str .= PHP_EOL . '    ]';
+                $modesl_str .= PHP_EOL.'    ]';
 
             } else {
                 $modesl_str = '[]';

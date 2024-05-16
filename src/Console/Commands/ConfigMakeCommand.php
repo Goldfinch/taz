@@ -85,13 +85,13 @@ class ConfigMakeCommand extends GeneratorCommand
 
     protected function replacer()
     {
-        $after = $this->input->getOption('after') ?? "*";
+        $after = $this->input->getOption('after') ?? '*';
         $before = $this->input->getOption('before');
         $nameprefix = $this->input->getOption('nameprefix');
 
         return [
-            [$after, '{{ yaml_after }}', 'After: "' . $after . '"'],
-            [$before, '{{ yaml_before }}', 'Before: "' . $before . '"'],
+            [$after, '{{ yaml_after }}', 'After: "'.$after.'"'],
+            [$before, '{{ yaml_before }}', 'Before: "'.$before.'"'],
             [$nameprefix, '{{ yaml_nameprefix }}', $nameprefix],
         ];
     }

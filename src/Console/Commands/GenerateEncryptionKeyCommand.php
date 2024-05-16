@@ -2,9 +2,9 @@
 
 namespace Goldfinch\Taz\Console\Commands;
 
-use LeKoala\Encrypt\EncryptHelper;
-use Goldfinch\Taz\Services\InputOutput;
 use Goldfinch\Taz\Console\GeneratorCommand;
+use Goldfinch\Taz\Services\InputOutput;
+use LeKoala\Encrypt\EncryptHelper;
 use Symfony\Component\Console\Command\Command;
 
 #[AsCommand(name: 'generate:encryption-key')]

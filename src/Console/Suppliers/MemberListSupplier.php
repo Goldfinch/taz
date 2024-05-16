@@ -2,8 +2,8 @@
 
 namespace Goldfinch\Taz\Console\Suppliers;
 
-use SilverStripe\Security\Member;
 use Goldfinch\CLISupplier\CLISupplier;
+use SilverStripe\Security\Member;
 
 class MemberListSupplier implements CLISupplier
 {

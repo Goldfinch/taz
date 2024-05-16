@@ -3,8 +3,8 @@
 namespace Goldfinch\Taz\Console\Commands;
 
 use Composer\InstalledVersions;
-use Goldfinch\Taz\Services\InputOutput;
 use Goldfinch\Taz\Console\GeneratorCommand;
+use Goldfinch\Taz\Services\InputOutput;
 use Symfony\Component\Console\Command\Command;
 
 #[AsCommand(name: 'display:version')]

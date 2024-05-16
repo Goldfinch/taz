@@ -2,7 +2,6 @@
 
 namespace Goldfinch\Taz\Console\Commands;
 
-use Composer\InstalledVersions;
 use Goldfinch\Taz\Console\GeneratorCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -74,13 +73,13 @@ class PageMakeCommand extends GeneratorCommand
     {
         $questions = $this->questions;
 
-        if ($questions && is_array($questions) && !empty($questions)) {
+        if ($questions && is_array($questions) && ! empty($questions)) {
 
             $class = $questions['parentPageType'] ?? 'Page';
 
             if ($class == 'Page') {
                 $useClass = 'Page';
-            } else if ($class == 'SiteTree') {
+            } elseif ($class == 'SiteTree') {
                 $useClass = 'SilverStripe\CMS\Model\SiteTree';
             }
 

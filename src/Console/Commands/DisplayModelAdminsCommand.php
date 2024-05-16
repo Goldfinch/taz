@@ -4,8 +4,8 @@ namespace Goldfinch\Taz\Console\Commands;
 
 use Goldfinch\CLISupplier\SupplyHelper;
 use Goldfinch\Taz\Console\GeneratorCommand;
-use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\Table;
 
 #[AsCommand(name: 'display:admins')]
 class DisplayModelAdminsCommand extends GeneratorCommand
@@ -25,8 +25,7 @@ class DisplayModelAdminsCommand extends GeneratorCommand
             $table = new Table($output);
             $table
                 ->setHeaders(['Title', 'Priority', 'URL', 'Controller'])
-                ->setRows($response)
-            ;
+                ->setRows($response);
             $table->render();
         }
 

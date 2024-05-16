@@ -45,7 +45,7 @@ class CommandMakeCommand extends GeneratorCommand
     {
         $questions = $this->questions;
 
-        if ($questions && is_array($questions) && !empty($questions)) {
+        if ($questions && is_array($questions) && ! empty($questions)) {
 
             $clicommand = $questions['clicommand'];
             $path = $questions['path'];

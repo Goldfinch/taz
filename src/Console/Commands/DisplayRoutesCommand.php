@@ -2,10 +2,10 @@
 
 namespace Goldfinch\Taz\Console\Commands;
 
-use SilverStripe\Control\Director;
 use Goldfinch\Taz\Console\GeneratorCommand;
-use Symfony\Component\Console\Helper\Table;
+use SilverStripe\Control\Director;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\Table;
 
 #[AsCommand(name: 'display:routes')]
 class DisplayRoutesCommand extends GeneratorCommand

@@ -2,9 +2,9 @@
 
 namespace Goldfinch\Taz\Console\Commands;
 
-use SilverStripe\View\SSViewer;
-use Goldfinch\Taz\Services\InputOutput;
 use Goldfinch\Taz\Console\GeneratorCommand;
+use Goldfinch\Taz\Services\InputOutput;
+use SilverStripe\View\SSViewer;
 use Symfony\Component\Console\Command\Command;
 
 #[AsCommand(name: 'display:theme')]

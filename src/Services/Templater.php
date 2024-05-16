@@ -2,19 +2,22 @@
 
 namespace Goldfinch\Taz\Services;
 
-use Symfony\Component\Finder\Finder;
-use Goldfinch\Taz\Services\InputOutput;
-use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 class Templater
 {
     protected static $io;
+
     protected static $input;
+
     protected static $output;
+
     protected static $command;
+
     protected static $componentName;
 
     public static function defineTheme()
@@ -26,7 +29,7 @@ class Templater
 
         $ssTheme = null;
 
-        if (!$themes || !$themes->count()) {
+        if (! $themes || ! $themes->count()) {
             self::$io->wrong('There are no [themes] in your project for this action');
 
             return Command::FAILURE;
@@ -57,6 +60,7 @@ class Templater
             return $theme;
         } else {
             self::$io->wrong('The ['.self::$componentName.'] templates creation failed');
+
             return Command::FAILURE;
         }
     }

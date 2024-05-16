@@ -2,7 +2,6 @@
 
 namespace Goldfinch\Taz\Console\Commands;
 
-use Composer\InstalledVersions;
 use Goldfinch\Taz\Console\GeneratorCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -62,7 +61,7 @@ class ElementMakeCommand extends GeneratorCommand
         $config = $this->findYamlConfigFileByName('app-elements');
 
         // create new config if not exists
-        if (!$config) {
+        if (! $config) {
 
             $command = $this->getApplication()->find('make:config');
             $command->run(new ArrayInput([
@@ -78,7 +77,7 @@ class ElementMakeCommand extends GeneratorCommand
         // update config
         $this->updateYamlConfig(
             $config,
-            $className . '.allowed_elements',
+            $className.'.allowed_elements',
             [$this->getNamespaceClass($input)],
         );
 

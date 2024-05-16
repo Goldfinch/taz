@@ -2,7 +2,6 @@
 
 namespace Goldfinch\Taz\Console\Commands;
 
-use Composer\InstalledVersions;
 use Goldfinch\Taz\Console\GeneratorCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;

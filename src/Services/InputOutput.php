@@ -6,7 +6,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class InputOutput extends SymfonyStyle
 {
-    public function question(string $question, $default = null, callable $validator = null): string
+    public function question(string $question, $default = null, ?callable $validator = null): string
     {
         return $this->ask(sprintf(' ❓  %s', $question), $default, $validator);
     }

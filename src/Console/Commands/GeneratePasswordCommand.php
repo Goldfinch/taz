@@ -2,10 +2,10 @@
 
 namespace Goldfinch\Taz\Console\Commands;
 
-use Goldfinch\Taz\Services\InputOutput;
 use Goldfinch\Taz\Console\GeneratorCommand;
-use Symfony\Component\Console\Command\Command;
+use Goldfinch\Taz\Services\InputOutput;
 use Hackzilla\PasswordGenerator\Generator\ComputerPasswordGenerator;
+use Symfony\Component\Console\Command\Command;
 
 #[AsCommand(name: 'generate:password')]
 class GeneratePasswordCommand extends GeneratorCommand
