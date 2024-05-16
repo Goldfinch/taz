@@ -30,12 +30,7 @@ class AdminMakeCommand extends GeneratorCommand
     {
         parent::configure();
 
-        $this->addOption(
-            'template',
-            null,
-            InputOption::VALUE_REQUIRED,
-            'Specify template'
-        );
+        $this->addOption('template', null, InputOption::VALUE_REQUIRED, 'Specify template');
     }
 
     protected function execute($input, $output): int
@@ -43,7 +38,6 @@ class AdminMakeCommand extends GeneratorCommand
         $template = $this->chooseStubTemplate($input, $output);
 
         if ($template == 'plain') {
-
             $url_default = $this->callInnerReplace('{{ class_kebab }}', $this->getAttrName($input));
             $title_default = $this->callInnerReplace('{{ class_singular }}', $this->getAttrName($input));
             $icon_default = 'font-icon-database';
@@ -53,8 +47,18 @@ class AdminMakeCommand extends GeneratorCommand
             $this->questions['url'] = $this->askStringQuestion('$url_segment:', $input, $output, $url_default);
             $this->questions['title'] = $this->askStringQuestion('$menu_title:', $input, $output, $title_default);
             $this->questions['icon'] = $this->askStringQuestion('$menu_icon_class:', $input, $output, $icon_default);
-            $this->questions['priority'] = $this->askStringQuestion('$menu_priority:', $input, $output, $priority_default);
-            $this->questions['models'] = $this->askStringQuestion('$managed_models: (eg: App\Models\Fruit,App\Models\Worker:The Workers Title:workersurl,Page:Pages', $input, $output, $models_default);
+            $this->questions['priority'] = $this->askStringQuestion(
+                '$menu_priority:',
+                $input,
+                $output,
+                $priority_default
+            );
+            $this->questions['models'] = $this->askStringQuestion(
+                '$managed_models: (eg: App\Models\Fruit,App\Models\Worker:The Workers Title:workersurl,Page:Pages',
+                $input,
+                $output,
+                $models_default
+            );
         }
 
         if (parent::execute($input, $output) === false) {
@@ -69,7 +73,6 @@ class AdminMakeCommand extends GeneratorCommand
         $questions = $this->questions;
 
         if ($questions && is_array($questions) && ! empty($questions)) {
-
             $url = $questions['url'];
             $title = $questions['title'];
             $icon = $questions['icon'];
@@ -81,13 +84,11 @@ class AdminMakeCommand extends GeneratorCommand
                 $models_array = [];
 
                 foreach (explode(',', $models) as $model) {
-
                     if (strpos($model, ':') !== false) {
                         $mex = explode(':', $model);
                         $mexCount = count($mex);
 
                         if ($mexCount > 1) {
-
                             if ($mexCount == 2) {
                                 $models_array[$mex[0].'::class'] = [
                                     'title' => $mex[1],
@@ -109,7 +110,6 @@ class AdminMakeCommand extends GeneratorCommand
                 $modesl_str = '[';
 
                 foreach ($models_array as $k => $ma) {
-
                     if (is_string($k)) {
                         if (strpos($k, '::class') != false) {
                             $st = $k;
@@ -131,11 +131,9 @@ class AdminMakeCommand extends GeneratorCommand
                         $el = '';
 
                         foreach ($ma as $ki => $mai) {
-
                             if ($ki == 'title') {
                                 $maiMod = '\''.$mai.'\'';
                             } elseif ($ki == 'dataClass') {
-
                                 if (strpos($mai, '\\') !== false) {
                                     $x = explode('\\', $mai);
                                     $mai = $x ? end($x) : $x;
@@ -151,7 +149,6 @@ class AdminMakeCommand extends GeneratorCommand
                 }
 
                 $modesl_str .= PHP_EOL.'    ]';
-
             } else {
                 $modesl_str = '[]';
                 $modesl_namespace_str = '';

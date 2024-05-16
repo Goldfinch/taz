@@ -32,22 +32,13 @@ class PageMakeCommand extends GeneratorCommand
     {
         parent::configure();
 
-        $this->addOption(
-            'template',
-            null,
-            InputOption::VALUE_REQUIRED,
-            'Specify template'
-        );
+        $this->addOption('template', null, InputOption::VALUE_REQUIRED, 'Specify template');
     }
 
     protected function execute($input, $output): int
     {
         $helper = $this->getHelper('question');
-        $question = new ChoiceQuestion(
-            'Which class to inherit?',
-            ['Page', 'SiteTree'],
-            0,
-        );
+        $question = new ChoiceQuestion('Which class to inherit?', ['Page', 'SiteTree'], 0);
         $this->questions['parentPageType'] = $helper->ask($input, $output, $question);
 
         $this->chooseStubTemplate($input, $output);
@@ -74,7 +65,6 @@ class PageMakeCommand extends GeneratorCommand
         $questions = $this->questions;
 
         if ($questions && is_array($questions) && ! empty($questions)) {
-
             $class = $questions['parentPageType'] ?? 'Page';
 
             if ($class == 'Page') {
@@ -83,10 +73,7 @@ class PageMakeCommand extends GeneratorCommand
                 $useClass = 'SilverStripe\CMS\Model\SiteTree';
             }
 
-            return [
-                [true, '{{ __use_pagetype }}', $useClass],
-                [true, '{{ __pagetype }}', $class],
-            ];
+            return [[true, '{{ __use_pagetype }}', $useClass], [true, '{{ __pagetype }}', $class]];
         }
     }
 }

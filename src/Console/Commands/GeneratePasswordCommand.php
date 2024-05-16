@@ -20,12 +20,7 @@ class GeneratePasswordCommand extends GeneratorCommand
     {
         $generator = new ComputerPasswordGenerator();
 
-        $generator
-            ->setUppercase()
-            ->setLowercase()
-            ->setNumbers()
-            ->setSymbols(true)
-            ->setLength(16);
+        $generator->setUppercase()->setLowercase()->setNumbers()->setSymbols(true)->setLength(16);
 
         $password = $generator->generatePasswords(1);
 

@@ -21,11 +21,8 @@ class DisplayModelAdminsCommand extends GeneratorCommand
         $response = SupplyHelper::supply('adminlist');
 
         if ($response) {
-
             $table = new Table($output);
-            $table
-                ->setHeaders(['Title', 'Priority', 'URL', 'Controller'])
-                ->setRows($response);
+            $table->setHeaders(['Title', 'Priority', 'URL', 'Controller'])->setRows($response);
             $table->render();
         }
 

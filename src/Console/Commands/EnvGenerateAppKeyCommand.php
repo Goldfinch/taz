@@ -24,9 +24,7 @@ class EnvGenerateAppKeyCommand extends GeneratorCommand
         $file = file_get_contents($envPath);
 
         if ($file !== false) {
-
             if (strpos($file, PHP_EOL.'APP_KEY=') === false && strpos($file, 'APP_KEY=') !== 0) {
-
                 $command = $this->getApplication()->find('generate:crypto-key');
 
                 $key = $command->generateKey();

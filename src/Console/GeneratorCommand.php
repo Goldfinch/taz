@@ -175,9 +175,7 @@ abstract class GeneratorCommand extends Command
         $validations = $this->validationForMissingArgumentsUsing();
 
         foreach ($args as $arg) {
-
             if (isset($promts[$arg->getName()])) {
-
                 $prompt = $promts[$arg->getName()];
 
                 $validation = isset($validations[$arg->getName()]) ? $validations[$arg->getName()] : null;
@@ -191,16 +189,10 @@ abstract class GeneratorCommand extends Command
 
     protected function configure(): void
     {
-        $this
-            ->setDescription($this->description)
-            ->setHelp($this->help);
+        $this->setDescription($this->description)->setHelp($this->help);
 
         if ($this->getCommandPath()) {
-            $this->addArgument(
-                'name',
-                InputArgument::REQUIRED,
-                'How do you want to name it?',
-            );
+            $this->addArgument('name', InputArgument::REQUIRED, 'How do you want to name it?');
         }
     }
 
@@ -223,10 +215,7 @@ abstract class GeneratorCommand extends Command
 
             if (! file_exists($path)) {
                 $reflector = new \ReflectionClass($this);
-                $customCommandPath = explode(
-                    $reflector->getShortName(),
-                    $reflector->getFileName(),
-                )[0];
+                $customCommandPath = explode($reflector->getShortName(), $reflector->getFileName())[0];
                 $path = $customCommandPath.'/stubs/'.$this->stub;
             }
         }
@@ -271,12 +260,7 @@ abstract class GeneratorCommand extends Command
             $path = $dirPath.$nameInput.$this->suffix.$this->extension;
 
             if ($this->files->exists($path)) {
-                $io->wrong(
-                    'The '.
-                        $this->type.
-                        ' ['.$nameInput.']'.
-                        ' is already exists.',
-                );
+                $io->wrong('The '.$this->type.' ['.$nameInput.']'.' is already exists.');
 
                 return false;
             }
@@ -291,12 +275,10 @@ abstract class GeneratorCommand extends Command
                 $path,
                 $this->buildClass($nameInput),
                 // $this->sortImports($this->buildClass($nameInput)),
-                0,
+                0
             );
 
-            $io->right(
-                'The '.$this->type.' ['.$nameInput.'] has been created',
-            );
+            $io->right('The '.$this->type.' ['.$nameInput.'] has been created');
         }
 
         return Command::SUCCESS;
@@ -322,18 +304,12 @@ abstract class GeneratorCommand extends Command
      */
     protected function sortImports($stub)
     {
-        if (
-            preg_match('/(?P<imports>(?:^use [^;{]+;$\n?)+)/m', $stub, $match)
-        ) {
+        if (preg_match('/(?P<imports>(?:^use [^;{]+;$\n?)+)/m', $stub, $match)) {
             $imports = explode("\n", trim($match['imports']));
 
             sort($imports);
 
-            return str_replace(
-                trim($match['imports']),
-                implode("\n", $imports),
-                $stub,
-            );
+            return str_replace(trim($match['imports']), implode("\n", $imports), $stub);
         }
 
         return $stub;
@@ -357,11 +333,7 @@ abstract class GeneratorCommand extends Command
             return $name;
         }
 
-        return $this->qualifyClass(
-            $this->getDefaultNamespace(trim($rootNamespace, '\\')).
-                '\\'.
-                $name,
-        );
+        return $this->qualifyClass($this->getDefaultNamespace(trim($rootNamespace, '\\')).'\\'.$name);
     }
 
     /**
@@ -381,9 +353,7 @@ abstract class GeneratorCommand extends Command
             return $model;
         }
 
-        return is_dir(app_path('Models'))
-            ? $rootNamespace.'Models\\'.$model
-            : $rootNamespace.$model;
+        return is_dir(app_path('Models')) ? $rootNamespace.'Models\\'.$model : $rootNamespace.$model;
     }
 
     /**
@@ -393,16 +363,9 @@ abstract class GeneratorCommand extends Command
      */
     protected function possibleModels()
     {
-        $modelPath = is_dir(app_path('Models'))
-            ? app_path('Models')
-            : app_path();
+        $modelPath = is_dir(app_path('Models')) ? app_path('Models') : app_path();
 
-        return collect(
-            (new Finder())
-                ->files()
-                ->depth(0)
-                ->in($modelPath),
-        )
+        return collect((new Finder())->files()->depth(0)->in($modelPath))
             ->map(fn ($file) => $file->getBasename($this->extension))
             ->values()
             ->all();
@@ -427,9 +390,7 @@ abstract class GeneratorCommand extends Command
      */
     protected function alreadyExists($rawName)
     {
-        return $this->files->exists(
-            $this->getPath($this->qualifyClass($rawName)),
-        );
+        return $this->files->exists($this->getPath($this->qualifyClass($rawName)));
     }
 
     /**
@@ -529,28 +490,20 @@ abstract class GeneratorCommand extends Command
     {
         $this->composerJson = $this->get_composer_json();
 
-        if (
-            $this->composerJson &&
-            isset($this->composerJson['autoload']['psr-4'])
-        ) {
+        if ($this->composerJson && isset($this->composerJson['autoload']['psr-4'])) {
             $psr4root = array_keys($this->composerJson['autoload']['psr-4']);
 
             if (count($psr4root)) {
-
                 $stub = str_replace(
                     ['{{namespace_root_extensions}}', '{{ namespace_root_extensions }}'],
                     $psr4root[0].'Extensions\\',
-                    $stub,
+                    $stub
                 );
             }
         }
 
         // when not using PSR-4 - remove
-        $stub = str_replace(
-            ['{{namespace_root_extensions}}', '{{ namespace_root_extensions }}'],
-            '',
-            $stub,
-        );
+        $stub = str_replace(['{{namespace_root_extensions}}', '{{ namespace_root_extensions }}'], '', $stub);
 
         return $this;
     }
@@ -563,39 +516,26 @@ abstract class GeneratorCommand extends Command
 
         $psr4 = '';
 
-        if (
-            $this->composerJson &&
-            isset($this->composerJson['autoload']['psr-4'])
-        ) {
+        if ($this->composerJson && isset($this->composerJson['autoload']['psr-4'])) {
             $psr4root = array_keys($this->composerJson['autoload']['psr-4']);
 
             if (count($psr4root)) {
                 $stub = str_replace(
-                    [
-                        'DummyRootNamespace',
-                        '{{ namespace_root }}',
-                        '{{namespace_root}}',
-                    ],
+                    ['DummyRootNamespace', '{{ namespace_root }}', '{{namespace_root}}'],
                     $psr4root[0],
-                    $stub,
+                    $stub
                 );
 
-                $psr4path = str_replace(
-                    'app/src/',
-                    '',
-                    $this->getCommandPath(),
-                );
+                $psr4path = str_replace('app/src/', '', $this->getCommandPath());
                 $psr4path = str_replace('/', '\\', $psr4path);
-                $psr4 =
-                    $psr4root[0].
-                    $psr4path;
+                $psr4 = $psr4root[0].$psr4path;
             }
         }
 
         $stub = str_replace(
             ['DummyNamespaceClass', '{{ namespace_class }}', '{{namespace_class}}'],
             $psr4.'\\'.$name.($this->suffix ?? ''),
-            $stub,
+            $stub
         );
 
         return $this;
@@ -606,13 +546,9 @@ abstract class GeneratorCommand extends Command
         $class = str_replace($this->getNamespace($name).'\\', '', $name);
 
         $stub = str_replace(
-            [
-                'DummyClassSingular',
-                '{{ class_singular }}',
-                '{{class_singular}}',
-            ],
+            ['DummyClassSingular', '{{ class_singular }}', '{{class_singular}}'],
             Str::singular(Str::of($class)->headline()),
-            $stub,
+            $stub
         );
 
         return $this;
@@ -623,13 +559,9 @@ abstract class GeneratorCommand extends Command
         $class = str_replace($this->getNamespace($name).'\\', '', $name);
 
         $stub = str_replace(
-            [
-                'DummyClassSingularLowercase',
-                '{{ class_singular_lowercase }}',
-                '{{class_singular_lowercase}}',
-            ],
+            ['DummyClassSingularLowercase', '{{ class_singular_lowercase }}', '{{class_singular_lowercase}}'],
             Str::lower(strtolower(Str::singular(Str::of($class)->headline()))),
-            $stub,
+            $stub
         );
 
         return $this;
@@ -642,7 +574,7 @@ abstract class GeneratorCommand extends Command
         $stub = str_replace(
             ['DummyClassPlural', '{{ class_plural }}', '{{class_plural}}'],
             Str::pluralStudly(Str::of($class)->headline()),
-            $stub,
+            $stub
         );
 
         return $this;
@@ -653,13 +585,9 @@ abstract class GeneratorCommand extends Command
         $class = str_replace($this->getNamespace($name).'\\', '', $name);
 
         $stub = str_replace(
-            [
-                'DummyClassPluralLowercase',
-                '{{ class_plural_lowercase }}',
-                '{{class_plural_lowercase}}',
-            ],
+            ['DummyClassPluralLowercase', '{{ class_plural_lowercase }}', '{{class_plural_lowercase}}'],
             Str::lower(Str::pluralStudly(Str::of($class)->headline())),
-            $stub,
+            $stub
         );
 
         return $this;
@@ -672,7 +600,7 @@ abstract class GeneratorCommand extends Command
         $stub = str_replace(
             ['DummyClassKebab', '{{ class_kebab }}', '{{class_kebab}}'],
             Str::of($class)->kebab(),
-            $stub,
+            $stub
         );
 
         return $this;
@@ -707,44 +635,23 @@ abstract class GeneratorCommand extends Command
 
         $psr4 = '';
 
-        if (
-            $this->composerJson &&
-            isset($this->composerJson['autoload']['psr-4'])
-        ) {
+        if ($this->composerJson && isset($this->composerJson['autoload']['psr-4'])) {
             $psr4root = array_keys($this->composerJson['autoload']['psr-4']);
 
             if (count($psr4root)) {
                 $stub = str_replace(
-                    [
-                        'DummyRootNamespace',
-                        '{{ namespace_root }}',
-                        '{{namespace_root}}',
-                    ],
+                    ['DummyRootNamespace', '{{ namespace_root }}', '{{namespace_root}}'],
                     $psr4root[0],
-                    $stub,
+                    $stub
                 );
 
-                $psr4path = str_replace(
-                    'app/src/',
-                    '',
-                    $this->getCommandPath(),
-                );
+                $psr4path = str_replace('app/src/', '', $this->getCommandPath());
                 $psr4path = str_replace('/', '\\', $psr4path);
-                $psr4 =
-                    PHP_EOL.
-                    'namespace '.
-                    $psr4root[0].
-                    $psr4path.
-                    ';'.
-                    PHP_EOL;
+                $psr4 = PHP_EOL.'namespace '.$psr4root[0].$psr4path.';'.PHP_EOL;
             }
         }
 
-        $stub = str_replace(
-            ['DummyNamespace', '{{ namespace }}', '{{namespace}}'],
-            $psr4,
-            $stub,
-        );
+        $stub = str_replace(['DummyNamespace', '{{ namespace }}', '{{namespace}}'], $psr4, $stub);
 
         return $this;
     }
@@ -757,10 +664,7 @@ abstract class GeneratorCommand extends Command
      */
     protected function getNamespace($name)
     {
-        return trim(
-            implode('\\', array_slice(explode('\\', $name), 0, -1)),
-            '\\',
-        );
+        return trim(implode('\\', array_slice(explode('\\', $name), 0, -1)), '\\');
     }
 
     /**
@@ -774,11 +678,7 @@ abstract class GeneratorCommand extends Command
     {
         $class = str_replace($this->getNamespace($name).'\\', '', $name);
 
-        return str_replace(
-            ['DummyClass', '{{ class }}', '{{class}}'],
-            $class,
-            $stub,
-        );
+        return str_replace(['DummyClass', '{{ class }}', '{{class}}'], $class, $stub);
     }
 
     /**
@@ -821,13 +721,7 @@ abstract class GeneratorCommand extends Command
      */
     protected function getArguments()
     {
-        return [
-            [
-                'name',
-                InputArgument::REQUIRED,
-                'The name of the '.strtolower($this->type),
-            ],
-        ];
+        return [['name', InputArgument::REQUIRED, 'The name of the '.strtolower($this->type)]];
     }
 
     /**
@@ -854,19 +748,12 @@ abstract class GeneratorCommand extends Command
 
         return [
             'name' => function ($answer) {
-
                 if (! is_string($answer) || $answer === null) {
-                    throw new \RuntimeException(
-                        'Invalid name'
-                    );
+                    throw new \RuntimeException('Invalid name');
                 } elseif (strlen($answer) < 2) {
-                    throw new \RuntimeException(
-                        'The name is too short'
-                    );
+                    throw new \RuntimeException('The name is too short');
                 } elseif (! preg_match('/^([A-z0-9\_\-]+)$/', $answer)) {
-                    throw new \RuntimeException(
-                        'The name can contains letters, numbers and underscore'
-                    );
+                    throw new \RuntimeException('The name can contains letters, numbers and underscore');
                 }
 
                 return $answer;
@@ -891,7 +778,6 @@ abstract class GeneratorCommand extends Command
     protected function contentExistsDeterminator($content, $determinationLines, $chainer)
     {
         if (is_array($determinationLines)) {
-
             if ($chainer == 'or' || $chainer == '||') {
                 $state = false;
                 foreach ($determinationLines as $dl) {
@@ -902,7 +788,8 @@ abstract class GeneratorCommand extends Command
                 }
 
                 return $state;
-            } else { // and &&
+            } else {
+                // and &&
                 $state = false;
                 foreach ($determinationLines as $dl) {
                     if (strpos($content, $dl) !== false) {
@@ -915,7 +802,6 @@ abstract class GeneratorCommand extends Command
 
                 return $state;
             }
-
         } else {
             if (strpos($content, $determinationLines) !== false) {
                 return true;
@@ -931,7 +817,6 @@ abstract class GeneratorCommand extends Command
         $files = $finder->in(BASE_PATH.'/app/_config')->files();
 
         foreach ($files as $file) {
-
             if ($this->contentExistsDeterminator($file->getContents(), $determinationLines, $chainer) === true) {
                 $ymlFile = $file;
                 break;
@@ -957,13 +842,14 @@ abstract class GeneratorCommand extends Command
         $ymlFile = $this->findYamlConfigFile($determinationLines, $chainer);
 
         if (isset($ymlFile)) {
-
             $skeleton = $this->ymlConfigSkeleton($ymlFile);
 
-            return $skeleton ? [
-                'key' => $this->skeletonTargetKeyDeterminator($skeleton, $determinationLines, $chainer, 'content'),
-                'config' => $skeleton,
-            ] : null;
+            return $skeleton
+                ? [
+                    'key' => $this->skeletonTargetKeyDeterminator($skeleton, $determinationLines, $chainer, 'content'),
+                    'config' => $skeleton,
+                ]
+                : null;
         }
     }
 
@@ -977,21 +863,19 @@ abstract class GeneratorCommand extends Command
 
     protected function findYamlConfigFileByName($name)
     {
-        $determinationLines = [
-            'Name: '.$name,
-            'Name:'.$name,
-        ];
+        $determinationLines = ['Name: '.$name, 'Name:'.$name];
 
         $ymlFile = $this->findYamlConfigFile($determinationLines);
 
         if (isset($ymlFile)) {
-
             $skeleton = $this->ymlConfigSkeleton($ymlFile);
 
-            return $skeleton ? [
-                'key' => $this->skeletonTargetKeyDeterminator($skeleton, $determinationLines, 'or', 'head'),
-                'config' => $skeleton,
-            ] : null;
+            return $skeleton
+                ? [
+                    'key' => $this->skeletonTargetKeyDeterminator($skeleton, $determinationLines, 'or', 'head'),
+                    'config' => $skeleton,
+                ]
+                : null;
         }
     }
 
@@ -1013,10 +897,12 @@ abstract class GeneratorCommand extends Command
             }
         }
 
-        return ! empty($assembledConfig) ? [
-            'skeleton' => $assembledConfig,
-            'file' => $ymlFile,
-        ] : null;
+        return ! empty($assembledConfig)
+            ? [
+                'skeleton' => $assembledConfig,
+                'file' => $ymlFile,
+            ]
+            : null;
     }
 
     protected function updateYamlConfig($config, $nestPath, $value)
@@ -1039,7 +925,6 @@ abstract class GeneratorCommand extends Command
             $children = explode('.', $nestPath);
 
             foreach ($children as $child) {
-
                 while (isset($o[$child])) {
                     if ($child != '') {
                         $o = $o[$child];
@@ -1078,8 +963,13 @@ abstract class GeneratorCommand extends Command
         return $this->dumpYamlConfig($config);
     }
 
-    protected function askClassNameQuestion($text, $input, $output, $extraRule = '/^([A-z0-9\_]+)$/', $extraMessage = 'Name can contains letter, numbers and underscore')
-    {
+    protected function askClassNameQuestion(
+        $text,
+        $input,
+        $output,
+        $extraRule = '/^([A-z0-9\_]+)$/',
+        $extraMessage = 'Name can contains letter, numbers and underscore'
+    ) {
         if (is_array($text)) {
             $text = $text[0];
             $default = $text[1];
@@ -1090,15 +980,10 @@ abstract class GeneratorCommand extends Command
         $io = new InputOutput($input, $output);
 
         return $io->question($text, $default, function ($answer) use ($extraRule, $extraMessage) {
-
             if (! is_string($answer) || $answer === null) {
-                throw new \RuntimeException(
-                    'Invalid name'
-                );
+                throw new \RuntimeException('Invalid name');
             } elseif (strlen($answer) < 2) {
-                throw new \RuntimeException(
-                    'The name is too short'
-                );
+                throw new \RuntimeException('The name is too short');
             } elseif ($extraRule && ! preg_match($extraRule, $answer)) {
                 throw new \RuntimeException($extraMessage);
             }
@@ -1117,7 +1002,6 @@ abstract class GeneratorCommand extends Command
         $io = new InputOutput($input, $output);
 
         return $io->question($text, $default, function ($answer) use ($extraRule, $extraMessage) {
-
             if ($extraRule && ! preg_match($extraRule, $answer)) {
                 throw new \RuntimeException($extraMessage);
             }
@@ -1138,7 +1022,6 @@ abstract class GeneratorCommand extends Command
 
         foreach ($config['config']['skeleton'] as $bone) {
             if (isset($bone['altered']) && $bone['altered']) {
-
                 // put back comments (if exists)
 
                 $altered_contents = Yaml::dump($bone['altered'], PHP_INT_MAX, 2, Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK);
@@ -1150,7 +1033,6 @@ abstract class GeneratorCommand extends Command
                 $result = implode("\n", $altered_with_comments);
                 $output .= $bone['head'].PHP_EOL.$result.PHP_EOL;
                 // $output .= preg_replace("/([\r\n]{4,}|[\n]{2,}|[\r]{2,})/", "\n", $bone['head'] . $result . PHP_EOL);
-
             } else {
                 $output .= $bone['head'].PHP_EOL.$bone['content'].PHP_EOL;
                 // $output .= preg_replace("/([\r\n]{4,}|[\n]{2,}|[\r]{2,})/", "\n", $bone['head'] . $bone['content'] . PHP_EOL);
@@ -1184,10 +1066,7 @@ abstract class GeneratorCommand extends Command
         $path = $this->path;
 
         if ($path && is_string($path)) {
-            if (
-                strpos($path, '[theme]') !== false ||
-                strpos($path, '[psr4]') !== false
-            ) {
+            if (strpos($path, '[theme]') !== false || strpos($path, '[psr4]') !== false) {
                 // default
                 $psr4 = 'app/src';
                 $namespace_root = 'App/';
@@ -1196,16 +1075,9 @@ abstract class GeneratorCommand extends Command
                     $this->composerJson = $this->get_composer_json();
                 }
 
-                if (
-                    $this->composerJson &&
-                    isset($this->composerJson['autoload']['psr-4'])
-                ) {
-                    $psr4root = array_values(
-                        $this->composerJson['autoload']['psr-4'],
-                    );
-                    $psr4ns = array_keys(
-                        $this->composerJson['autoload']['psr-4'],
-                    );
+                if ($this->composerJson && isset($this->composerJson['autoload']['psr-4'])) {
+                    $psr4root = array_values($this->composerJson['autoload']['psr-4']);
+                    $psr4ns = array_keys($this->composerJson['autoload']['psr-4']);
 
                     if (substr($psr4root[0], -1) == '/') {
                         $psr4 = substr($psr4root[0], 0, -1);
@@ -1255,13 +1127,8 @@ abstract class GeneratorCommand extends Command
             $this->composerJson = $this->get_composer_json();
         }
 
-        if (
-            $this->composerJson &&
-            isset($this->composerJson['autoload']['psr-4'])
-        ) {
-            $namespace_root = array_keys(
-                $this->composerJson['autoload']['psr-4'],
-            );
+        if ($this->composerJson && isset($this->composerJson['autoload']['psr-4'])) {
+            $namespace_root = array_keys($this->composerJson['autoload']['psr-4']);
             $namespace_root = $namespace_root[0];
             $namespace_root = str_replace('\\', '/', $namespace_root);
             $namespace_root = explode('/', $namespace_root)[0];
@@ -1292,15 +1159,10 @@ abstract class GeneratorCommand extends Command
         }, $this->stubTemplates);
 
         if ($input->getOption('template') !== null) {
-
             $template = $input->getOption('template');
         } else {
-
             $helper = $this->getHelper('question');
-            $question = new ChoiceQuestion(
-                'What template to use?',
-                array_values($stubTemplates)
-            );
+            $question = new ChoiceQuestion('What template to use?', array_values($stubTemplates));
             $template = $helper->ask($input, $output, $question);
         }
 

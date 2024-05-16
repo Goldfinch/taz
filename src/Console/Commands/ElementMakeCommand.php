@@ -33,12 +33,7 @@ class ElementMakeCommand extends GeneratorCommand
     {
         parent::configure();
 
-        $this->addOption(
-            'template',
-            null,
-            InputOption::VALUE_REQUIRED,
-            'Specify template'
-        );
+        $this->addOption('template', null, InputOption::VALUE_REQUIRED, 'Specify template');
     }
 
     protected function execute($input, $output): int
@@ -49,7 +44,11 @@ class ElementMakeCommand extends GeneratorCommand
             return Command::FAILURE;
         }
 
-        $className = $this->askClassNameQuestion('What [class name] does this element need to be assigned to? (eg: Page, App\Pages\Page)', $input, $output);
+        $className = $this->askClassNameQuestion(
+            'What [class name] does this element need to be assigned to? (eg: Page, App\Pages\Page)',
+            $input,
+            $output
+        );
 
         $nameInput = $this->getAttrName($input);
 
@@ -62,24 +61,22 @@ class ElementMakeCommand extends GeneratorCommand
 
         // create new config if not exists
         if (! $config) {
-
             $command = $this->getApplication()->find('make:config');
-            $command->run(new ArrayInput([
-                'name' => 'elements',
-                '--plain' => true,
-                '--after' => 'dnadesign/silverstripe-elemental',
-                '--nameprefix' => 'app-',
-            ]), $output);
+            $command->run(
+                new ArrayInput([
+                    'name' => 'elements',
+                    '--plain' => true,
+                    '--after' => 'dnadesign/silverstripe-elemental',
+                    '--nameprefix' => 'app-',
+                ]),
+                $output
+            );
 
             $config = $this->findYamlConfigFileByName('app-elements');
         }
 
         // update config
-        $this->updateYamlConfig(
-            $config,
-            $className.'.allowed_elements',
-            [$this->getNamespaceClass($input)],
-        );
+        $this->updateYamlConfig($config, $className.'.allowed_elements', [$this->getNamespaceClass($input)]);
 
         return Command::SUCCESS;
     }

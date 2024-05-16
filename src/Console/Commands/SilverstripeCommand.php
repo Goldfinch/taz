@@ -20,9 +20,7 @@ class SilverstripeCommand extends GeneratorCommand
             return Command::FAILURE;
         }
 
-        echo shell_exec(
-            'php vendor/silverstripe/framework/cli-script.php dev/build "flush=1"',
-        );
+        echo shell_exec('php vendor/silverstripe/framework/cli-script.php dev/build "flush=1"');
 
         return Command::SUCCESS;
     }

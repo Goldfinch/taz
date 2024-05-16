@@ -28,22 +28,13 @@ class ExtensionMakeCommand extends GeneratorCommand
     {
         parent::configure();
 
-        $this->addOption(
-            'fielder',
-            null,
-            InputOption::VALUE_NONE,
-            'Fielder model template'
-        );
+        $this->addOption('fielder', null, InputOption::VALUE_NONE, 'Fielder model template');
     }
 
     protected function execute($input, $output): int
     {
         $helper = $this->getHelper('question');
-        $question = new ChoiceQuestion(
-            'Which type?',
-            ['Extension', 'DataExtension'],
-            0,
-        );
+        $question = new ChoiceQuestion('Which type?', ['Extension', 'DataExtension'], 0);
         $this->questions['extensionType'] = $helper->ask($input, $output, $question);
 
         if (InstalledVersions::isInstalled('goldfinch/fielder') || $input->getOption('fielder') !== false) {
@@ -56,10 +47,14 @@ class ExtensionMakeCommand extends GeneratorCommand
 
         $nameInput = $this->getAttrName($input);
 
-        $registerExtension = $this->askStringQuestion('Do you want to register this extension in Yaml config? [y/n]', $input, $output, 'y');
+        $registerExtension = $this->askStringQuestion(
+            'Do you want to register this extension in Yaml config? [y/n]',
+            $input,
+            $output,
+            'y'
+        );
 
         if ($registerExtension == 'y' || $registerExtension == 'Y') {
-
             $recognizedClasses = [
                 'SilverStripe\SiteConfig\SiteConfig' => 'siteconfig',
             ];
@@ -75,17 +70,16 @@ class ExtensionMakeCommand extends GeneratorCommand
             if (! empty($suggestClasses)) {
                 $suggestClasses = ['no (skip)' => 'no'] + $suggestClasses;
                 $helper = $this->getHelper('question');
-                $question = new ChoiceQuestion(
-                    'Any of these?',
-                    array_keys($suggestClasses),
-                    0,
-                );
+                $question = new ChoiceQuestion('Any of these?', array_keys($suggestClasses), 0);
                 $className = $helper->ask($input, $output, $question);
             }
 
             if (! isset($className)) {
-
-                $className = $this->askClassNameQuestion('What class are we extending? (eg: Page, App\Models\Member)', $input, $output);
+                $className = $this->askClassNameQuestion(
+                    'What class are we extending? (eg: Page, App\Models\Member)',
+                    $input,
+                    $output
+                );
             }
 
             // find config
@@ -93,23 +87,21 @@ class ExtensionMakeCommand extends GeneratorCommand
 
             // create new config if not exists
             if (! $config) {
-
                 $command = $this->getApplication()->find('make:config');
-                $command->run(new ArrayInput([
-                    'name' => 'extensions',
-                    '--plain' => true,
-                    '--nameprefix' => 'app-',
-                ]), $output);
+                $command->run(
+                    new ArrayInput([
+                        'name' => 'extensions',
+                        '--plain' => true,
+                        '--nameprefix' => 'app-',
+                    ]),
+                    $output
+                );
 
                 $config = $this->findYamlConfigFileByName('app-extensions');
             }
 
             // update config
-            $this->updateYamlConfig(
-                $config,
-                $className.'.extensions',
-                [$this->getNamespaceClass($input)],
-            );
+            $this->updateYamlConfig($config, $className.'.extensions', [$this->getNamespaceClass($input)]);
         }
 
         return Command::SUCCESS;
@@ -120,7 +112,6 @@ class ExtensionMakeCommand extends GeneratorCommand
         $questions = $this->questions;
 
         if ($questions && is_array($questions) && ! empty($questions)) {
-
             $class = $questions['extensionType'] ?? 'Extension';
 
             if ($class == 'Extension') {
@@ -129,10 +120,7 @@ class ExtensionMakeCommand extends GeneratorCommand
                 $useClass = 'SilverStripe\ORM\DataExtension';
             }
 
-            return [
-                [true, '{{ __use_pagetype }}', $useClass],
-                [true, '{{ __pagetype }}', $class],
-            ];
+            return [[true, '{{ __use_pagetype }}', $useClass], [true, '{{ __pagetype }}', $class]];
         }
     }
 }

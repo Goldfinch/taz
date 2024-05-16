@@ -43,11 +43,7 @@ class Templater
             }
 
             $helper = self::$command->getHelper('question');
-            $question = new ChoiceQuestion(
-                'Which templete?',
-                $availableThemes,
-                0,
-            );
+            $question = new ChoiceQuestion('Which templete?', $availableThemes, 0);
             $question->setErrorMessage('Theme %s is invalid.');
             $theme = $helper->ask(self::$input, self::$output, $question);
         } else {

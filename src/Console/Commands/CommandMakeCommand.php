@@ -23,10 +23,30 @@ class CommandMakeCommand extends GeneratorCommand
 
     protected function execute($input, $output): int
     {
-        $this->questions['clicommand'] = $this->askStringQuestion('Command name for Taz [php taz ...]:', $input, $output, 'make:my_custom_command');
-        $this->questions['path'] = $this->askStringQuestion('Where should the output files/classes of this command be stored?:', $input, $output, 'app/src/MyCommands');
-        $this->questions['suffix'] = $this->askStringQuestion('Does the output files/classes need to have suffix?:', $input, $output, '');
-        $this->questions['description'] = $this->askStringQuestion('Command description:', $input, $output, 'My command description');
+        $this->questions['clicommand'] = $this->askStringQuestion(
+            'Command name for Taz [php taz ...]:',
+            $input,
+            $output,
+            'make:my_custom_command'
+        );
+        $this->questions['path'] = $this->askStringQuestion(
+            'Where should the output files/classes of this command be stored?:',
+            $input,
+            $output,
+            'app/src/MyCommands'
+        );
+        $this->questions['suffix'] = $this->askStringQuestion(
+            'Does the output files/classes need to have suffix?:',
+            $input,
+            $output,
+            ''
+        );
+        $this->questions['description'] = $this->askStringQuestion(
+            'Command description:',
+            $input,
+            $output,
+            'My command description'
+        );
 
         if (parent::execute($input, $output) === false) {
             return Command::FAILURE;
@@ -46,7 +66,6 @@ class CommandMakeCommand extends GeneratorCommand
         $questions = $this->questions;
 
         if ($questions && is_array($questions) && ! empty($questions)) {
-
             $clicommand = $questions['clicommand'];
             $path = $questions['path'];
             $suffix = $questions['suffix'];

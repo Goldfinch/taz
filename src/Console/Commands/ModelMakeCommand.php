@@ -30,12 +30,7 @@ class ModelMakeCommand extends GeneratorCommand
     {
         parent::configure();
 
-        $this->addOption(
-            'template',
-            null,
-            InputOption::VALUE_REQUIRED,
-            'Specify template'
-        );
+        $this->addOption('template', null, InputOption::VALUE_REQUIRED, 'Specify template');
     }
 
     protected function execute($input, $output): int

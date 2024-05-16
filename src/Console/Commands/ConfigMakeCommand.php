@@ -37,33 +37,13 @@ class ConfigMakeCommand extends GeneratorCommand
             'Use clean config template with no placeholder attributes'
         );
 
-        $this->addOption(
-            'after',
-            null,
-            InputOption::VALUE_REQUIRED,
-            'Set yaml parameter After'
-        );
+        $this->addOption('after', null, InputOption::VALUE_REQUIRED, 'Set yaml parameter After');
 
-        $this->addOption(
-            'before',
-            null,
-            InputOption::VALUE_REQUIRED,
-            'Set yaml parameter Before'
-        );
+        $this->addOption('before', null, InputOption::VALUE_REQUIRED, 'Set yaml parameter Before');
 
-        $this->addOption(
-            'nameprefix',
-            null,
-            InputOption::VALUE_REQUIRED,
-            'Set name suffix to Yaml config name'
-        );
+        $this->addOption('nameprefix', null, InputOption::VALUE_REQUIRED, 'Set name suffix to Yaml config name');
 
-        $this->addOption(
-            'template',
-            null,
-            InputOption::VALUE_REQUIRED,
-            'Specify template'
-        );
+        $this->addOption('template', null, InputOption::VALUE_REQUIRED, 'Specify template');
     }
 
     protected function execute($input, $output): int

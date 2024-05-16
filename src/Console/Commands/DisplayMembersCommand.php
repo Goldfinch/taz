@@ -21,11 +21,8 @@ class DisplayMembersCommand extends GeneratorCommand
         $response = SupplyHelper::supply('memberslist');
 
         if ($response) {
-
             $table = new Table($output);
-            $table
-                ->setHeaders(['First name', 'Surname', 'Email', 'Groups'])
-                ->setRows($response);
+            $table->setHeaders(['First name', 'Surname', 'Email', 'Groups'])->setRows($response);
             $table->render();
         }
 

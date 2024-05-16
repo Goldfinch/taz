@@ -1,56 +1,46 @@
 #!/usr/bin/env php
 <?php
 
-require __DIR__ . '/vendor/autoload.php';
+require __DIR__.'/vendor/autoload.php';
 
+use Goldfinch\Taz\Console\GeneratorCommand;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
-use Symfony\Component\Console\Application;
-use Goldfinch\Taz\Console\GeneratorCommand;
-use Symfony\Component\Filesystem\Filesystem;
 
-if (!in_array(PHP_SAPI, ['cli', 'cgi', 'cgi-fcgi'])) {
+if (! in_array(PHP_SAPI, ['cli', 'cgi', 'cgi-fcgi'])) {
     echo 'Taz has escaped! Sorry, can\'t run it here.';
-    exit;
+    exit();
 }
 
 $finder = Finder::create();
 
-$dirs = [
-    __DIR__ . '/vendor/**/*/src/Commands',
-    __DIR__ . '/app/src/Commands',
-];
+$dirs = [__DIR__.'/vendor/**/*/src/Commands', __DIR__.'/app/src/Commands'];
 
-$checkDirs = array_filter($dirs, static function ($dir){
-    return !empty(glob($dir));
+$checkDirs = array_filter($dirs, static function ($dir) {
+    return ! empty(glob($dir));
 });
 
 $customCommands = [];
 
-if (count($checkDirs))
-{
-    $finder
-        ->in($checkDirs)
-        ->depth(0);
+if (count($checkDirs)) {
+    $finder->in($checkDirs)->depth(0);
 
-    foreach($finder as $f)
-    {
-        if (is_dir($f->getPathname()))
-        {
+    foreach ($finder as $f) {
+        if (is_dir($f->getPathname())) {
             continue;
         }
 
-        $fileContent = (string)file_get_contents($f->getPathname());
+        $fileContent = (string) file_get_contents($f->getPathname());
 
         preg_match('#namespace (.*);#', $fileContent, $matches);
 
-        if ($matches && isset($matches[1]))
-        {
+        if ($matches && isset($matches[1])) {
             $name = explode('.php', $f->getFilename())[0];
-            $class = $matches[1] . '\\' . $name;
+            $class = $matches[1].'\\'.$name;
 
-            if (is_subclass_of($class, GeneratorCommand::class))
-            {
+            if (is_subclass_of($class, GeneratorCommand::class)) {
                 $customCommands[] = $class;
             }
         }
@@ -59,30 +49,25 @@ if (count($checkDirs))
 
 $application = new Application();
 
-$files = new Filesystem;
+$files = new Filesystem();
 
 $finder = Finder::create();
 $finder
-    ->in([
-        __DIR__ . '/vendor/goldfinch/taz/src/Console/Commands',
-    ])
+    ->in([__DIR__.'/vendor/goldfinch/taz/src/Console/Commands'])
     ->depth(0)
-    ->filter(static function (SplFileInfo $file) {});
+    ->filter(static function (SplFileInfo $file) {
+    });
 
-foreach($finder as $f)
-{
-    if (substr($f->getFilename(), -4) == '.php')
-    {
+foreach ($finder as $f) {
+    if (substr($f->getFilename(), -4) == '.php') {
         $name = substr($f->getFilename(), 0, -4);
-        $class = '\Goldfinch\Taz\Console\Commands\\' . $name;
+        $class = '\Goldfinch\Taz\Console\Commands\\'.$name;
 
         $application->add(new $class($files, __DIR__));
     }
 
-    if (count($customCommands))
-    {
-        foreach ($customCommands as $commandClass)
-        {
+    if (count($customCommands)) {
+        foreach ($customCommands as $commandClass) {
             $application->add(new $commandClass($files, __DIR__));
         }
     }
